@@ -1,0 +1,21 @@
+app:
+  build: .
+  command: rails server -p 3000 -b '0.0.0.0'
+  volumes:
+    - .:/app
+  ports:
+    - "3000:3000"
+  links:
+    - postgres
+postgres:
+  image: postgres:9.4
+  ports:
+    - "5434:5432"
+  volumes_from:
+    - db-data
+  env_file: config/db.env
+db-data:
+  image: postgres:9.4
+  command: echo 'Data Container for PostgreSQL'
+  volumes:
+    - /var/lib/postgresql/data
