@@ -1,12 +1,25 @@
 Rails.application.routes.draw do
-  get 'home/index'
-
-  get 'home/index'
 
   # You can have the root of your site routed with "root"
   root 'home#index'
   
   get 'home/index'
+
+  get 'signup' => 'users/users#new'
+  
+  namespace :users do
+    
+    resources :users do
+       
+      
+      
+      member do
+       
+      end
+      
+    end # resources users
+    
+  end # namespace users
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

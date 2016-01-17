@@ -1,0 +1,18 @@
+header {
+ height: $header-height;
+ background-color: $secondary-color;
+ color: #FFF;
+}
+
+header .navbar {
+  padding: 0;
+  margin: 0;
+}
+
+header .navbar .btn {
+  margin-right: 10px;
+}
+
+header .navbar .btn:last-child {
+  margin-right: 0;
+}

@@ -1,6 +1,8 @@
 FROM ruby:2.3 
 MAINTAINER vincent.pelle@gmail.com
 
+RUN adduser --disabled-password --gecos '' vincent
+
 # Install apt based dependencies required to run Rails as 
 # well as RubyGems. As the Ruby image itself is based on a 
 # Debian image, we use apt-get to install those.
@@ -20,6 +22,8 @@ WORKDIR /app
 # are made.
 COPY Gemfile Gemfile.lock ./ 
 RUN gem install bundler && bundle install --jobs 20 --retry 5
+
+USER vincent
 
 # Copy the main application.
 COPY . ./
