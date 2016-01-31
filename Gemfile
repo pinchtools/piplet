@@ -18,7 +18,7 @@ gem 'jquery-rails'
 gem 'bootstrap', '~> 4.0.0.alpha3'
 
 # Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+gem 'bcrypt', '~> 3.1.7'
 
 # Add a comment summarizing the current schema on models & specs
 gem 'annotate'
@@ -32,7 +32,6 @@ gem 'annotate'
 
 gem 'active_model_serializers'
 
-#gem 'devise'
 
 
 
@@ -51,6 +50,11 @@ group :development, :test do
   gem 'shoulda'
 
   gem 'mocha'
+
+  gem 'factory_girl_rails', '~> 4.0'
+
+  gem 'faker'
+
 end
 
 group :development do
@@ -67,5 +71,7 @@ group :development do
   gem 'mailcatcher'
 
   gem 'better_errors'
+
+  gem 'annotate'
 end
 

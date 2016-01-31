@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+
   # You can have the root of your site routed with "root"
   root 'home#index'
   
@@ -9,15 +10,11 @@ Rails.application.routes.draw do
   
   namespace :users do
     
-    resources :users do
-       
-      
-      
-      member do
-       
-      end
-      
-    end # resources users
+    get 'users/new'
+    
+#    resources :users do
+#      
+#    end
     
   end # namespace users
 

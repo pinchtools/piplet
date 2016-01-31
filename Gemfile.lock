@@ -48,6 +48,7 @@ GEM
     autoprefixer-rails (6.3.1)
       execjs
       json
+    bcrypt (3.1.10)
     better_errors (2.1.1)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
@@ -70,6 +71,13 @@ GEM
     erubis (2.7.0)
     eventmachine (1.0.8)
     execjs (2.6.0)
+    factory_girl (4.5.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.5.0)
+      factory_girl (~> 4.5.0)
+      railties (>= 3.0.0)
+    faker (1.6.1)
+      i18n (~> 0.5)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     i18n (0.7.0)
@@ -224,9 +232,12 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers
   annotate
+  bcrypt (~> 3.1.7)
   better_errors
   bootstrap (~> 4.0.0.alpha3)
   byebug
+  factory_girl_rails (~> 4.0)
+  faker
   jquery-rails
   mailcatcher
   mocha
