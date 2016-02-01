@@ -8,9 +8,11 @@ Rails.application.routes.draw do
 
   get 'signup' => 'users/users#new'
   
+
+  
   namespace :users do
     
-    get 'users/new'
+    resources :users
     
 #    resources :users do
 #      
