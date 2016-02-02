@@ -47,5 +47,13 @@ RSpec.describe User, type: :model do
     
     expect(subject.name).to eq(name.downcase)
   end
-    
+  
+  it 'should generate a token when user is remembered' do
+    expect{ subject.remember }.to change(subject, :remember_token).to be_present
+  end
+  
+  it 'should set  a digest when user is remembered' do
+    expect{ subject.remember }.to change(subject, :remember_digest).to be_present
+  end
+  
 end
