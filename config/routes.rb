@@ -1,22 +1,23 @@
 Rails.application.routes.draw do
 
 
+  namespace :users do
+  get 'sessions/new'
+  end
+
   # You can have the root of your site routed with "root"
   root 'home#index'
   
   get 'home/index'
 
   get 'signup' => 'users/users#new'
-  
-
+  get 'login' => 'users/sessions#new'
+  post 'login' => 'users/sessions#create'
+  delete 'logout' => 'users/sessions#destroy'
   
   namespace :users do
     
     resources :users
-    
-#    resources :users do
-#      
-#    end
     
   end # namespace users
 
