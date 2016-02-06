@@ -9,11 +9,23 @@ RSpec.describe Users::SessionsController, type: :controller do
     end
   end
   
+  def log_in_as(user, options = {})
+      session = { email: user.email, password: user.password }
+      
+      session[:remember_me] = options[:remember_me] if options[:remember_me].present?
+      
+      post :create, session: session
+  end
   
   describe "POST #create" do
     
     it "fails with bad entries" do
-      post :create, session: { email: Faker::Internet.email, password: "foobar" }
+      user = create(:user)
+      
+      user.email = Faker::Internet.email
+      user.password = 'foobar'
+      
+      log_in_as(user)
         
       expect(response).to render_template(:new)
     end
@@ -21,11 +33,37 @@ RSpec.describe Users::SessionsController, type: :controller do
     it "create a user session when suceed" do
       user = create(:user)
     
-      post :create, session: { email: user.email, password: user.password }
+      log_in_as(user)
       
       expect(session[:user_id]).to eq(user.id)
       expect(response).to redirect_to( users_user_path(user) )
       
+    end
+    
+    it 'generate cookies if remember me is checked' do
+      expect(cookies).to_not have_key(:remember_token)
+      expect(cookies).to_not have_key(:user_id)
+      
+      user = create(:user)
+    
+      log_in_as(user, { remember_me: '1' })
+      
+      expect(cookies).to have_key(:remember_token)
+      expect(cookies).to have_key(:user_id)
+  end
+    
+    it 'destroy existing cookies if remember me is unchecked' do
+      user = create(:user)
+    
+      log_in_as(user, { remember_me: '1' })
+      
+      expect(cookies).to have_key(:remember_token)
+      expect(cookies).to have_key(:user_id)
+      
+      log_in_as(user)
+      
+      expect(cookies).to_not have_key(:remember_token)
+      expect(cookies).to_not have_key(:user_id)
     end
     
   end
@@ -35,7 +73,7 @@ RSpec.describe Users::SessionsController, type: :controller do
     it 'destroy cookies' do
       user = create(:user)
     
-      post :create, session: { email: user.email, password: user.password }
+      log_in_as(user, { remember_me: '1' })
       
       expect(cookies).to have_key(:remember_token)
       expect(cookies).to have_key(:user_id)

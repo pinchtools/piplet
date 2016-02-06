@@ -28,3 +28,7 @@ en:
     log-out: 'Log Out'
     profile: 'Profile'
     setting: 'Settings'
+  session:
+    sign-up-btn: 'Sign up now!'
+    remember-me: 'Remember me'
+    
