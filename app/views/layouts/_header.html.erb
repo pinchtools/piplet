@@ -27,7 +27,7 @@
                   <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><%= t('user.account') %></a>
                   <div class="dropdown-menu">
                     <%= link_to t('user.profile'), users_user_path(current_user), class: 'dropdown-item' %>
-                    <%= link_to t('user.settings'), users_user_path(current_user), class: 'dropdown-item' %>
+                    <%= link_to t('user.settings'), edit_users_user_path(current_user), class: 'dropdown-item' %>
                     <div class="dropdown-divider"></div>
                     <%= link_to t('user.log-out'), logout_path(current_user), method: 'delete', class: 'dropdown-item' %>
                   </div>

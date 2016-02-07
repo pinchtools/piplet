@@ -28,6 +28,12 @@ en:
     log-out: 'Log Out'
     profile: 'Profile'
     setting: 'Settings'
+    notice:
+      success:
+        created: 'Profile created!'
+        updated: 'Profile updated!'
+      danger:
+        not-logged: 'Please log in.'
   session:
     sign-up-btn: 'Sign up now!'
     remember-me: 'Remember me'

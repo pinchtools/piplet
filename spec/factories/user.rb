@@ -1,9 +1,9 @@
 FactoryGirl.define do
 
   factory :user do
-    name Faker::Lorem.words(2).join(" ")
-    email Faker::Internet.email
-    password 'foobar'
+    sequence(:name) { Faker::Lorem.words(2).join(" ") }
+    sequence(:email) { Faker::Internet.email }
+      password 'foobar'
     password_confirmation 'foobar'
   end
   

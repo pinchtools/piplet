@@ -13,8 +13,6 @@ module Users::SessionsHelper
   end
   
   def current_user
-    @current_user ||= User.find_by(id: session[:user_id])
-      
     if (user_id = session[:user_id]) # session exists
       @current_user ||= User.find_by(id: user_id)
     elsif (user_id = cookies.signed[:user_id]) #persistent session exists
@@ -26,6 +24,11 @@ module Users::SessionsHelper
       end
       
     end
+  end
+  
+  # Returns true if the given user is the current user.
+  def current_user?(user)
+    user == current_user
   end
   
   # Remembers a user in a persistent session.

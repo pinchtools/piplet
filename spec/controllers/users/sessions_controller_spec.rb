@@ -9,13 +9,6 @@ RSpec.describe Users::SessionsController, type: :controller do
     end
   end
   
-  def log_in_as(user, options = {})
-      session = { email: user.email, password: user.password }
-      
-      session[:remember_me] = options[:remember_me] if options[:remember_me].present?
-      
-      post :create, session: session
-  end
   
   describe "POST #create" do
     
