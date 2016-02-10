@@ -23,15 +23,27 @@ en:
   site:
     title: 'Piplet'
   user:
-    sign-up: 'Sign Up'
-    log-in: 'Log In'
-    log-out: 'Log Out'
+    links:
+      sign-up: 'Sign Up'
+      log-in: 'Log In'
+      log-out: 'Log Out'
+      all: 'Users'
     profile: 'Profile'
     setting: 'Settings'
+    list: 'All users'
+    form:
+      new:
+        title: 'Sign up'
+        submit: 'Create my account'
+      edit:
+        title: 'Edit User'
+        submit: 'Save changes'
+
     notice:
       success:
         created: 'Profile created!'
         updated: 'Profile updated!'
+        destroyed: 'User deleted'
       danger:
         not-logged: 'Please log in.'
   session:

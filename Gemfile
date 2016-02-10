@@ -32,7 +32,8 @@ gem 'annotate'
 
 gem 'active_model_serializers'
 
-
+# Pagination
+gem 'will_paginate'
 
 
 # Use Puma as the app server

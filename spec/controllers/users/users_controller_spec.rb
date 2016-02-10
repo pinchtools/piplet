@@ -3,6 +3,14 @@ require 'rails_helper'
 RSpec.describe Users::UsersController, type: :controller do
   include Helpers
   
+  describe "GET #index" do 
+    it "redirect to login page if not authorized" do
+      get :index
+      
+      should_redirect_to_login
+    end
+  end
+  
   describe "GET #new" do
     it "returns http success" do
       get :new
@@ -55,7 +63,22 @@ RSpec.describe Users::UsersController, type: :controller do
     
       should_redirect_to_login
     end
+
+    it "should forward to edit when you need to login before" do
+      user = create(:user)
     
+      get :edit, :id => user.id
+    
+      expect(session[:forwarding_url]).to be_present
+      
+      should_redirect_to_login
+
+      log_in_as user
+      
+      expect(response).to redirect_to (edit_users_user_path(user.id))
+      expect(session[:forwarding_url]).to be_nil
+    end
+        
     it 'should not be able to edit another user profile' do
       user = log_in_as create(:user)
       other_user = create(:user)
@@ -107,7 +130,6 @@ RSpec.describe Users::UsersController, type: :controller do
       end
       
       
-      
       it 'update valid form' do
         new_password = 'foobar2'
         
@@ -125,6 +147,7 @@ RSpec.describe Users::UsersController, type: :controller do
         
       end
       
+      
       it 'accepts empty password' do
         user.password = nil
         user.password_confirmation = nil
@@ -135,7 +158,48 @@ RSpec.describe Users::UsersController, type: :controller do
         expect(response).to redirect_to( users_user_path(assigns(:user)))
       end
       
+      it 'should not be able to set a user as admin' do
+        
+        expect(user.admin?).to be false
+        
+        patch :update, :id => user.id, :user => user.attributes.merge({
+          :admin => true
+        })
+        
+        expect(User.find(user.id)).not_to be_admin
+        
+      end
+      
     end
+  end
+  
+  describe "DELETE #destroy" do
+    
+    it 'redirect non-admin user' do
+      lambda_user = create(:user)
+      
+      user = log_in_as( create(:user) )
+      count = User.count
+
+      delete :destroy, id: lambda_user.id
+      
+      expect(:response).to redirect_to(:root)
+      expect(User.count).to eq(count)
+    end
+    
+    it 'effectively destroys an user when we\'re an admin' do
+      lambda_user = create(:user)
+      
+      user = log_in_as( create(:admin) )
+      count = User.count
+
+      delete :destroy, id: lambda_user.id
+      
+      expect(:response).to redirect_to(:users_users)
+      expect(User.count).to eq(count - 1)
+      
+    end
+    
   end
   
   

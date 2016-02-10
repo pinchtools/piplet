@@ -3,14 +3,21 @@
 
 @import "template/base";
 
-/* mixins, variables, etc. */
-$gray-medium-light: #eaeaea;
+@import "variables";
+
+/* mixins, etc. */
 
 @mixin box_sizing {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+
+@import "form";
+
+@import "users/*";
+
+
 
 
 /* miscellaneous */
@@ -61,5 +68,3 @@ aside {
   margin-top: 15px;
 }
 
-/* forms */
-@import "form";
