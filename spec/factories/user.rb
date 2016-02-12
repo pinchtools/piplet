@@ -5,6 +5,8 @@ FactoryGirl.define do
     sequence(:email) { Faker::Internet.email }
     password 'foobar'
     password_confirmation 'foobar'
+    activated true
+    activated_at Time.zone.now
   end
   
 
@@ -14,6 +16,8 @@ FactoryGirl.define do
     password 'foobar'
     password_confirmation 'foobar'
     admin      true
+    activated true
+    activated_at Time.zone.now
   end
   
 end

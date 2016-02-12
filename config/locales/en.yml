@@ -38,14 +38,17 @@ en:
       edit:
         title: 'Edit User'
         submit: 'Save changes'
-
     notice:
       success:
         created: 'Profile created!'
         updated: 'Profile updated!'
         destroyed: 'User deleted'
+        account-activated: 'Account activated!'
       danger:
         not-logged: 'Please log in.'
+        invalid-activation-link: 'Invalid activation link'
+      info:
+        account-need-activation: 'Please check your email to activate your account.'
   session:
     sign-up-btn: 'Sign up now!'
     remember-me: 'Remember me'

@@ -20,9 +20,9 @@ class Users::UsersController < ApplicationController
     @user = User.new(user_params)
     
     if @user.save
-      log_in @user
-      flash[:success] = t 'user.notice.success.created'
-      redirect_to users_user_path(@user)
+      UserMailer.account_activation(@user).deliver_now
+      flash[:info] = t 'user.notice.info.account-need-activation'
+      redirect_to root_url
     else
       render :new, locals: { user: @user }
     end

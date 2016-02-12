@@ -48,6 +48,10 @@ RSpec.describe User, type: :model do
     expect(subject.name).to eq(name.downcase)
   end
   
+  it 'authenticated? should return false for a user with nil digest' do
+    expect(subject.authenticated?(:remember, '')).to be false
+  end
+  
   it 'should generate a token when user is remembered' do
     expect{ subject.remember }.to change(subject, :remember_token).to be_present
   end

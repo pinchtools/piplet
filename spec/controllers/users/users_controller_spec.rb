@@ -48,8 +48,11 @@ RSpec.describe Users::UsersController, type: :controller do
       post :create, :user => user_params
       
       expect(User.count).to eq(count + 1) # one more user
-      expect(session[:user_id]).to eq(assigns(:user).id) # create a session
-      expect(response).to redirect_to( users_user_path(assigns(:user)) ) # redirect to user profile
+      expect(response).to redirect_to(:root)
+      expect(flash[:info]).to be_present
+      
+      #expect(response).to redirect_to( users_user_path(assigns(:user)) ) # redirect to user profile
+      #expect(session[:user_id]).to eq(assigns(:user).id) # create a session
     end
     
   end # END POST #create
