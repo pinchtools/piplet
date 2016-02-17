@@ -11,7 +11,7 @@ class Users::AccountActivationsController < ApplicationController
         log_in user
         flash[:success] = t('user.notice.success.account-activated')
           
-        redirect_to user
+        redirect_to users_user_url(user)
     else
       flash[:danger] = t('user.notice.danger.invalid-activation-link')
         
