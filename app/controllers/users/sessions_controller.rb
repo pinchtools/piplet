@@ -6,11 +6,18 @@ class Users::SessionsController < ApplicationController
     user = User.find_by(email: params[:session][:email].downcase)
       
     if user && user.authenticate(params[:session][:password])
-      log_in user
-      params[:session][:remember_me] == '1' ? remember(user) : forget(user)
+      if user.activated?
+        log_in user
+        params[:session][:remember_me] == '1' ? remember(user) : forget(user)
         redirect_back_or users_user_path(user)
+      else
+        flash[:warning] = t('user.notice.warning.account-not-activated')
+        redirect_to root_url
+      end
+      
+
     else
-      flash.now[:danger] = 'Invalid email/password combination' # Not quite right!
+      flash.now[:danger] = t('user.notice.danger.invalid-login')
       render 'new'
     end
     

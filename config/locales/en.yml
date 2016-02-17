@@ -44,8 +44,13 @@ en:
         updated: 'Profile updated!'
         destroyed: 'User deleted'
         account-activated: 'Account activated!'
+      warning:
+        account-not-activated: |
+          Account not activated.
+          Check your email for the activation link.
       danger:
         not-logged: 'Please log in.'
+        invalid-login:'Invalid email/password combination'
         invalid-activation-link: 'Invalid activation link'
       info:
         account-need-activation: 'Please check your email to activate your account.'
