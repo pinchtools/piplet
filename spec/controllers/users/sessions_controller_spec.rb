@@ -24,6 +24,17 @@ RSpec.describe Users::SessionsController, type: :controller do
       expect(response).to render_template(:new)
     end
     
+    it "fails if user is not activated" do
+      user = create(:user)
+      
+      user.update_attribute(:activated, false)
+      
+      log_in_as(user)
+      
+      expect(response).to redirect_to(:root)
+      expect(flash[:warning]).to be_present
+    end
+    
     it "create a user session when suceed" do
       user = create(:user)
     

@@ -37,22 +37,23 @@ RSpec.describe Users::UsersController, type: :controller do
     
     
     it "create a valid user" do
-  
+      ActionMailer::Base.deliveries.clear
+      
       user_params = build(:user).attributes.merge({
         :password => 'foobar',
-        :password_confirmation => 'foobar'
+        :password_confirmation => 'foobar',
+        :activated => false
       })
       
       count = User.count
       
       post :create, :user => user_params
       
-      expect(User.count).to eq(count + 1) # one more user
+      expect(User.count).to eq(count + 1) # add a new User
+      expect(ActionMailer::Base.deliveries.size).to eq(1) #should send an email
       expect(response).to redirect_to(:root)
+      expect(assigns(:user)).not_to be_activated
       expect(flash[:info]).to be_present
-      
-      #expect(response).to redirect_to( users_user_path(assigns(:user)) ) # redirect to user profile
-      #expect(session[:user_id]).to eq(assigns(:user).id) # create a session
     end
     
   end # END POST #create

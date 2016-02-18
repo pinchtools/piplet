@@ -20,7 +20,7 @@ class Users::UsersController < ApplicationController
     @user = User.new(user_params)
     
     if @user.save
-      UserMailer.account_activation(@user).deliver_now
+      @user.send_activation_email
       flash[:info] = t 'user.notice.info.account-need-activation'
       redirect_to root_url
     else
