@@ -2,6 +2,18 @@ Rails.application.routes.draw do
 
 
   namespace :users do
+  get 'password_resets/new'
+  end
+
+  namespace :users do
+  get 'password_resets/edit'
+  end
+
+  get 'password_resets/new'
+
+  get 'password_resets/edit'
+
+  namespace :users do
   get 'sessions/new'
   end
 
@@ -21,6 +33,8 @@ Rails.application.routes.draw do
     
     resources :account_activations, only: [:edit]
     
+    resources :password_resets, only: [:new, :create, :edit, :update]
+
   end # namespace users
 
   # The priority is based upon order of creation: first created -> highest priority.

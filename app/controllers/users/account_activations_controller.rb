@@ -19,5 +19,4 @@ class Users::AccountActivationsController < ApplicationController
     end
   end
 
-
 end

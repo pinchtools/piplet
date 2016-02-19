@@ -54,7 +54,25 @@ en:
         invalid-activation-link: 'Invalid activation link'
       info:
         account-need-activation: 'Please check your email to activate your account.'
+    mailer:
+      account-activation: 'Account activation'
+      password-reset: 'Password reset'
   session:
     sign-up-btn: 'Sign up now!'
     remember-me: 'Remember me'
-    
+    forgot-password: '"(forgot password)"'
+  password-reset:
+    new:
+      forgot-password: 'Forgot password'
+      submit-btn: 'Submit'
+    edit:
+      reset-password: 'Reset password'
+      submit-btn: 'Update password'
+    notice:
+      info:
+        email-sent: 'Email sent with password reset instructions'
+      success:
+        password-reset: 'Password has been reset.'
+      danger:
+        email-not-found: 'Email address not found'
+        password-expired: 'Password reset has expired.'

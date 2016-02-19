@@ -4,7 +4,7 @@ RSpec.describe Users::AccountActivationsController, type: :controller do
   include Helpers
   
   describe "GET #edit" do 
-    let(:user) { user = build(:user) }
+    let(:user) { build(:user) }
     before(:each) {
       user.update_attribute(:activated, false)
     }
