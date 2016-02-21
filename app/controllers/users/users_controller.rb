@@ -4,7 +4,7 @@ class Users::UsersController < ApplicationController
   before_action :admin_user, only: :destroy
   
   def index
-    @users = User.where(activate: true).paginate(page: params[:page])
+    @users = User.where(activated: true).paginate(page: params[:page])
     
     
     render locals: { users: @users }
