@@ -1,7 +1,7 @@
 FactoryGirl.define do
 
   factory :user do
-    sequence(:name) { Faker::Lorem.words(2).join(" ") }
+    sequence(:username) { Faker::Lorem.characters(10) }
     sequence(:email) { Faker::Internet.email }
     password 'foobar'
     password_confirmation 'foobar'
@@ -11,7 +11,7 @@ FactoryGirl.define do
   
 
   factory :admin, class: User do
-    sequence(:name) { Faker::Lorem.words(2).join(" ") }
+    sequence(:username) { Faker::Lorem.characters(10) }
     sequence(:email) { Faker::Internet.email }
     password 'foobar'
     password_confirmation 'foobar'

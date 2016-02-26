@@ -3,7 +3,7 @@
 # Table name: users
 #
 #  id                :integer          not null, primary key
-#  name              :string
+#  username          :string
 #  email             :string
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
@@ -23,13 +23,14 @@ class User < ActiveRecord::Base
   attr_accessor :remember_token, :activation_token, :reset_token
 
   before_save :downcase_email
-  before_save :downcase_name
+  before_validation :update_username_lower
+  
   before_create :create_activation_digest
 
   has_secure_password
 
   
-  validates :name,
+  validates :username,
     presence: true, 
     uniqueness: { case_sensitive: false },
     length: { in: 5..50 }
@@ -108,15 +109,22 @@ class User < ActiveRecord::Base
     reset_sent_at < 2.hours.ago
   end
   
+  
+  ########
+  #
+  # PRIVATE
+  #
+  ########
   private
+  
   
   def downcase_email
     self.email = email.downcase
   end
   
-  def downcase_name
-      self.name = name.downcase
-    end
+  def update_username_lower
+    self.username_lower = username.downcase if username.present?
+  end
     
   def create_activation_digest
     # Create the token and digest.

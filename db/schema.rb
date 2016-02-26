@@ -11,13 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160218134837) do
+ActiveRecord::Schema.define(version: 20160226160823) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "users", force: :cascade do |t|
-    t.string   "name"
+    t.string   "username"
     t.string   "email"
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
@@ -29,9 +29,11 @@ ActiveRecord::Schema.define(version: 20160218134837) do
     t.datetime "activated_at"
     t.string   "reset_digest"
     t.datetime "reset_sent_at"
+    t.string   "username_lower"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["name"], name: "index_users_on_name", unique: true, using: :btree
+  add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
+  add_index "users", ["username_lower"], name: "index_users_on_username_lower", unique: true, using: :btree
 
 end
