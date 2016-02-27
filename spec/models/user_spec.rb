@@ -38,10 +38,23 @@ RSpec.describe User, type: :model do
   it 'shoud be valid' do
     expect(subject.valid?).to be true
   end
+  
+  context "email validation" do
+    include_context "email validation", :email
+  end
+  
+  context "username validation" do
+    include_context "username validation", :username
+  end
+  
+  it 'should populate username_lower before validation' do
+    subject.username = "fOoBar"
+    expect(subject.username_lower).to be_nil
     
-  include_context "email validation", :email
-
-  #include_context "username validation", :username
+    subject.valid?
+    
+    expect(subject.username_lower).to eq(subject.username.downcase)
+  end
   
   it 'should saved email in lower-case' do
     email = "UsEr.tEST@EXAmple.com"

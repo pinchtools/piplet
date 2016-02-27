@@ -17,6 +17,7 @@
 #  reset_sent_at     :datetime
 #
 
+
 class User < ActiveRecord::Base
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
   
@@ -29,18 +30,20 @@ class User < ActiveRecord::Base
 
   has_secure_password
 
-  
+
   validates :username,
     presence: true, 
     uniqueness: { case_sensitive: false },
     length: { in: 5..50 }
 
+  validates :username, username: true
+      
   validates :email,
     presence: true,
     uniqueness: { case_sensitive: false },
     length: { maximum: 255 },
     format: { with: VALID_EMAIL_REGEX }
-      
+
   validates :password,
     presence: true,
     length: { in: 6..255 },
