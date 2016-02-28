@@ -5,7 +5,7 @@ RSpec.shared_context "email validation" do |attribute|
 
  def assert_invalid(email)
   
-   subject[attribute] = email
+   subject[attribute] = email.strip
    
   subject.valid?
 

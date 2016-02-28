@@ -5,7 +5,7 @@ RSpec.shared_context "url validation" do |attribute|
 
  def assert_invalid(url)
   
-   subject[attribute] = url
+   subject[attribute] = url.strip
    
   subject.valid?
 
