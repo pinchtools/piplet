@@ -1,3 +1,5 @@
+require_dependency "reserved_usernames"
+
 class UsernameValidator < ActiveModel::EachValidator
 
   attr_accessor :record, :attribute, :value
@@ -14,7 +16,7 @@ class UsernameValidator < ActiveModel::EachValidator
     last_char_valid?
     no_double_special?
     does_not_end_with_confusing_suffix?
-    
+    reserved?
   end
   
 
@@ -55,5 +57,11 @@ class UsernameValidator < ActiveModel::EachValidator
     end
   end
 
+  def reserved?
+    return unless record.errors.empty?
+    if ReservedUsernames.include?(self.value)
+      record.errors.add(self.attribute, I18n.t(:'user.errors.username.reserved'))
+    end
+  end
 
 end

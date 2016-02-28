@@ -9,3 +9,10 @@ f--bar
 f..bar
 foobar.js
 foobar.jpeg
+admin
+moderator
+administrator
+mod
+sys
+system
+community

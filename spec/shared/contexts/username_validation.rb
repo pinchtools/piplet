@@ -15,7 +15,7 @@ RSpec.shared_context "username validation" do |attribute|
   invalid_usernames = IO.read(Rails.root.join("spec", "fixtures", "lists", "usernames_invalid.txt")).lines
   
   invalid_usernames.each do | username |
-    it 'should not accept username with invalid characters' do 
+    it 'should not accept invalid username (bad syntax or reserved)' do 
       assert_invalid(username)
     end
   end
