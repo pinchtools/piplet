@@ -59,17 +59,16 @@ en:
       password-reset: 'Password reset'
     errors:
       username:
-        errors:
-          characters: "must only include numbers, letters and underscores"
-          must_begin_with_alphanumeric: "must begin with a letter or number or an underscore"
-          must_end_with_alphanumeric: "must end with a letter or number or an underscore"
-          must_not_contain_two_special_chars_in_seq: "must not contain a sequence of 2 or more special chars (.-_)"
-          must_not_contain_confusing_suffix: "must not contain a confusing suffix like .json or .png etc."
+        characters: "must only include numbers, letters and underscores"
+        must_begin_with_alphanumeric: "must begin with a letter or number or an underscore"
+        must_end_with_alphanumeric: "must end with a letter or number or an underscore"
+        must_not_contain_two_special_chars_in_seq: "must not contain a sequence of 2 or more special chars (.-_)"
+        must_not_contain_confusing_suffix: "must not contain a confusing suffix like .json or .png etc."
+        reserved: "That username is not allowed."
       password:
-        errors:
-          common: "is one of the 10000 most common passwords. Please use a more secure password."
-          same_as_username: "is the same as your username. Please use a more secure password."
-          same_as_email: "is the same as your email. Please use a more secure password."
+        common: "is one of the 10000 most common passwords. Please use a more secure password."
+        same_as_username: "is the same as your username. Please use a more secure password."
+        same_as_email: "is the same as your email. Please use a more secure password."
   session:
     sign-up-btn: 'Sign up now!'
     remember-me: 'Remember me'
