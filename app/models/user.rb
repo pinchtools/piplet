@@ -49,7 +49,7 @@ class User < ActiveRecord::Base
     length: { in: 6..255 },
     allow_nil: true
 
-
+  validates :password, password: true
 
   # Returns the hash digest of the given string.
   def self.digest(string)

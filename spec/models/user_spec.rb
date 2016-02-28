@@ -20,6 +20,7 @@
 require 'rails_helper'
 require "shared/contexts/email_validation"
 require "shared/contexts/username_validation"
+require "shared/contexts/password_validation"
 
 RSpec.describe User, type: :model do
   subject { build(:user) }
@@ -47,6 +48,10 @@ RSpec.describe User, type: :model do
     include_context "username validation", :username
   end
   
+  context "password validation" do
+    include_context "password validation", :password
+  end
+  
   it 'should populate username_lower before validation' do
     subject.username = "fOoBar"
     expect(subject.username_lower).to be_nil
@@ -64,6 +69,24 @@ RSpec.describe User, type: :model do
     expect(subject.email).to eq(email.downcase)
   end
   
+  it 'should not accept a password equal to username' do
+    subject.password = subject.username
+    subject.password_confirmation = subject.username
+    
+    subject.valid?
+    
+    expect(subject.errors).to have_key(:password)
+  end
+
+  it 'should not accept a password equal to email' do
+    subject.password = subject.email
+    subject.password_confirmation = subject.email
+    
+    subject.valid?
+    
+    expect(subject.errors).to have_key(:password)
+  end
+
   it 'authenticated? should return false for a user with nil digest' do
     expect(subject.authenticated?(:remember, '')).to be false
   end
