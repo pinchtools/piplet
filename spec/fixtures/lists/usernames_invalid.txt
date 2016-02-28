@@ -1,0 +1,11 @@
+foo;bar
+foo;b*ar
+.foobar
+-foobar
+foobar.
+foobar-
+f__bar
+f--bar
+f..bar
+foobar.js
+foobar.jpeg
