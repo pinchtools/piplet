@@ -1,4 +1,4 @@
-require_dependency "common_passwords/common_passwords"
+require_dependency "common_passwords"
 
 class PasswordValidator < ActiveModel::EachValidator
 

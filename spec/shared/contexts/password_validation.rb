@@ -1,5 +1,6 @@
+require_dependency "common_passwords"
+
 RSpec.shared_context "password validation" do |attribute|
-  #invalid_emails = IO.read(Rails.root.join("spec", "fixtures", "lists", "emails_invalid.txt")).lines
 
   let(:attribute) { attribute }
 

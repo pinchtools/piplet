@@ -9,7 +9,7 @@ class CommonPasswords
   end
   
   def self.load
-    data = File.read( Rails.root.join("lib", "common_passwords", "list.txt") )
+    data = File.read( Rails.root.join("config", "lists", "common_passwords.txt") )
     @@list = data.split( /\r?\n/ )
   end
   
