@@ -19,11 +19,10 @@
 
 
 class User < ActiveRecord::Base
-  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
   
   attr_accessor :remember_token, :activation_token, :reset_token
 
-  before_save :downcase_email
+  before_validation :strip_downcase_email
   before_validation :update_username_lower
   
   before_create :create_activation_digest
@@ -42,8 +41,10 @@ class User < ActiveRecord::Base
     presence: true,
     uniqueness: { case_sensitive: false },
     length: { maximum: 255 },
-    format: { with: VALID_EMAIL_REGEX }
+    format: { with:  /@/ }
 
+  validates :email, email: true
+      
   validates :password,
     presence: true,
     length: { in: 6..255 },
@@ -120,9 +121,11 @@ class User < ActiveRecord::Base
   ########
   private
   
-  
-  def downcase_email
-    self.email = email.downcase
+  def strip_downcase_email
+    if email.present?
+      self.email = email.strip
+      self.email = email.downcase
+    end
   end
   
   def update_username_lower

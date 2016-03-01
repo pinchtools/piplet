@@ -20,9 +20,6 @@ gem 'bootstrap', '~> 4.0.0.alpha3'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 
-# Add a comment summarizing the current schema on models & specs
-gem 'annotate'
-
 # security
 # gem 'rack-attack'
 # gem 'rack-security'
@@ -41,6 +38,8 @@ gem 'puma'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+
+#gem 'mail'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -73,6 +72,7 @@ group :development do
 
   gem 'better_errors'
 
+  # Add a comment summarizing the current schema on models & specs
   gem 'annotate'
 end
 
