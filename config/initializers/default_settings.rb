@@ -1,0 +1,1 @@
+Setting.load_default_settings
