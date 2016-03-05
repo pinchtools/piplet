@@ -15,8 +15,8 @@
 #  activated_at      :datetime
 #  reset_digest      :string
 #  reset_sent_at     :datetime
+#  username_lower    :string
 #
-
 
 class User < ActiveRecord::Base
   
