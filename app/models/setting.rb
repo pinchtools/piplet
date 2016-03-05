@@ -10,6 +10,10 @@
 #  created_at :datetime
 #  updated_at :datetime
 #
+# Indexes
+#
+#  index_settings_on_thing_type_and_thing_id_and_var  (thing_type,thing_id,var) UNIQUE
+#
 
 # RailsSettings Model
 class Setting < RailsSettings::CachedSettings

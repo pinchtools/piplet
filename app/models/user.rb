@@ -17,6 +17,12 @@
 #  reset_sent_at     :datetime
 #  username_lower    :string
 #
+# Indexes
+#
+#  index_users_on_email           (email) UNIQUE
+#  index_users_on_username        (username) UNIQUE
+#  index_users_on_username_lower  (username_lower) UNIQUE
+#
 
 class User < ActiveRecord::Base
   
