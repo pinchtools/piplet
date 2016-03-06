@@ -1,26 +1,22 @@
+require 'sidekiq/web'
+require 'admin_constraint'
+
 Rails.application.routes.draw do
 
-
-  namespace :users do
-  get 'password_resets/new'
+  if Rails.env.development?
+    mount Sidekiq::Web => "/sidekiq"
+  else
+    mount Sidekiq::Web => "/sidekiq", constraints: AdminConstraint.new
   end
-
-  namespace :users do
-  get 'password_resets/edit'
-  end
-
-  get 'password_resets/new'
-
-  get 'password_resets/edit'
-
-  namespace :users do
-  get 'sessions/new'
-  end
-
-  # You can have the root of your site routed with "root"
+  
   root 'home#index'
   
   get 'home/index'
+
+  get 'password_resets/new'
+
+  get 'password_resets/edit'
+
 
   get 'signup' => 'users/users#new'
   get 'login' => 'users/sessions#new'
@@ -28,6 +24,8 @@ Rails.application.routes.draw do
   delete 'logout' => 'users/sessions#destroy'
   
   namespace :users do
+    
+    get 'sessions/new'
     
     resources :users
     

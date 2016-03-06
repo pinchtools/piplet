@@ -7,6 +7,8 @@ app:
     - "3000:3000"
   links:
     - postgres
+    - redis
+  env_file: config/app.env
 postgres:
   image: postgres:9.4
   ports:
@@ -19,3 +21,15 @@ db-data:
   command: echo 'Data Container for PostgreSQL'
   volumes:
     - /var/lib/postgresql/data
+redis:
+  image: redis
+  ports:
+    - "6379:6379"
+sidekiq:
+  build: .
+  volumes:
+    - .:/app
+  links:
+    - redis
+  command: sidekiq
+  env_file: config/app.env

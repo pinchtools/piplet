@@ -24,8 +24,11 @@ gem 'bcrypt', '~> 3.1.7'
 # gem 'rack-attack'
 # gem 'rack-security'
 
+gem 'redis'
+gem 'redis-rails'
+
 # background processing
-#gem 'sidekiq'
+gem 'sidekiq'
 
 gem 'active_model_serializers'
 
@@ -76,5 +79,7 @@ group :development do
 
   # Add a comment summarizing the current schema on models & specs
   gem 'annotate'
+
+  gem 'mock_redis'
 end
 
