@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: user_histories
+# Table name: user_logs
 #
 #  id             :integer          not null, primary key
 #  action         :integer
@@ -16,14 +16,19 @@
 
 require 'rails_helper'
 
-RSpec.describe UserHistory, type: :model do
-  subject { build(:user_history) }
+RSpec.describe UserLog, type: :model do
+  subject { build(:user_log) }
   
   it { should validate_presence_of(:action) }
   it { should validate_presence_of(:level) }
   it { should validate_presence_of(:message) }
   it { should validate_presence_of(:concerned_user_id) }
   
+  
+   it 'should  be saved when valid' do
+    expect(subject.save).to be true
+   end
+    
   it 'should not accept invalid action' do
     subject.action = -1
     

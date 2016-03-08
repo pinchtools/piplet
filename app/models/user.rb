@@ -25,6 +25,7 @@
 #
 
 class User < ActiveRecord::Base
+  include UserConcerns::Loggable
   
   attr_accessor :remember_token, :activation_token, :reset_token
 
@@ -96,7 +97,7 @@ class User < ActiveRecord::Base
   
   # Sends activation email.
   def send_activation_email
-    UserMailer.account_activation(self).deliver_now
+    UserMailer.delay.account_activation(self, self.activation_token)
   end
   
   # Sets the password reset attributes.
@@ -111,7 +112,7 @@ class User < ActiveRecord::Base
   
   # Sends password reset email.
   def send_password_reset_email
-    UserMailer.password_reset(self).deliver_now
+    UserMailer.delay.password_reset(self, self.reset_token)
   end
   
   # Returns true if a password reset has expired.

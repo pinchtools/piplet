@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: user_histories
+# Table name: user_logs
 #
 #  id             :integer          not null, primary key
 #  action         :integer
@@ -15,12 +15,13 @@
 #
 
 FactoryGirl.define do
-  factory :user_history do
+  factory :user_log do
     action 1
     level 1
-    message "user history test"
+    message "user log test"
     ip_address Faker::Internet.ip_v4_address
-    concerned_user_id :user
+    
+    association :concerned_user, factory: :user
   end
 
 end

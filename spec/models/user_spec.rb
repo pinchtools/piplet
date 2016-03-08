@@ -24,8 +24,13 @@ require "shared/contexts/username_validation"
 require "shared/contexts/password_validation"
 
 RSpec.describe User, type: :model do
+  
   subject { build(:user) }
   
+  include_examples 'user loggable'
+  
+    it { should have_many(:logs).dependent(:destroy) }
+    
   it { should validate_presence_of(:username) }
   it { should validate_presence_of(:email) }
   it { should have_secure_password }
@@ -87,7 +92,7 @@ RSpec.describe User, type: :model do
     
     expect(subject.errors).to have_key(:password)
   end
-
+  
   it 'authenticated? should return false for a user with nil digest' do
     expect(subject.authenticated?(:remember, '')).to be false
   end
