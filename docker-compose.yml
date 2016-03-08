@@ -30,6 +30,7 @@ sidekiq:
   volumes:
     - .:/app
   links:
+    - postgres
     - redis
   command: sidekiq
   env_file: config/app.env

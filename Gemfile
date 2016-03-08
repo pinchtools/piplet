@@ -60,6 +60,7 @@ group :development, :test do
 
   gem 'faker'
 
+  gem 'mock_redis'
 end
 
 group :development do
@@ -80,6 +81,9 @@ group :development do
   # Add a comment summarizing the current schema on models & specs
   gem 'annotate'
 
-  gem 'mock_redis'
 end
 
+
+group :test do
+  gem 'rspec-sidekiq'
+end
