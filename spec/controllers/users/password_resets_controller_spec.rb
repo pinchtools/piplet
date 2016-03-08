@@ -2,18 +2,21 @@ require 'rails_helper'
 
 RSpec.describe Users::PasswordResetsController, type: :controller do
   include Helpers
+  include ActiveJob::TestHelper
   
   describe "POST #create" do
     let(:user) { create(:user) }
     
     it 'should send an email to a valid user' do
-      ActionMailer::Base.deliveries.clear
+
+      expect(Sidekiq::Extensions::DelayedMailer.jobs.size).to eq(0)
       
       post :create, { password_reset: { :email => user.email } }
       
+      expect(Sidekiq::Extensions::DelayedMailer.jobs.size).to eq(1)
+      
       expect(response).to redirect_to(:root)
       expect(flash[:info]).to be_present
-      expect(ActionMailer::Base.deliveries.size).to eq(1) #should send an email
     end
     
     it 'should not accept invalid mail' do

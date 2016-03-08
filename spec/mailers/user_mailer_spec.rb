@@ -8,7 +8,7 @@ RSpec.describe UserMailer, type: :mailer do
       
       return user
     }
-    let(:mail) { UserMailer.account_activation(user) }
+    let(:mail) { UserMailer.account_activation(user, user.activation_token) }
 
     it "renders the headers" do
       expect(mail.to).to eq([user.email])
@@ -30,7 +30,7 @@ RSpec.describe UserMailer, type: :mailer do
       return user
     }
     
-    let(:mail) { UserMailer.password_reset(user) }
+    let(:mail) { UserMailer.password_reset(user, user.reset_token) }
 
     it "renders the headers" do
       expect(mail.to).to eq([user.email])

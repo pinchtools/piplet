@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Users::UsersController, type: :controller do
   include Helpers
+  include ActiveJob::TestHelper
   
   describe "GET #index" do 
     it "redirect to login page if not authorized" do
@@ -47,10 +48,13 @@ RSpec.describe Users::UsersController, type: :controller do
       
       count = User.count
       
+      expect(Sidekiq::Extensions::DelayedMailer.jobs.size).to eq(0)
+
       post :create, :user => user_params
       
+      expect(Sidekiq::Extensions::DelayedMailer.jobs.size).to eq(1)
+      
       expect(User.count).to eq(count + 1) # add a new User
-      expect(ActionMailer::Base.deliveries.size).to eq(1) #should send an email
       expect(response).to redirect_to(:root)
       expect(assigns(:user)).not_to be_activated
       expect(flash[:info]).to be_present
