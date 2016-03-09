@@ -2,7 +2,7 @@ FactoryGirl.define do
 
   factory :user do
     sequence(:username) { Faker::Lorem.characters(10) }
-    sequence(:email) { Faker::Internet.email }
+    sequence(:email) { |n| "example#{n}@domain.com" }
     password 'foobar'
     password_confirmation 'foobar'
     activated true
@@ -12,7 +12,7 @@ FactoryGirl.define do
 
   factory :admin, class: User do
     sequence(:username) { Faker::Lorem.characters(10) }
-    sequence(:email) { Faker::Internet.email }
+    sequence(:email) { |n| "example#{n}@domain.com" }
     password 'foobar'
     password_confirmation 'foobar'
     admin      true
