@@ -1,24 +1,64 @@
 RSpec.shared_examples "user loggable" do
 
-  #
-  # TODO add test for important & restricted + test some actions can't be restricted some others must
-  #
   
-  it 'should delayed a notice log' do
+  it 'should delayed a normal log' do
+    should_delayed_method  do
+      subject.log(UserLog.actions[:generic], "normal log")
+    end
+  end
+
+  
+  it 'should delayed an important log' do
+    should_delayed_method  do
+      subject.log(UserLog.actions[:created], "important log")
+    end
+  end
+
+  
+  it 'should delayed a sensitive log' do
+    should_delayed_method  do
+      subject.log(UserLog.actions[:admin], "sensitive log")
+    end
+  end
+
+  
+  it 'should be able to save a notice log' do
+    should_save_log do
+      subject.log(UserLog.actions[:generic], "normal log")
+    end
+  end
+  
+  
+  it 'should be able to save an important log' do
+    should_save_log do
+      subject.log(UserLog.actions[:created], "important log")
+    end
+  end
+  
+  
+  it 'should be able to save a restricted log' do
+    should_save_log do
+      subject.log(UserLog.actions[:admin], "sensitive log")
+    end
+  end
+  
+  
+  private
+  
+  
+  def should_delayed_method
     expect(Sidekiq::Extensions::DelayedClass.jobs.size).to eq(0)
-    
-    subject.log_notice(UserLog.actions[:created], "Created!")
-    
+
+    yield
+
     expect(Sidekiq::Extensions::DelayedClass.jobs.size).to eq(1)
   end
   
-  it 'should be able to save a notice log' do
-    
+  
+  def should_save_log
     expect(UserLog).to receive(:delay).and_return(UserLog)
     
-    log = subject.log_notice(UserLog.actions[:created], "Created!")
-    
-    expect(log.valid?).to be false
-    
+    expect(yield.valid?).to be false
   end
+  
 end

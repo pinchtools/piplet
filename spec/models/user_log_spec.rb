@@ -20,7 +20,7 @@ RSpec.describe UserLog, type: :model do
   subject { build(:user_log) }
   
   it { should validate_presence_of(:action) }
-  it { should validate_presence_of(:level) }
+  #it { should validate_presence_of(:level) }
   it { should validate_presence_of(:message) }
   it { should validate_presence_of(:concerned_user_id) }
   
@@ -36,11 +36,34 @@ RSpec.describe UserLog, type: :model do
     expect(subject.errors).to have_key(:action)
   end
     
-  it 'should not accept invalid level' do
-    subject.level = -1
+  it 'should not set a level when action is invalid' do
+    subject.action = -1
     
     expect(subject.valid?).to be false
     expect(subject.errors).to have_key(:level)
-
   end
+
+  it 'should set correct level depending on action' do
+    #normal
+    subject.action = UserLog.normal_actions.values.first
+    
+    expect(subject.valid?).to be true
+    
+    expect(subject.level).to eq(UserLog.levels[:normal])
+    
+    #important
+    subject.action = UserLog.important_actions.values.first
+    
+    expect(subject.valid?).to be true
+    
+    expect(subject.level).to eq(UserLog.levels[:important])
+    
+    #sensitive
+    subject.action = UserLog.sensitive_actions.values.first
+    
+    expect(subject.valid?).to be true
+    
+    expect(subject.level).to eq(UserLog.levels[:sensitive])
+  end
+  
 end

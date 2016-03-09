@@ -7,10 +7,9 @@ module UserConcerns::Loggable
       dependent: :destroy
   end
   
-  def log( level, action, message, options  = {} )
+  def log( action, message, options  = {} )
     attributes = {
        :concerned_user_id => self.id,
-       :level => level,
        :action => action,
        :message => message
      }
@@ -20,16 +19,5 @@ module UserConcerns::Loggable
      
      UserLog.delay.create(attributes) # async log
   end
-  
-  def log_notice(action, message, options  = {})
-    log(UserLog.levels[:notice], action, message, options)
-  end
-  
-  def log_important(action, message, options  = {})
-    log(UserLog.levels[:important], action, message, options)
-  end
-  
-  def log_restricted(action, message, options  = {})
-    log(UserLog.levels[:restricted], action, message, options)
-  end
+
 end
