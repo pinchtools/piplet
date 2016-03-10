@@ -113,7 +113,7 @@ class UserLog < ActiveRecord::Base
     return if action_user.nil?
 
     if level == UserLog.levels[:sensitive] && action_user.regular?
-      self.errors.add(:action_user, I18n.t(:'user.errors.action_user.must_be_staff_member'))
+      self.errors.add(:action_user, I18n.t(:'user-log.errors.action-user.must-be-staff-member'))
     end
 
   end

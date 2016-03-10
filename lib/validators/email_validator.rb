@@ -18,7 +18,7 @@ class EmailValidator < ActiveModel::EachValidator
     return unless record.errors.empty?
     
     if BannedEmailProviders.include?(value)
-      record.errors.add(attribute, I18n.t(:'user.errors.email.provider_banned'))
+      record.errors.add(attribute, I18n.t(:'user.errors.email.provider-banned'))
     end
   end
   

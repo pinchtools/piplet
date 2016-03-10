@@ -32,28 +32,28 @@ class UsernameValidator < ActiveModel::EachValidator
   def first_char_valid?
     return unless record.errors.empty?
     if self.value[0] =~ /[^A-Za-z0-9_]/
-    record.errors.add(self.attribute, I18n.t(:'user.errors.username.must_begin_with_alphanumeric'))
+    record.errors.add(self.attribute, I18n.t(:'user.errors.username.must-begin-with-alphanumeric'))
     end
   end
 
   def last_char_valid?
     return unless record.errors.empty?
     if self.value[-1] =~ /[^A-Za-z0-9_]/
-      record.errors.add(self.attribute, I18n.t(:'user.errors.username.must_end_with_alphanumeric'))
+      record.errors.add(self.attribute, I18n.t(:'user.errors.username.must-end-with-alphanumeric'))
     end
   end
 
   def no_double_special?
     return unless record.errors.empty?
     if self.value =~ /[\-_\.]{2,}/
-      record.errors.add(self.attribute, I18n.t(:'user.errors.username.must_not_contain_two_special_chars_in_seq'))
+      record.errors.add(self.attribute, I18n.t(:'user.errors.username.must-not-contain-two-special-chars-in-seq'))
     end
   end
 
   def does_not_end_with_confusing_suffix?
     return unless record.errors.empty?
     if self.value =~ /\.(json|gif|jpeg|png|htm|js|json|xml|woff|tif|html)/i
-      record.errors.add(self.attribute, I18n.t(:'user.errors.username.must_not_contain_confusing_suffix'))
+      record.errors.add(self.attribute, I18n.t(:'user.errors.username.must-not-contain-confusing-suffix'))
     end
   end
 
