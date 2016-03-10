@@ -26,6 +26,7 @@
 
 class User < ActiveRecord::Base
   include UserConcerns::Loggable
+  include UserConcerns::Roleable
   
   attr_accessor :remember_token, :activation_token, :reset_token
 
@@ -35,7 +36,6 @@ class User < ActiveRecord::Base
   before_create :create_activation_digest
 
   has_secure_password
-
 
   validates :username,
     presence: true, 
@@ -59,6 +59,7 @@ class User < ActiveRecord::Base
 
   validates :password, password: true
 
+  
   # Returns the hash digest of the given string.
   def self.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :

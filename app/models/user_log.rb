@@ -27,12 +27,14 @@ class UserLog < ActiveRecord::Base
   before_validation :set_level
   
   validates :action, presence: true, inclusion: { :in => proc { self.actions.values } }
-  validates :level, presence: true,  inclusion: { :in => proc { self.levels.values } }
+  validates :level, presence: true, inclusion: { :in => proc { self.levels.values } }
   validates :message, presence: true
   validates :concerned_user_id, presence: true
   
+  validate :action_user_on_sensitive_log
+  
   belongs_to :concerned_user, :class_name => 'User'
-  has_one :action_user, :class_name => 'User'
+  belongs_to :action_user, :class_name => 'User'
   
   
   def self.normal_actions
@@ -74,7 +76,9 @@ class UserLog < ActiveRecord::Base
       )
   end
   
+  
   private
+  
   
   def set_level
     return if action.nil?
@@ -103,6 +107,15 @@ class UserLog < ActiveRecord::Base
   
   def has_sensitive_action?
     UserLog.sensitive_actions.has_value? action
+  end
+  
+  def action_user_on_sensitive_log
+    return if action_user.nil?
+
+    if level == UserLog.levels[:sensitive] && action_user.regular?
+      self.errors.add(:action_user, I18n.t(:'user.errors.action_user.must_be_staff_member'))
+    end
+
   end
   
 end

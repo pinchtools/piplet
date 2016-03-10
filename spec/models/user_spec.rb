@@ -28,6 +28,8 @@ RSpec.describe User, type: :model do
   subject { build(:user) }
   
   include_examples 'user loggable'
+  include_examples 'user roleable'
+    
   
     it { should have_many(:logs).dependent(:destroy) }
     
