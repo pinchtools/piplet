@@ -2,20 +2,22 @@
 #
 # Table name: users
 #
-#  id                :integer          not null, primary key
-#  username          :string
-#  email             :string
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  password_digest   :string
-#  remember_digest   :string
-#  admin             :boolean          default(FALSE)
-#  activation_digest :string
-#  activated         :boolean          default(FALSE)
-#  activated_at      :datetime
-#  reset_digest      :string
-#  reset_sent_at     :datetime
-#  username_lower    :string
+#  id                    :integer          not null, primary key
+#  username              :string
+#  email                 :string
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  password_digest       :string
+#  remember_digest       :string
+#  admin                 :boolean          default(FALSE)
+#  activation_digest     :string
+#  activated             :boolean          default(FALSE)
+#  activated_at          :datetime
+#  reset_digest          :string
+#  reset_sent_at         :datetime
+#  username_lower        :string
+#  creation_ip_address   :inet
+#  activation_ip_address :inet
 #
 # Indexes
 #
@@ -34,6 +36,8 @@ class User < ActiveRecord::Base
   before_validation :update_username_lower
   
   before_create :create_activation_digest
+  
+  after_create :log_created
 
   has_secure_password
 
@@ -58,6 +62,10 @@ class User < ActiveRecord::Base
     allow_nil: true
 
   validates :password, password: true
+
+  validates :creation_ip_address, presence: true
+  validates :activation_ip_address, presence: true, if: :activated?
+  validates :activated_at, presence: true, if: :activated?
 
   
   # Returns the hash digest of the given string.
@@ -92,8 +100,13 @@ class User < ActiveRecord::Base
   end
   
   # Activates an account.
-  def activate
-    update_columns(activated: true, activated_at: Time.zone.now)
+  def activate(ip_address)
+    update_columns(activated: true, 
+      activated_at: Time.zone.now,
+      activation_ip_address: ip_address
+      )
+    
+    log_activated
   end
   
   # Sends activation email.
@@ -144,6 +157,14 @@ class User < ActiveRecord::Base
     # Create the token and digest.
     self.activation_token = User.new_token
     self.activation_digest = User.digest(activation_token)
+  end
+  
+  def log_created
+    log( :created, ip_address: creation_ip_address )
+  end
+  
+  def log_activated
+    log( :activated, ip_address: activation_ip_address )
   end
   
 end

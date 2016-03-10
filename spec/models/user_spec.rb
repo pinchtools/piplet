@@ -35,6 +35,8 @@ RSpec.describe User, type: :model do
     
   it { should validate_presence_of(:username) }
   it { should validate_presence_of(:email) }
+  it { should validate_presence_of(:creation_ip_address) }
+    
   it { should have_secure_password }
      
   it { should validate_uniqueness_of(:username).case_insensitive }
@@ -48,6 +50,11 @@ RSpec.describe User, type: :model do
     expect(subject.valid?).to be true
   end
   
+  it 'should generate a log when saved' do
+    expect(subject).to receive(:log)
+    subject.save
+  end
+  
   context "email validation" do
     include_context "email validation", :email
   end
@@ -58,6 +65,27 @@ RSpec.describe User, type: :model do
   
   context "password validation" do
     include_context "password validation", :password
+  end
+  
+  
+  describe 'activation' do
+    subject{ create(:user) }
+    
+    it 'should validate presence of activated_at' do
+      
+      expect(subject).to receive(:log)
+      expect( subject ).to validate_presence_of(:activated_at)
+      expect( subject ).to validate_presence_of(:activation_ip_address)
+      
+      subject.activate('126.98.8.123')
+    end
+  end
+  
+
+  it 'should log a creation' do
+    expect(subject).to receive(:log)
+    
+    subject.save
   end
   
   it 'should populate username_lower before validation' do

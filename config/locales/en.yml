@@ -94,3 +94,8 @@ en:
     errors:
       action-user:
         must-be-staff-member: 'Action user must be a staff member'
+    messages:
+      created: 'User has been created.'
+      activated: 'User confirms his mail, account activated.' 
+      request_password_reset: 'User ask for a new password.'
+      password_reset: 'Password as been reset.'

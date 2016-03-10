@@ -16,8 +16,10 @@ class Users::UsersController < ApplicationController
     render locals: { user: @user }
   end
   
-  def create 
+  def create
     @user = User.new(user_params)
+    
+    @user.creation_ip_address = request.remote_ip
     
     if @user.save
       @user.send_activation_email

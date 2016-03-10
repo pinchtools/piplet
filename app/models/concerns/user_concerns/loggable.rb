@@ -7,17 +7,20 @@ module UserConcerns::Loggable
       dependent: :destroy
   end
   
-  def log( action, message, options  = {} )
+  def log( action, options  = {} )
     attributes = {
        :concerned_user_id => self.id,
-       :action => action,
-       :message => message
-     }
+       :action => UserLog.actions[action],
+       
+    }
     
+    attributes[:message] = options[:message] || "user-log.messages.#{action}"
+
     attributes[:data] = options[:data]  if options[:data].present?
-    attributes[:ip_address] = options[:data]  if options[:data].present?
-     
-     UserLog.delay.create(attributes) # async log
+    attributes[:link] = options[:link]  if options[:link].present?
+    attributes[:ip_address] = options[:ip_address]  if options[:ip_address].present?
+   
+    UserLog.delay.create(attributes) # async log
   end
 
 end

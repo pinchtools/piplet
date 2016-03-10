@@ -12,6 +12,7 @@
 #  concerned_user_id :integer
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  link              :string
 #
 # Indexes
 #
@@ -47,7 +48,7 @@ class UserLog < ActiveRecord::Base
   def self.important_actions
     @important_actions ||= Enum.new(
       created: 1000,
-      registrated: 1002
+      activated: 1002
     )
   end
 
@@ -56,7 +57,9 @@ class UserLog < ActiveRecord::Base
     @sensitive_actions ||= Enum.new(
       suspected: 2000,
       admin: 2001,
-      set_user_admin: 2002
+      set_user_admin: 2002,
+      request_password_reset: 2003,
+      password_reset: 2004
     )
   end
   

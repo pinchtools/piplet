@@ -6,7 +6,7 @@ class Users::AccountActivationsController < ApplicationController
     if @user &&
       !@user.activated? &&
       @user.authenticated?(:activation, params[:id])
-        @user.activate
+        @user.activate(request.remote_ip )
         
         log_in @user
         flash[:success] = t('user.notice.success.account-activated')

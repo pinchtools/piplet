@@ -5,8 +5,10 @@ FactoryGirl.define do
     sequence(:email) { |n| "example#{n}@domain.com" }
     password 'foobar'
     password_confirmation 'foobar'
+    creation_ip_address '127.6.4.98'
     activated true
     activated_at Time.zone.now
+    activation_ip_address '127.6.4.98'
   end
   
 
@@ -15,9 +17,11 @@ FactoryGirl.define do
     sequence(:email) { |n| "example#{n}@domain.com" }
     password 'foobar'
     password_confirmation 'foobar'
+    creation_ip_address '127.6.4.98'
     admin      true
     activated true
     activated_at Time.zone.now
+    activation_ip_address '127.6.4.98'
   end
   
 end

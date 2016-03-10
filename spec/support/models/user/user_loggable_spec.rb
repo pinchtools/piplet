@@ -3,42 +3,42 @@ RSpec.shared_examples "user loggable" do
   
   it 'should delayed a normal log' do
     should_delayed_method  do
-      subject.log(UserLog.actions[:generic], "normal log")
+      subject.log(:generic)
     end
   end
 
   
   it 'should delayed an important log' do
     should_delayed_method  do
-      subject.log(UserLog.actions[:created], "important log")
+      subject.log(:created)
     end
   end
 
   
   it 'should delayed a sensitive log' do
     should_delayed_method  do
-      subject.log(UserLog.actions[:admin], "sensitive log")
+      subject.log(:admin)
     end
   end
 
   
   it 'should be able to save a notice log' do
     should_save_log do
-      subject.log(UserLog.actions[:generic], "normal log")
+      subject.log(:generic)
     end
   end
   
   
   it 'should be able to save an important log' do
     should_save_log do
-      subject.log(UserLog.actions[:created], "important log")
+      subject.log(:created)
     end
   end
   
   
   it 'should be able to save a restricted log' do
     should_save_log do
-      subject.log(UserLog.actions[:admin], "sensitive log")
+      subject.log(:admin)
     end
   end
   

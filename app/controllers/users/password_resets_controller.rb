@@ -12,6 +12,8 @@ class Users::PasswordResetsController < ApplicationController
       if @user
         @user.create_reset_digest
         @user.send_password_reset_email
+        @user.log( :request_password_reset, ip_address: request.remote_ip )
+        
         flash[:info] = t('password-reset.notice.info.email-sent')
 
         redirect_to root_url
@@ -32,6 +34,8 @@ class Users::PasswordResetsController < ApplicationController
       render 'edit'
     elsif @user.update_attributes(user_params)
       log_in @user
+      
+      @user.log( :password_reset, ip_address: request.remote_ip )
       
       flash[:success] = t('password-reset.notice.success.password-reset')
         
