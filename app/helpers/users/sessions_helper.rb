@@ -3,6 +3,8 @@ module Users::SessionsHelper
   # Logs in the given user.
   def log_in(user)
     session[:user_id] = user.id
+    
+    user.log(:login)
   end
   
   # Logs out the current user.

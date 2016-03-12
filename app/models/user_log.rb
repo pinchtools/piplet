@@ -47,8 +47,7 @@ class UserLog < ActiveRecord::Base
   
   def self.important_actions
     @important_actions ||= Enum.new(
-      created: 1000,
-      activated: 1002
+      created: 1000
     )
   end
 
@@ -59,7 +58,9 @@ class UserLog < ActiveRecord::Base
       admin: 2001,
       set_user_admin: 2002,
       request_password_reset: 2003,
-      password_reset: 2004
+      password_reset: 2004,
+      activated: 2005,
+      login: 2006
     )
   end
   
