@@ -29,6 +29,7 @@ RSpec.describe User, type: :model do
   
   include_examples 'user loggable'
   include_examples 'user roleable'
+  include_examples 'user moderatable'
     
   
     it { should have_many(:logs).dependent(:destroy) }

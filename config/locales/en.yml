@@ -57,6 +57,9 @@ en:
     mailer:
       account-activation: 'Account activation'
       password-reset: 'Password reset'
+    moderation:
+      suspect:
+        email_similar: 'Email is similar to a blocked one : %{user_email} - %{blocked_email}'
     errors:
       username:
         characters: "must only include numbers, letters and underscores"

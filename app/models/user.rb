@@ -18,6 +18,13 @@
 #  username_lower        :string
 #  creation_ip_address   :inet
 #  activation_ip_address :inet
+#  blocked               :boolean
+#  suspected             :boolean
+#  suspected_note        :string
+#  suspected_by_id       :integer
+#  suspected_at          :datetime
+#  blocked_by_id         :integer
+#  blocked_at            :datetime
 #
 # Indexes
 #
@@ -26,9 +33,12 @@
 #  index_users_on_username_lower  (username_lower) UNIQUE
 #
 
+require 'levenshtein'
+
 class User < ActiveRecord::Base
   include UserConcerns::Loggable
   include UserConcerns::Roleable
+  include UserConcerns::Moderatable
   
   attr_accessor :remember_token, :activation_token, :reset_token
 
@@ -67,7 +77,6 @@ class User < ActiveRecord::Base
   validates :activation_ip_address, presence: true, if: :activated?
   validates :activated_at, presence: true, if: :activated?
 
-  
   # Returns the hash digest of the given string.
   def self.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
@@ -132,6 +141,29 @@ class User < ActiveRecord::Base
   # Returns true if a password reset has expired.
   def password_reset_expired?
     reset_sent_at < 2.hours.ago
+  end
+  
+  
+  def check_new_account
+    if blocked_email = find_email_similar_to_blocked_one
+      suspect
+      log(:suspect, message: 'user.moderation.suspect.email_similar')
+    end
+  end
+  
+  def find_email_similar_to_blocked_one
+    return false unless Settings['user.suspect_email_similar_to_banned_one']
+    
+    
+    max_distance = Settings['user.considered_email_similar_when_x_characters'] || 2
+    
+    emails_blocked = User.all_blocked
+      .where('blocked_at >  ? ', 7.days.ago)
+      .order(:blocked_at => :desc)
+      .limit(500)
+      .pluck(:email)
+      
+    return emails_blocked.find{|e| Levenshtein.distance(email, e) <= max_distance}
   end
   
   
