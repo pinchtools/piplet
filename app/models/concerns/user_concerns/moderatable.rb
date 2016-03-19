@@ -2,7 +2,7 @@ module UserConcerns::Moderatable
   extend ActiveSupport::Concern
   
   included do
-    scope :suspects, -> { where(supected: true) }
+    scope :suspects, -> { where(suspected: true) }
     scope :all_blocked, -> { where(blocked: true) }
   end
 
