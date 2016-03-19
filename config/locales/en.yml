@@ -74,6 +74,7 @@ en:
         same-as-email: "is the same as your email. Please use a more secure password."
       email:
         provider-banned: "Invalid email"
+        similar-to-blocked-one: "Email is similar to a blocked one, please see logs for further details"
   session:
     sign-up-btn: 'Sign up now!'
     remember-me: 'Remember me'
@@ -102,3 +103,6 @@ en:
       activated: 'User confirms his mail, account activated.' 
       request_password_reset: 'User ask for a new password.'
       password_reset: 'Password as been reset.'
+      email_similar: 'Email %{email} is similar to the blocked email %{blocked_email}'
+      block_user: 'User blocked another user'
+      blocked: 'User has been blocked'

@@ -29,6 +29,7 @@ gem 'redis-rails'
 
 # background processing
 gem 'sidekiq'
+gem 'sidekiq-statistic'
 
 gem 'active_model_serializers'
 

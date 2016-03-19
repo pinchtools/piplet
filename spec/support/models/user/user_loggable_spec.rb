@@ -21,27 +21,33 @@ RSpec.shared_examples "user loggable" do
     end
   end
 
-  
-  it 'should be able to save a notice log' do
-    should_save_log do
-      subject.log(:generic)
+  context 'create ' do
+    before {
+      allow(subject).to receive(:id) {1}
+    }
+
+    
+    it 'should be able to save a notice log' do
+      should_save_log do
+        subject.log(:generic)
+      end
     end
-  end
-  
-  
-  it 'should be able to save an important log' do
-    should_save_log do
-      subject.log(:created)
+    
+    
+    it 'should be able to save an important log' do
+      should_save_log do
+        subject.log(:created)
+      end
     end
-  end
-  
-  
-  it 'should be able to save a restricted log' do
-    should_save_log do
-      subject.log(:admin)
+    
+    
+    it 'should be able to save a restricted log' do
+      should_save_log do
+        subject.log(:admin)
+      end
     end
-  end
   
+  end
   
   private
   
@@ -56,9 +62,9 @@ RSpec.shared_examples "user loggable" do
   
   
   def should_save_log
-    expect(UserLog).to receive(:delay).and_return(UserLog)
-    
-    expect(yield.valid?).to be false
+    expect(UserLog).to receive(:delay).at_least(:once).and_return(UserLog)
+
+    expect(yield.valid?).to be true
   end
   
 end

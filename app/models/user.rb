@@ -48,6 +48,7 @@ class User < ActiveRecord::Base
   before_create :create_activation_digest
   
   after_create :log_created
+  after_create ->{ delay.check_new_account }
 
   has_secure_password
 
@@ -146,16 +147,20 @@ class User < ActiveRecord::Base
   
   def check_new_account
     if blocked_email = find_email_similar_to_blocked_one
-      suspect
-      log(:suspect, message: 'user.moderation.suspect.email_similar')
+      suspect(note: 'user.errors.email.similar-to-blocked-one')
+      
+      log(:suspected,
+        message: 'user-log.messages.email_similar',
+        message_vars: { email: email, bloqued_email: blocked_email }.to_json )
     end
   end
   
+  
   def find_email_similar_to_blocked_one
-    return false unless Settings['user.suspect_email_similar_to_banned_one']
+    return false unless Setting['user.suspect_email_similar_to_banned_one']
     
     
-    max_distance = Settings['user.considered_email_similar_when_x_characters'] || 2
+    max_distance = Setting['user.considered_email_similar_when_x_characters'] || 2
     
     emails_blocked = User.all_blocked
       .where('blocked_at >  ? ', 7.days.ago)

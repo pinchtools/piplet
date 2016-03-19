@@ -9,6 +9,10 @@ module UserConcerns::Moderatable
   
   def suspect_user(user, options = {})
     return false unless staff_member?
+    
+    log(:suspect_user, 
+      link: Rails.application.routes.url_helpers.users_user_path( user.id ))
+    
     options[:suspected_by_id] = id
 
     user.suspect(options)
@@ -56,12 +60,21 @@ module UserConcerns::Moderatable
   def block_user(user)
     return false unless staff_member?
     
+    log(:block_user, 
+      link: Rails.application.routes.url_helpers.users_user_path( user.id ))
+    
     user.block({ blocked_by_id: id })
   end
   
   
   def block(options = {})
     return false if staff_member?
+    
+    log_options = {}
+    
+    log_options[:action_user_id] =  options[:blocked_by_id] if options[:blocked_by_id].present?
+      
+    log(:blocked, log_options)
     
     columns = {
       blocked: true,

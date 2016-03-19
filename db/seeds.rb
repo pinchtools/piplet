@@ -3,7 +3,7 @@
 #
 
 User.create!(username: "Example",
-  email: "example@railstutorial.org",
+  email: "example@piplet.io",
   password: "foobar",
   password_confirmation: "foobar",
   admin: true,
@@ -13,9 +13,9 @@ User.create!(username: "Example",
   activation_ip_address: '127.6.4.98')
 
 49.times do |n|
-    name = Faker::Name.name
-    email = "example-#{n+1}@railstutorial.org"
-    password = "password"
+    name = "fastandfurious#{n+1}"
+    email = "example-#{n+1}@piplet.io"
+    password = "foobar"
     
     User.create!(username: name,
     email: email,

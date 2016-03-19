@@ -8,6 +8,8 @@ module UserConcerns::Loggable
   end
   
   def log( action, options  = {} )
+    return if UserLog.actions[action].nil?
+    
     attributes = {
        :concerned_user_id => self.id,
        :action => UserLog.actions[action],
@@ -16,10 +18,12 @@ module UserConcerns::Loggable
     
     attributes[:message] = options[:message] || "user-log.messages.#{action}"
 
-    attributes[:data] = options[:data]  if options[:data].present?
-    attributes[:link] = options[:link]  if options[:link].present?
-    attributes[:ip_address] = options[:ip_address]  if options[:ip_address].present?
-   
+    attributes[:message_vars] = options[:message_vars] if options[:message_vars].present? 
+    attributes[:data] = options[:data] if options[:data].present?
+    attributes[:link] = options[:link] if options[:link].present?
+    attributes[:ip_address] = options[:ip_address] if options[:ip_address].present?
+    attributes[:action_user_id] = options[:action_user_id] if options[:action_user_id].present?
+      
     UserLog.delay.create(attributes) # async log
   end
 

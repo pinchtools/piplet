@@ -1,10 +1,25 @@
 RSpec.shared_examples "user moderatable" do
 
-  context 'admin user' do
-    subject{ create(:admin) }
-    before(:each) do
-      @user = create(:user)
-      @another_admin = create(:admin)
+  context 'admin' do
+    before(:all) do
+      @admin = build(:admin)
+      @user = build(:user)
+      @another_admin = build(:admin)
+      
+      
+      @admin.email = "admin-user@example.com"
+      @user.email = "regular-user1@example.com"
+      @another_admin.email = "admin-user1@example.com"
+      
+      @admin.save
+      @user.save
+      @another_admin.save
+    end
+    
+    after(:all) do
+      User.destroy(@admin.id)
+      User.destroy(@user.id)
+      User.destroy(@another_admin.id)
     end
     
     it 'should be able to mark/unmark user as suspect' do
@@ -12,13 +27,13 @@ RSpec.shared_examples "user moderatable" do
       expect(@user.suspected_at).to be nil
       expect(@user.suspected_by_id).to be nil
       
-      expect(subject.suspect_user(@user)).to be true
+      expect(@admin.suspect_user(@user)).to be true
       
       expect(@user.suspected?).to be true
       expect(@user.suspected_at).not_to be nil
       expect(@user.suspected_by_id).not_to be nil
       
-      expect(subject.clear_suspect(@user)).to be true
+      expect(@admin.clear_suspect(@user)).to be true
 
       expect(@user.suspected?).to be false
       expect(@user.suspected_at).to be nil
@@ -26,8 +41,8 @@ RSpec.shared_examples "user moderatable" do
     end
     
     it 'can\'t be suspected' do
-      expect(@another_admin.suspect_user(subject)).to be false
-      expect(subject.suspect).to be false
+      expect(@another_admin.suspect_user(@admin)).to be false
+      expect(@admin.suspect).to be false
     end
     
     it 'should be able to block/unblock user' do
@@ -35,13 +50,13 @@ RSpec.shared_examples "user moderatable" do
         expect(@user.blocked_at).to be nil
         expect(@user.blocked_by_id).to be nil
         
-        expect(subject.block_user(@user)).to be true
+        expect(@admin.block_user(@user)).to be true
         
         expect(@user.blocked?).to be true
         expect(@user.blocked_at).not_to be nil
         expect(@user.blocked_by_id).not_to be nil
         
-        expect(subject.unblock_user(@user)).to be true
+        expect(@admin.unblock_user(@user)).to be true
   
         expect(@user.blocked?).to be false
         expect(@user.blocked_at).to be nil
@@ -49,36 +64,52 @@ RSpec.shared_examples "user moderatable" do
     end
     
     it 'can\'t be suspected' do
-      expect(@another_admin.block_user(subject)).to be false
-      expect(subject.block).to be false
+      expect(@another_admin.block_user(@admin)).to be false
+      expect(@admin.block).to be false
     end
     
   end
 
   
   context 'regular user' do
-    subject{ create(:user) }
-    before{ @admin = create(:admin)}
-    before{ @another_user = create(:user)}
+    before(:all) do
+      @user = build(:user)
+      @admin = build(:admin)
+      @another_user = build(:user)
+      
+      @user.email = "regular-user@example.com"
+      @admin.email = "admin-user@example.com"
+      @another_user.email = "regular-user1@example.com"
+      
+      @user.save
+      @admin.save
+      @another_user.save
+    end
+    
+    after(:all) do
+      User.destroy(@admin.id)
+      User.destroy(@user.id)
+      User.destroy(@another_user.id)
+    end
     
     it 'can\'t suspect anyone ' do
-      expect(subject.suspect_user(@admin)).to be false
-      expect(subject.suspect_user(@another_user)).to be false
+      expect(@user.suspect_user(@admin)).to be false
+      expect(@user.suspect_user(@another_user)).to be false
     end
     
     it 'can be suspected' do
-      expect(@admin.suspect_user(subject)).to be true
-      expect(subject.suspect).to be true
+      expect(@admin.suspect_user(@user)).to be true
+      expect(@user.suspect).to be true
     end
     
-    it 'can\'t block anyone ' do
-      expect(subject.block_user(@admin)).to be false
-      expect(subject.block_user(@another_user)).to be false
+    it 'can\'t block anyone' do
+      expect(@user.block_user(@admin)).to be false
+      expect(@user.block_user(@another_user)).to be false
     end
     
     it 'can be blocked' do
-      expect(@admin.block_user(subject)).to be true
-      expect(subject.block).to be true
+      expect(@admin.block_user(@user)).to be true
+      expect(@user.block).to be true
     end
     
   end

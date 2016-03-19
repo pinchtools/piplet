@@ -13,6 +13,7 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  link              :string
+#  message_vars      :string
 #
 # Indexes
 #
@@ -60,7 +61,10 @@ class UserLog < ActiveRecord::Base
       request_password_reset: 2003,
       password_reset: 2004,
       activated: 2005,
-      login: 2006
+      login: 2006,
+      block_user: 2007,
+      blocked: 2008,
+      suspect_user: 2009
     )
   end
   
