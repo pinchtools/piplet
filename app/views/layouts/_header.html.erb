@@ -24,7 +24,7 @@
             <% if logged_in? %>
               <ul class="nav navbar-nav  pull-md-right">
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><%= t('user.account') %></a>
+                  <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><%= t('user.links.account') %></a>
                   <div class="dropdown-menu">
                     <%= link_to t('user.links.profile'), users_user_path(current_user), class: 'dropdown-item' %>
                     <%= link_to t('user.links.settings'), edit_users_user_path(current_user), class: 'dropdown-item' %>
@@ -38,8 +38,8 @@
                   </li>
               </ul>
             <% else %>
-              <%= link_to t('user.log-in'), login_path, class: 'btn btn-primary-outline btn-sm', role: 'button' %>
-              <%= link_to t('user.sign-up'), signup_path, class: 'btn btn-primary-outline btn-sm', role: 'button' %>
+              <%= link_to t('user.links.log-in'), login_path, class: 'btn btn-secondary btn-sm', role: 'button' %>
+              <%= link_to t('user.links.sign-up'), signup_path, class: 'btn btn-secondary btn-sm', role: 'button' %>
             <% end %>
 
 

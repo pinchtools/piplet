@@ -1,0 +1,44 @@
+
+.debug_dump {
+  clear: both;
+  float: left;
+  width: 100%;
+  margin-top: 45px;
+}
+
+/* Override bootstrap styles
+----------------------------------------------------------------------------- */
+  
+.btn-primary-outline,
+.btn-primary-outline:focus,
+.btn-primary-outline.focus
+  {
+  border-color: $primary-color;
+  color: $primary-color;
+  
+  &:active,
+  &.active,
+  &:hover {
+    background-color: $primary-color;
+    color: $secondary-color;
+    border-color: $secondary-color;
+  }
+}
+
+.btn-secondary,
+.btn-secondary:focus,
+.btn-secondary.focus
+  {
+  border-color: $primary-color;
+  color: $tertiary-color;
+  background-color: $primary-color;
+    
+  &:active,
+  &.active,
+  &:hover {
+    border-color: $tertiary-color;
+    color: $primary-color;
+    background-color: $tertiary-color;
+    border-radius: 4px;
+  }
+}

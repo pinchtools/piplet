@@ -1,8 +1,8 @@
-<ul class="nav nav-tabs nav-justified">
-  <li role="presentation">
-    <%= link_to t('admin.links.dashboard'), admin_dashboard_index_path %>
+<ul id="admin-main-nav" class="nav nav-pills">
+  <li class="nav-item">
+    <%= active_link_to t('admin.links.dashboard'), admin_dashboard_index_path, :class => 'nav-link' %>
   </li>
-  <li role="presentation">
-    <%= link_to t('admin.links.users'), admin_users_path %>
+  <li class="nav-item">
+    <%= active_link_to t('admin.links.users'), admin_users_path, :class => 'nav-link' %>
   </li>
 </ul>

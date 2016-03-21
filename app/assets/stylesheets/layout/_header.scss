@@ -16,3 +16,11 @@ header .navbar .btn {
 header .navbar .btn:last-child {
   margin-right: 0;
 }
+
+header .dropdown-item::first-letter {
+  text-transform: capitalize;
+}
+
+header .nav-item.dropdown > a {
+  color: #FFF;
+}

@@ -29,13 +29,14 @@ en:
       dashboard: 'dashboard'
   user:
     links:
-      sign-up: 'Sign Up'
-      log-in: 'Log In'
-      log-out: 'Log Out'
+      account: 'Account'
+      sign-up: 'Sign up'
+      log-in: 'Log in'
+      log-out: 'Log out'
       all: 'Users'
-    profile: 'Profile'
-    setting: 'Settings'
-    list: 'All users'
+      profile: 'Profile'
+      settings: 'Settings'
+      list: 'All users'
     form:
       new:
         title: 'Sign up'
