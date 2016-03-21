@@ -22,6 +22,11 @@
 en:
   site:
     title: 'Piplet'
+  admin: 
+    links:
+      admin: 'admin'
+      users: 'users'
+      dashboard: 'dashboard'
   user:
     links:
       sign-up: 'Sign Up'

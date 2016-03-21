@@ -35,14 +35,22 @@ RSpec.describe Users::SessionsController, type: :controller do
       expect(flash[:warning]).to be_present
     end
     
-    it "create a user session when suceed" do
+    it "create a regular session when suceed" do
       user = create(:user)
     
       log_in_as(user)
       
       expect(session[:user_id]).to eq(user.id)
       expect(response).to redirect_to( users_user_path(user) )
+    end
+    
+    it "create aan admin session when suceed" do
+      user = create(:admin)
+    
+      log_in_as(user)
       
+      expect(session[:user_id]).to eq(user.id)
+      expect(response).to redirect_to( admin_dashboard_index_path )
     end
     
     it 'generate cookies if remember me is checked' do

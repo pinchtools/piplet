@@ -52,6 +52,10 @@ module Users::SessionsHelper
     !!current_user
   end
   
+  def staff_member?
+    logged_in? && current_user.staff_member?
+  end
+  
   # Redirects to stored location (or to the default).
   def redirect_back_or(default)
     redirect_to(session[:forwarding_url] || default)

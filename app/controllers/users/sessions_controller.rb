@@ -9,7 +9,13 @@ class Users::SessionsController < ApplicationController
       if user.activated?
         log_in user
         params[:session][:remember_me] == '1' ? remember(user) : forget(user)
-        redirect_back_or users_user_path(user)
+          
+        if user.regular?
+          redirect_back_or users_user_path(user) 
+        else
+          redirect_back_or admin_dashboard_index_path
+        end
+        
       else
         flash[:warning] = t('user.notice.warning.account-not-activated')
         redirect_to root_url

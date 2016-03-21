@@ -3,6 +3,7 @@ require 'admin_constraint'
 
 Rails.application.routes.draw do
 
+
   if Rails.env.development?
     mount Sidekiq::Web => "/sidekiq"
   else
@@ -22,6 +23,14 @@ Rails.application.routes.draw do
   get 'login' => 'users/sessions#new'
   post 'login' => 'users/sessions#create'
   delete 'logout' => 'users/sessions#destroy'
+  
+  namespace :admin do
+    resources :dashboard, only: [:index]
+    resources :users, only: [:index] do 
+      get 'filtering', on: :collection 
+    end
+     
+  end
   
   namespace :users do
     
