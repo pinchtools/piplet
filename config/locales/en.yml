@@ -85,6 +85,9 @@ en:
     sign-up-btn: 'Sign up now!'
     remember-me: 'Remember me'
     forgot-password: '"(forgot password)"'
+    form:
+      title: 'Log in'
+      submit: 'Log in'
   password-reset:
     new:
       forgot-password: 'Forgot password'

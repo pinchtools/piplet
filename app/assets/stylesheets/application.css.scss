@@ -1,13 +1,10 @@
-$primary-color: #FFF;
-$secondary-color: #02C39A;
-$tertiary-color :#0275D8;
-$gray-medium-light: #eaeaea;
-
-$header-height: 50px;
+@import 'variables';
 
 @import 'bootstrap';
 
 @import 'util';
+
+@import 'global';
 
 @import 'layout/header';
 

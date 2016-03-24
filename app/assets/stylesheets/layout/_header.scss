@@ -24,3 +24,29 @@ header .dropdown-item::first-letter {
 header .nav-item.dropdown > a {
   color: #FFF;
 }
+
+#logo,
+#logo > a {
+  font-family: 'Prosto One', Arial;
+  color: #FFF;
+  font-size: 1.5em;
+  line-height: 1em;
+  text-decoration: none
+}
+
+header .link-primary,
+header .link-secondary{
+  font-size: 1.15em;
+  line-height: 2em;
+  padding: 1rem 0.8rem;
+  color: $tertiary-color;
+  
+  &:active,
+  &:hover {
+    color: $tertiary-color;
+  }
+}
+
+header .link-secondary {
+  color: #FFF;
+}

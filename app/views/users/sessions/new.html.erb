@@ -1,5 +1,5 @@
-<% provide(:title, "Log in") %>
-<h1>Log in</h1>
+<% provide(:title, t("session.form.title")) %>
+<h1><%= t "session.form.title" %></h1>
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
     <%= form_for(:session, url: login_path) do |f| %>
@@ -15,7 +15,7 @@
         <span><%= t 'session.remember-me' %></span>
       <% end %>
       
-      <%= f.submit "Log in", class: "btn btn-primary" %>
+      <%= f.submit t("session.form.submit"), class: "btn btn-primary" %>
     <% end %>
   <p>New user? <%= link_to t('session.sign-up-btn'), signup_path %></p>
 </div>

@@ -1,0 +1,30 @@
+#primary-sidebar {
+  margin: 30px 0;
+  
+  li::first-letter {
+    text-transform: capitalize;
+  }
+  
+  
+.nav-link,
+.nav-link:focus,
+.nav-link.focus {
+  background: transparent;
+  color: $link-secondary-color;
+    
+  &:hover {
+    color: $link-hover-secondary-color;
+  }
+    
+  &:active,
+  &.active {
+    color: $link-primary-color;
+    
+    &:hover {
+      color: $link-hover-primary-color;
+    }
+  }
+
+}
+  
+}
