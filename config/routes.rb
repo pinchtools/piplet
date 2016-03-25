@@ -3,7 +3,6 @@ require 'admin_constraint'
 
 Rails.application.routes.draw do
 
-
   if Rails.env.development?
     mount Sidekiq::Web => "/sidekiq"
   else
@@ -26,10 +25,11 @@ Rails.application.routes.draw do
   
   namespace :admin do
     resources :dashboard, only: [:index]
-    resources :users, only: [:index] do 
-      get 'filtering', on: :collection 
+      
+    namespace :users do
+      resources :users, only: [:index]
+      resources :filters
     end
-     
   end
   
   namespace :users do
