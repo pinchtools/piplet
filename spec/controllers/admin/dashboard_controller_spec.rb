@@ -1,11 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe Admin::DashboardController, type: :controller do
-
-  describe "GET #index" do
-    it "returns http success" do
+  include Helpers
+  
+  describe "GET #index" do 
+    it "redirect to login page if not authorized" do
       get :index
-      expect(response).to have_http_status(:success)
+      
+      should_redirect_to_login
     end
   end
 

@@ -1,0 +1,8 @@
+<% if list.empty? %>
+<p class="no-result"><%= t 'global.no-results-found' %></p>
+<% end %>
+<table class="table table-striped">
+  <tbody>
+    <%= render partial: 'filter', collection: list %>
+  </tbody>
+</table>

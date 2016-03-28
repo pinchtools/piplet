@@ -26,7 +26,6 @@ RSpec.shared_examples "user moderatable" do
       expect(@user.suspected?).to be false
       expect(@user.suspected_at).to be nil
       expect(@user.suspected_by_id).to be nil
-      
       expect(@admin.suspect_user(@user)).to be true
       
       expect(@user.suspected?).to be true

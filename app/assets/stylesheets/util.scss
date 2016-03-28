@@ -43,3 +43,36 @@
   }
 }
 
+.btn-default,
+.btn-default:focus,
+.btn-default.focus
+  {
+  border-color: transparent;
+  color: $primary-font-color;
+  background-color: #EFEFEF;
+  
+  &:active,
+  &.active,
+  &:hover {
+    background-color: #DFDFDF;
+  }
+}
+
+.alert-danger {
+  background-color: #FF4E46;
+  border: 0px solid transparent;
+  color: #fff;
+  font-size: 1.3rem;
+}
+
+#error_explanation ul {
+  color: #FF3F36;
+  list-style-type: none;
+  padding: 0 30px;
+}
+
+
+#error_explanation li::before {
+  content: '-';
+  padding-right: 10px;
+}

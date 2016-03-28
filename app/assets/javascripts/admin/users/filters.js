@@ -1,2 +1,10 @@
-// Place all the behaviors and hooks related to the matching controller here.
-// All this logic will automatically be available in application.js.
+$(function() {
+  
+  $("#rule_kind").change(function() {
+    $(".rule_kind_section").hide();
+    $(".rule_kind_section input").val("");
+    $(".rule_kind_section.rule_kind_" + this.value).show();
+    
+  })
+  
+});

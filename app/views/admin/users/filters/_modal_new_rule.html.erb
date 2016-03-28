@@ -1,0 +1,37 @@
+<!-- Modal -->
+<div class="modal fade" id="newRuleModal" tabindex="-1" role="dialog" aria-labelledby="newRuleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <%= form_for :user_filter, remote:true do |f| %>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title" id="newRuleModalLabel"><%= t('user-filter.form.title') %></h4>
+        </div>
+        <div class="modal-body">
+            <%= f.label :rule_kind %>
+            <%= select_tag :rule_kind, options_for_select([ ['Email provider', 1], ['Ip address', 2] ]), {class: 'form-control'} %>
+          
+          <%= f.label :list_kind %>
+          <%= select_tag :list_kind, options_for_select([ ['Blacklist', 1], ['Whitelist', 2] ]), {class: 'form-control'} %>
+          
+          <div class="rule_kind_section rule_kind_1">
+            <%= f.label :email_provider %>
+            <small class="text-muted"><%= t 'user-filter.form.email-provider-helper' %></small>
+            <%= f.text_field :email_provider, class: 'form-control' %>
+          </div>
+          <div class="rule_kind_section rule_kind_2 hidden">
+            <%= f.label :ip_address %>
+            <small class="text-muted"><%= t 'user-filter.form.ip-address-helper' %></small>
+            <%= f.text_field :ip_address, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <%= button_tag t('user-filter.form.close'), class: "btn btn-default", 'data-dismiss': "modal" %>
+          <%= f.button t('user-filter.form.submit'), class: "btn btn-primary" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

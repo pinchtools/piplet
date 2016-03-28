@@ -3,5 +3,16 @@
   <%= render 'admin/users/shared/primary_sidebar' %>
 
   <div class="col-md-10">
+  
+    <%= will_paginate %>
+    
+    <ul class="users">
+      <% users.each do |user| %>
+        <%= render user %>
+      <% end %>
+    </ul>
+      
+    <%= will_paginate %>
+  
   </div>
 </div>

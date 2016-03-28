@@ -1,7 +1,15 @@
 #primary-sidebar {
-  margin: 30px 0;
   
-  li::first-letter {
+  .nav {
+    border-radius: 3px; 
+    background-color: #EFEFEF;
+  }
+  
+  li:not(:last-child) {
+      border-bottom: 1px solid #FFF;
+  }
+  
+  li a::first-letter {
     text-transform: capitalize;
   }
   

@@ -1,0 +1,16 @@
+<% if @filter.errors.any? %>
+$('#newRuleModal #error_explanation').remove();
+$('#newRuleModal .modal-body').prepend("<%= j  render 'shared/error_messages', object: @filter %>");
+<% else %>
+var tab = (<%=  @filter.blocked? %>) ? 'blacklist': 'whitelist';
+
+$("#newRuleModal").modal('hide');
+$('#filter-tabs a[href=#'+tab+']').tab('show');
+
+$('.no-result').hide();
+
+$("#" + tab + " table").prepend("<%= j render partial: 'filter', locals: { filter: @filter } %>")
+$("#" + tab + " tr:first").effect( "highlight","slow" );
+
+$('#newRuleModal form')[0].reset();
+<% end %>

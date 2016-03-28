@@ -41,7 +41,9 @@ class User < ActiveRecord::Base
   include UserConcerns::Moderatable
   
   attr_accessor :remember_token, :activation_token, :reset_token
-
+  
+  has_and_belongs_to_many :user_filters
+  
   before_validation :strip_downcase_email
   before_validation :update_username_lower
   
@@ -202,6 +204,10 @@ class User < ActiveRecord::Base
   
   def log_activated
     log( :activated, ip_address: activation_ip_address )
+  end
+  
+  def remove_destroy_dependencies
+    self.user_filters.clear
   end
   
 end

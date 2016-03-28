@@ -4,13 +4,7 @@ RSpec.describe Users::UsersController, type: :controller do
   include Helpers
   include ActiveJob::TestHelper
   
-  describe "GET #index" do 
-    it "redirect to login page if not authorized" do
-      get :index
-      
-      should_redirect_to_login
-    end
-  end
+
   
   describe "GET #new" do
     it "returns http success" do

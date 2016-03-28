@@ -22,10 +22,15 @@
 en:
   site:
     title: 'Piplet'
+  global:
+    no-results-found : 'No results found'
   admin: 
     links:
       admin: 'admin'
-      users: 'users'
+      users: 
+        index: 'users'
+        list: 'list'
+        filters: 'filters'
       dashboard: 'dashboard'
   user:
     links:
@@ -103,6 +108,17 @@ en:
       danger:
         email-not-found: 'Email address not found'
         password-expired: 'Password reset has expired.'
+  user-filter:
+    form:
+      title: 'New filter'
+      submit: 'Create'
+      close: 'Close'
+      email-provider-helper: 'eg: fakemail.com or spamhost.net'
+      ip-address-helper: 'eg: 192.98.12.23 or 192.98.12.*'
+    errors:
+      base:
+        email-xor-ip: 'Email provider or Ip address needed, but not both'
+        trusted-xor-blocked: 'Must be a trusting filter or a blocking one, but not both'
   user-log:
     errors:
       action-user:
@@ -115,3 +131,18 @@ en:
       email_similar: 'Email %{email} is similar to the blocked email %{blocked_email}'
       block_user: 'User blocked another user'
       blocked: 'User has been blocked'
+      
+  attributes:  &attributes
+    user_filter:
+      rule_kind: "Type"
+      list_kind: "List"
+      email_provider: "Email provider"
+      ip_address: "Ip Address"
+      
+  helpers:
+    label:
+      <<: *attributes
+      
+  activerecord:
+    attributes:
+      <<: *attributes
