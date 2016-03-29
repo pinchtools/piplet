@@ -42,7 +42,7 @@ class User < ActiveRecord::Base
   
   attr_accessor :remember_token, :activation_token, :reset_token
   
-  has_and_belongs_to_many :user_filters
+  has_and_belongs_to_many :filters, :class_name => 'UserFilter', :join_table => :users_user_filters
   
   before_validation :strip_downcase_email
   before_validation :update_username_lower
@@ -52,6 +52,8 @@ class User < ActiveRecord::Base
   after_create :log_created
   after_create ->{ delay.check_new_account }
 
+  before_destroy :destroy_dependencies
+    
   has_secure_password
 
   validates :username,
@@ -206,8 +208,8 @@ class User < ActiveRecord::Base
     log( :activated, ip_address: activation_ip_address )
   end
   
-  def remove_destroy_dependencies
-    self.user_filters.clear
+  def destroy_dependencies
+    self.filters.clear
   end
   
 end

@@ -32,6 +32,8 @@ RSpec.describe User, type: :model do
   include_examples 'user moderatable'
   
   it { should have_many(:logs).dependent(:destroy) }
+  
+  it { should have_and_belong_to_many(:filters).class_name('UserFilter') }
     
   it { should validate_presence_of(:username) }
   it { should validate_presence_of(:email) }
@@ -175,6 +177,14 @@ RSpec.describe User, type: :model do
     expect(subject).to receive(:check_new_account)
     
     subject.save
+  end
+  
+  it 'should remove relation with user_filters when destroyed' do
+#    filter = create(:user_filter)
+#    subject.save
+#    subject.filters << filter
+#    
+#    expect(subject).to have_any(filters)
   end
   
 end

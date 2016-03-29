@@ -4,6 +4,8 @@ RSpec.describe UserFilter, type: :model do
   
   subject{ build(:user_filter) }
   
+  it { should have_and_belong_to_many(:users) }
+    
   it { should validate_uniqueness_of(:email_provider) }
   it { should validate_uniqueness_of(:ip_address) }
     
