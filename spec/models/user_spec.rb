@@ -179,12 +179,24 @@ RSpec.describe User, type: :model do
     subject.save
   end
   
-  it 'should remove relation with user_filters when destroyed' do
-#    filter = create(:user_filter)
-#    subject.save
-#    subject.filters << filter
-#    
-#    expect(subject).to have_any(filters)
+  context 'with blocked filter' do
+    subject { create(:user_blocked_by_filter) }
+      
+    it 'should remove relation with user_filters when destroyed' do
+      expect(subject.filters).not_to be_empty
+      
+      filter_id = subject.filters.first.id
+      
+      #look if the filter is link to the user
+      expect(UserFilter.find(filter_id).users.find_by(:id => subject.id)).to be_present
+      
+      expect(subject.destroy).not_to be(false)
+      
+      #look if the link between filter and user has been removed
+      expect(UserFilter.find(filter_id).users.find_by(:id => subject.id)).to be_nil
+    end
   end
+  
+
   
 end

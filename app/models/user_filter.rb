@@ -32,7 +32,9 @@ class UserFilter < ActiveRecord::Base
   
   before_save :set_ip_address_to_nil_if_empty
   before_save :set_email_provider_to_nil_if_empty
-    
+  
+  after_create -> { delay.apply_to_existing_users }
+  
   private
   
   def validate_email_xor_ip
