@@ -15,6 +15,7 @@
 #
 
 FactoryGirl.define do
+
   factory :user_log do
     action 1
     level 1

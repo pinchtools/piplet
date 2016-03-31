@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160328161549) do
+ActiveRecord::Schema.define(version: 20160331055845) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 20160328161549) do
     t.boolean  "trusted"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.inet     "cidr_address"
   end
 
   create_table "user_logs", force: :cascade do |t|

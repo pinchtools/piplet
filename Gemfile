@@ -50,6 +50,8 @@ gem "rails-settings-cached"
 
 gem 'active_link_to'
 
+gem 'netaddr', '~> 1.5', '>= 1.5.1'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

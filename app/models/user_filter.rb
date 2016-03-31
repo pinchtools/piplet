@@ -9,10 +9,19 @@
 #  trusted        :boolean
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  cidr_address   :inet
 #
+require_dependency 'ip_addr'
+require 'cidr_address'
 
 class UserFilter < ActiveRecord::Base
   has_and_belongs_to_many :users, :join_table => :users_user_filters
+  
+  before_validation :convert_ip_address, unless: Proc.new { |filter| filter.ip_address.blank? }
+  before_save :set_ip_address_to_nil_if_empty
+  before_save :set_email_provider_to_nil_if_empty
+  
+  after_create -> { delay.apply_to_existing_users }
   
   validates :email_provider,
     length: { in: 4..100 },
@@ -21,6 +30,7 @@ class UserFilter < ActiveRecord::Base
     allow_blank: true
   validate :validate_email_xor_ip
   validate :validate_blocked_xor_trusted
+  validate :validate_cidr_address
   
   validates :ip_address,
     length: { in: 5..50 },
@@ -30,10 +40,18 @@ class UserFilter < ActiveRecord::Base
   scope :all_blocked, -> { where(blocked: true) }
   scope :all_trusted, -> { where(trusted: true) }
   
-  before_save :set_ip_address_to_nil_if_empty
-  before_save :set_email_provider_to_nil_if_empty
   
-  after_create -> { delay.apply_to_existing_users }
+  def apply_to_existing_users
+
+    if email_provider.present?
+      concerned_users = User.where("email LIKE ?", "%" + email_provider)
+    elsif ip_address.present?
+      concerned_users = User.where("creation_ip_address <<= ?", self.cidr_address.to_cidr_s)
+    end
+    
+    self.users << concerned_users
+  end
+  
   
   private
   
@@ -49,6 +67,12 @@ class UserFilter < ActiveRecord::Base
     end
   end
   
+  def validate_cidr_address
+    if self.ip_address.present? && self.cidr_address.blank?
+      self.errors.add(:ip_address, I18n.t(:'user-filter.errors.ip_address.invalid'))
+    end
+  end
+  
   def set_ip_address_to_nil_if_empty
     self.ip_address = nil if ip_address.blank?
   end
@@ -57,4 +81,10 @@ class UserFilter < ActiveRecord::Base
     self.email_provider = nil if email_provider.blank?
   end
   
+  def convert_ip_address
+    address = CIDRAddress.create(ip_address)
+
+    self.cidr_address = address.to_s if address.present?
+  end
+    
 end
