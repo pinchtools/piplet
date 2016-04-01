@@ -85,9 +85,30 @@ RSpec.describe UserFilter, type: :model do
     
   end
   
-  describe ' should impact some users' do
+
+  
+  describe 'when related to users' do
     
-    describe 'when having same email provider' do
+    it 'should remove relation with users when destroyed' do
+      subject.save
+      
+      expect(subject.users).to be_empty
+      
+      
+      subject.users << create(:user)
+      
+      user_id = subject.users.first.id
+      
+      #look if the filter is link to the user
+      expect(User.find(user_id).filters.find_by(:id => subject.id)).to be_present
+      
+      expect(subject.destroy).not_to be(false)
+
+      #look if the link between filter and user has been removed
+      expect(User.find(user_id).filters.find_by(:id => subject.id)).to be_nil
+    end
+    
+    describe '.. by the email provider' do
       subject {build(:user_filter_blocked_email) }
       
       let(:user) { build(:user) }
@@ -105,7 +126,7 @@ RSpec.describe UserFilter, type: :model do
       end
     end
     
-    describe 'when containing user\'s ip address' do
+    describe 'by the ip address' do
       subject {build(:user_filter_blocked_ip) }
 
       let(:user) { build(:user) }
