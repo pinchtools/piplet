@@ -52,8 +52,6 @@ class User < ActiveRecord::Base
   after_create :log_created
   after_create ->{ delay.check_new_account }
 
-  before_destroy :destroy_dependencies
-    
   has_secure_password
 
   validates :username,
@@ -206,10 +204,6 @@ class User < ActiveRecord::Base
   
   def log_activated
     log( :activated, ip_address: activation_ip_address )
-  end
-  
-  def destroy_dependencies
-    self.filters.clear
   end
   
 end
