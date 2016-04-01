@@ -36,7 +36,7 @@
 require 'levenshtein'
 
 class User < ActiveRecord::Base
-  include UserConcerns::Loggable
+  include Concerns::Loggable
   include UserConcerns::Roleable
   include UserConcerns::Moderatable
   
@@ -152,7 +152,7 @@ class User < ActiveRecord::Base
       suspect(note: 'user.errors.email.similar-to-blocked-one')
       
       log(:suspected,
-        message: 'user-log.messages.email_similar',
+        message: 'log.messages.email_similar',
         message_vars: { email: email, bloqued_email: blocked_email }.to_json )
     end
   end

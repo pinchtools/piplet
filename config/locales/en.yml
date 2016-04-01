@@ -121,7 +121,7 @@ en:
         trusted-xor-blocked: 'Must be a trusting filter or a blocking one, but not both'
       ip_address:
         invalid: 'Invalid ip address or wildcard'
-  user-log:
+  log:
     errors:
       action-user:
         must-be-staff-member: 'Action user must be a staff member'

@@ -11,10 +11,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160331055845) do
+ActiveRecord::Schema.define(version: 20160401082248) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "logs", force: :cascade do |t|
+    t.integer  "action"
+    t.integer  "level"
+    t.text     "message"
+    t.text     "data"
+    t.inet     "ip_address"
+    t.string   "link"
+    t.string   "message_vars"
+    t.integer  "action_user_id"
+    t.integer  "loggable_id"
+    t.string   "loggable_type"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "logs", ["action"], name: "index_logs_on_action", using: :btree
+  add_index "logs", ["action_user_id"], name: "index_logs_on_action_user_id", using: :btree
+  add_index "logs", ["level"], name: "index_logs_on_level", using: :btree
+  add_index "logs", ["loggable_type", "loggable_id"], name: "index_logs_on_loggable_type_and_loggable_id", using: :btree
 
   create_table "settings", force: :cascade do |t|
     t.string   "var",                   null: false

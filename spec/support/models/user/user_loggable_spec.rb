@@ -1,29 +1,39 @@
 RSpec.shared_examples "user loggable" do
 
-  
-  it 'should delayed a normal log' do
-    should_delayed_method  do
-      subject.log(:generic)
+  describe 'log send' do
+    
+    before(:each) do
+      subject.save
+      
+      Sidekiq::Extensions::DelayedClass.clear
     end
-  end
+    
+    it 'should delayed a normal log' do
+      should_delayed_method  do
+        subject.log(:generic)
+      end
+    end
+  
+    
+    it 'should delayed an important log' do
+      should_delayed_method  do
+        subject.log(:created)
+      end
+    end
+  
+    
+    it 'should delayed a sensitive log' do
+      should_delayed_method  do
+        subject.log(:admin)
+      end
+    end
 
-  
-  it 'should delayed an important log' do
-    should_delayed_method  do
-      subject.log(:created)
-    end
-  end
-
-  
-  it 'should delayed a sensitive log' do
-    should_delayed_method  do
-      subject.log(:admin)
-    end
   end
 
   context 'create ' do
     before {
-      allow(subject).to receive(:id) {1}
+      #allow(subject).to receive(:id) {1}
+      subject.save
     }
 
     
@@ -62,9 +72,11 @@ RSpec.shared_examples "user loggable" do
   
   
   def should_save_log
-    expect(UserLog).to receive(:delay).at_least(:once).and_return(UserLog)
+    #allow(subject).to receive(:id) {1}
 
-    expect(yield.valid?).to be true
+    expect(subject.logs).to receive(:delay).at_least(:once).and_return(subject.logs)
+
+    expect(yield).to be_valid
   end
   
 end
