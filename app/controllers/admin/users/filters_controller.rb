@@ -1,5 +1,6 @@
 class Admin::Users::FiltersController < Admin::AdminController
   before_action :load_filters, only: [:index]
+  before_action :set_filter, only: [:destroy]
   
   def index
     
@@ -18,6 +19,8 @@ class Admin::Users::FiltersController < Admin::AdminController
   
   def destroy
     
+    @filter.destroy
+    
   end
   
   private
@@ -25,6 +28,10 @@ class Admin::Users::FiltersController < Admin::AdminController
   def load_filters
     @all_blocked = UserFilter.all_blocked
     @all_trusted = UserFilter.all_trusted
+  end
+  
+  def set_filter
+    @filter = UserFilter.find_by_id(params[:id])
   end
   
   def filter_params

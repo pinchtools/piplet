@@ -66,7 +66,9 @@ class Log < ActiveRecord::Base
       login: 2006,
       block_user: 2007,
       blocked: 2008,
-      suspect_user: 2009
+      suspect_user: 2009,
+      apply_filter: 2010,
+      filter_ignored: 2011
     )
   end
   

@@ -6,6 +6,14 @@ module UserConcerns::Moderatable
     scope :all_blocked, -> { where(blocked: true) }
   end
 
+  def blocked?
+    #user can be blocked directly or impacted by a filter
+    super || self.filters.all_blocked.any?
+  end
+  
+  def trusted?
+    self.filters.all_trusted.any?
+  end
   
   def suspect_user(user, options = {})
     return false unless staff_member?

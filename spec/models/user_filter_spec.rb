@@ -3,7 +3,9 @@ require 'rails_helper'
 RSpec.describe UserFilter, type: :model do
   
   subject{ build(:user_filter_blocked_email) }
-  
+
+  include_examples 'loggable'
+      
   it { should have_and_belong_to_many(:users) }
     
   it { should validate_uniqueness_of(:email_provider) }
@@ -89,11 +91,55 @@ RSpec.describe UserFilter, type: :model do
   
   describe 'when related to users' do
     
+    context 'blocking filter' do
+      subject {build(:user_filter_blocked_email) }
+      
+      it 'should not block a trusted user' do
+        user = create(:user_trusted_by_filter)
+        
+        # apply blocking filter, which should concerned our user
+        expect(subject).to receive(:delay).and_return(subject)
+        
+        expect(subject.save).to be true
+            
+        expect(subject.users.find_by_id(user.id)).to be_nil
+      end
+    end
+    
+    context 'trusting filter' do
+      subject {build(:user_filter_trusted_email) }
+      
+      it 'should not trust a user already blocked by a filter' do
+        user = create(:user_blocked_by_filter)
+        
+        # apply blocking filter, which should concerned our user
+        expect(subject).to receive(:delay).and_return(subject)
+        
+        expect(subject.save).to be true
+            
+        expect(subject.users.find_by_id(user.id)).to be_nil
+      end
+      
+      it 'should not trust a user directly blocked' do
+        user = create(:user_blocked)
+        
+        # apply blocking filter, which should concerned our user
+        expect(subject).to receive(:delay).and_return(subject)
+        
+        expect(subject.save).to be true
+            
+        expect(subject.users.find_by_id(user.id)).to be_nil
+      end
+      
+    end
+
+    
+
+    
     it 'should remove relation with users when destroyed' do
       subject.save
       
       expect(subject.users).to be_empty
-      
       
       subject.users << create(:user)
       

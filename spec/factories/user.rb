@@ -1,4 +1,3 @@
-#require 'spec/factories/user_filters'
 
 FactoryGirl.define do
 
@@ -16,12 +15,21 @@ FactoryGirl.define do
       admin true
     end
     
+    trait :is_blocked do
+      blocked true
+    end
+    
     trait :with_blocked_filter do
       after(:create) do |user|
         user.filters << create(:user_filter_blocked_email)
       end
     end
     
+    trait :with_trusted_filter do
+      after(:create) do |user|
+        user.filters << create(:user_filter_trusted_email)
+      end
+    end
   end
   
 
@@ -29,8 +37,16 @@ FactoryGirl.define do
     is_admin
   end
   
+  factory :user_blocked, parent: :user do
+    is_blocked
+  end
+  
   factory :user_blocked_by_filter, parent: :user  do
     with_blocked_filter
   end
   
+  factory :user_trusted_by_filter, parent: :user  do
+    with_trusted_filter
+  end
+
 end

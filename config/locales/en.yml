@@ -24,6 +24,8 @@ en:
     title: 'Piplet'
   global:
     no-results-found : 'No results found'
+    destroy-confirm: 'Are you sure?'
+    destroy-btn: 'delete'
   admin: 
     links:
       admin: 'admin'
@@ -133,6 +135,8 @@ en:
       email_similar: 'Email %{email} is similar to the blocked email %{blocked_email}'
       block_user: 'User blocked another user'
       blocked: 'User has been blocked'
+      apply_filter: 'Apply filter to existing users'
+      filter_ignored: 'The filter conflicts with another one or the current use state and will not be applied'
       
   attributes:  &attributes
     user_filter:

@@ -39,22 +39,32 @@ class UserFilter < ActiveRecord::Base
     uniqueness: true,
     allow_blank: true
   
-  scope :all_blocked, -> { where(blocked: true) }
-  scope :all_trusted, -> { where(trusted: true) }
+  scope :all_blocked, -> { where(blocked: true).order(created_at: :desc) }
+  scope :all_trusted, -> { where(trusted: true).order(created_at: :desc) }
   
   
   def apply_to_existing_users
 
-#    log(:add_filter,
-#      message: 'user-log.messages.email_similar',
-#      message_vars: { email: email, bloqued_email: blocked_email }.to_json )
-#    
-    if email_provider.present?
-      concerned_users = User.where("email LIKE ?", "%" + email_provider)
-    elsif ip_address.present?
-      concerned_users = User.where("creation_ip_address <<= ?", self.cidr_address.to_cidr_s)
-    end
+    log(:apply_filter)
     
+    if email_provider.present?
+      concerned_users = User.where("email LIKE ?", "%" + email_provider).to_a
+    elsif ip_address.present?
+      concerned_users = User.where("creation_ip_address <<= ?", self.cidr_address.to_cidr_s).to_a
+    end
+
+    concerned_users.delete_if do |u|
+      if (self.trusted? && u.blocked?) ||
+        (self.blocked? && u.trusted?)
+        log(:filter_ignored,
+              message: 'user-log.messages.email_similar',
+              link: Rails.application.routes.url_helpers.users_user_path( u.id ),
+              message_vars: { email: u.email }.to_json )
+                
+        return true
+      end
+    end
+         
     self.users << concerned_users
   end
   

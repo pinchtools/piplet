@@ -7,8 +7,8 @@ FactoryGirl.define do
     end
     
     trait :is_trusted do
-          blocked true
-          trusted false
+          blocked false
+          trusted true
         end
         
     
@@ -29,7 +29,7 @@ FactoryGirl.define do
   factory :user_filter_trusted_email, parent: :user_filter do
     is_trusted
     ip_address nil
-    email_provider 'yahoo.com' 
+    email_provider 'trustedomain.com' 
   end
 
   factory :user_filter_trusted_ip, parent: :user_filter do
