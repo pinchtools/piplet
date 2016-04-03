@@ -15,6 +15,8 @@ require_dependency 'ip_addr'
 require 'cidr_address'
 
 class UserFilter < ActiveRecord::Base
+  include Concerns::Loggable
+  
   has_and_belongs_to_many :users, :join_table => :users_user_filters
   
   before_validation :convert_ip_address, unless: Proc.new { |filter| filter.ip_address.blank? }
@@ -43,6 +45,10 @@ class UserFilter < ActiveRecord::Base
   
   def apply_to_existing_users
 
+#    log(:add_filter,
+#      message: 'user-log.messages.email_similar',
+#      message_vars: { email: email, bloqued_email: blocked_email }.to_json )
+#    
     if email_provider.present?
       concerned_users = User.where("email LIKE ?", "%" + email_provider)
     elsif ip_address.present?

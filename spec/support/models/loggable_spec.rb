@@ -1,4 +1,4 @@
-RSpec.shared_examples "user loggable" do
+RSpec.shared_examples "loggable" do
 
   describe 'log send' do
     
@@ -32,7 +32,6 @@ RSpec.shared_examples "user loggable" do
 
   context 'create ' do
     before {
-      #allow(subject).to receive(:id) {1}
       subject.save
     }
 
@@ -72,8 +71,6 @@ RSpec.shared_examples "user loggable" do
   
   
   def should_save_log
-    #allow(subject).to receive(:id) {1}
-
     expect(subject.logs).to receive(:delay).at_least(:once).and_return(subject.logs)
 
     expect(yield).to be_valid
