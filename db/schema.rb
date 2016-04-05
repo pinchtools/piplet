@@ -47,24 +47,13 @@ ActiveRecord::Schema.define(version: 20160401082248) do
 
   add_index "settings", ["thing_type", "thing_id", "var"], name: "index_settings_on_thing_type_and_thing_id_and_var", unique: true, using: :btree
 
-  create_table "user_auth_lists", force: :cascade do |t|
-    t.string   "username"
-    t.string   "email"
-    t.string   "email_provider"
-    t.inet     "ip_address"
-    t.boolean  "banned"
-    t.boolean  "trusted"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-  end
-
   create_table "user_filters", force: :cascade do |t|
     t.string   "email_provider"
     t.string   "ip_address"
-    t.boolean  "blocked"
-    t.boolean  "trusted"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.boolean  "blocked",        default: false
+    t.boolean  "trusted",        default: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.inet     "cidr_address"
   end
 

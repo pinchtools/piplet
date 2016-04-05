@@ -1,4 +1,4 @@
 <tr id="filter-<%= filter.id %>">
   <td><%= filter.ip_address || filter.email_provider %></td>
-  <td><%= link_to t('global.destroy-btn'),  admin_users_filter_path(filter.id), method: :delete, remote: true, data: { confirm: t('global.destroy-confirm') } %></td>
+  <td align="right"><%= link_to t('global.destroy-btn'),  admin_users_filter_path(filter.id), method: :delete, remote: true, data: { confirm: t('global.destroy-confirm') } %></td>
 </tr>

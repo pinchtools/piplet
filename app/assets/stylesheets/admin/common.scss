@@ -1,0 +1,65 @@
+/**
+  * Pagination
+*/
+  
+.pagination {
+  
+  .previous_page:before {
+    font-family: FontAwesome;
+    content: "\f060";
+  }
+  
+  .next_page:after {
+    font-family: FontAwesome;
+    content: "\f061";
+  }
+  
+  a, span, em {
+    padding: 0.2em 0.5em;
+  }
+  
+  .disabled {
+      color: #99979c;
+   }
+  
+  .current {
+      font-style: normal;
+      font-weight: bold;
+      background: $tertiary-color;
+      color: #FFF;
+      border-radius: 2px;
+   }
+   
+   a {
+     color: $primary-font-color;
+     text-decoration: none;
+
+   }
+   
+  a:hover, .pagination a:focus {
+        background: #eceeef;
+        border-radius: 2px;
+  }
+  
+  a.next_page,
+  a.previous_page {
+    border-width: 0;
+  }
+  
+  
+  .previous_page {
+    margin-right: 0.8em;
+  }
+  
+  .next_page {
+    margin-left: 0.8em; 
+  }
+   
+}
+  
+
+    
+  
+  
+
+

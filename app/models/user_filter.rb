@@ -5,12 +5,13 @@
 #  id             :integer          not null, primary key
 #  email_provider :string
 #  ip_address     :string
-#  blocked        :boolean
-#  trusted        :boolean
+#  blocked        :boolean          default(FALSE)
+#  trusted        :boolean          default(FALSE)
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  cidr_address   :inet
 #
+
 require_dependency 'ip_addr'
 require 'cidr_address'
 
