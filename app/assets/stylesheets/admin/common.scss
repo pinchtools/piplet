@@ -27,7 +27,7 @@
       font-weight: bold;
       background: $tertiary-color;
       color: #FFF;
-      border-radius: 2px;
+      border-radius: 0.1rem;
    }
    
    a {
@@ -38,7 +38,7 @@
    
   a:hover, .pagination a:focus {
         background: #eceeef;
-        border-radius: 2px;
+        border-radius: 0.1rem;
   }
   
   a.next_page,
