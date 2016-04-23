@@ -16,6 +16,8 @@ gem 'uglifier', '>= 1.3.0'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 
+gem 'detect_timezone_rails'
+
 gem 'bootstrap', '~> 4.0.0.alpha3'
 gem 'font-awesome-rails'
 

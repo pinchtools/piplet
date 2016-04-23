@@ -167,7 +167,7 @@ RSpec.describe User, type: :model do
     another_user.email = "mail-not-at-all-similar@example.com"
     another_user.save
     
-    expect(subject.find_email_similar_to_blocked_one).to be nil
+    expect(subject.find_email_similar_to_blocked_one).to be_nil
 
   end
   
@@ -177,6 +177,32 @@ RSpec.describe User, type: :model do
     expect(subject).to receive(:check_new_account)
     
     subject.save
+  end
+  
+  it 'should have a last_seen_at after a creation' do
+    expect(subject.last_seen_at).to be_nil
+    
+    subject.save
+    
+    expect(subject.last_seen_at).to be_present
+  end
+  
+  it 'should not save last_seen_at when it has  already saved lesser than 1 minute ago' do
+    expect(subject.last_seen_at).to be_nil
+    
+    subject.save
+    
+    expect(subject.last_seen_at).to be_present
+    
+    last_seen = subject.last_seen_at
+    
+    subject.update_last_seen!(last_seen + 30.seconds)
+    
+    expect(subject.last_seen_at).to eq last_seen
+    
+    subject.update_last_seen!(last_seen + 1.minute)
+     
+    expect(subject.last_seen_at).to eq last_seen + 1.minute
   end
   
   context 'with blocked filter' do

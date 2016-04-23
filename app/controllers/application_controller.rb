@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   
+  around_action :set_time_zone, if: :current_user
+  
   include Users::SessionsHelper
 
   private
@@ -14,6 +16,10 @@ class ApplicationController < ActionController::Base
       flash[:danger] = t 'user.notice.danger.not-logged'
       redirect_to login_url
     end
+  end
+  
+  def set_time_zone(&block)
+    Time.use_zone(current_user.time_zone, &block)
   end
   
 end

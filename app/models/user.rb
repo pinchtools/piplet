@@ -25,6 +25,8 @@
 #  suspected_at          :datetime
 #  blocked_by_id         :integer
 #  blocked_at            :datetime
+#  last_seen_at          :datetime
+#  time_zone             :string           default("UTC")
 #
 # Indexes
 #
@@ -51,6 +53,7 @@ class User < ActiveRecord::Base
   
   after_create :log_created
   after_create ->{ delay.check_new_account }
+  after_create :update_last_seen!
 
   has_secure_password
 
@@ -173,6 +176,10 @@ class User < ActiveRecord::Base
     return emails_blocked.find{|e| Levenshtein.distance(email, e) <= max_distance}
   end
   
+  
+  def update_last_seen!(date = Time.current)
+    update_column(:last_seen_at, date) unless last_seen_at.present? && date - last_seen_at < 1.minute
+  end
   
   ########
   #

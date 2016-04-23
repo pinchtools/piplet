@@ -10,5 +10,7 @@
   <%= f.label :password_confirmation, "Confirmation" %>
   <%= f.password_field :password_confirmation, class: 'form-control' %>
 
+  <%= f.hidden_field :time_zone %>
+  
   <%= f.submit yield(:button_text), class: "btn btn-primary" %>
 <% end %>

@@ -4,6 +4,27 @@
 
   <div class="col-md-10">
   
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" data-toggle="tab" href="#blacklist" role="tab">Active</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#whitelist" role="tab">New</a>
+  </li>
+<li class="nav-item">
+  <a class="nav-link" data-toggle="tab" href="#whitelist" role="tab">Suspected</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" data-toggle="tab" href="#whitelist" role="tab">Blocked</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" data-toggle="tab" href="#whitelist" role="tab">Staff</a>
+</li>
+</ul>
+
+
+  
     <%= will_paginate users , :previous_label => '', :next_label => '' %>
     
     <table class="table table-striped">

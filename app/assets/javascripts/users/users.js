@@ -1,2 +1,6 @@
-// Place all the behaviors and hooks related to the matching controller here.
-// All this logic will automatically be available in application.js.
+//= require detect_timezone
+//= require jquery.detect_timezone
+
+$(document).ready(function(){
+    $('#user_time_zone').set_timezone({format: 'city'});
+})
