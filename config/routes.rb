@@ -27,7 +27,11 @@ Rails.application.routes.draw do
     resources :dashboard, only: [:index]
       
     namespace :users do
-      resources :users, only: [:index]
+      resources :users, only: [:index] do
+        collection do
+          get 'list/:list' =>'users#index', as: :list
+        end
+      end
       resources :filters
     end
   end

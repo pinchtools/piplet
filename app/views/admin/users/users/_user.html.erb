@@ -1,7 +1,9 @@
 <tr>
   <td><%= gravatar_for user, size: 50 %></td>
   <td><%= link_to user.username, users_user_path(user) %></td>
-  
+  <td><%= user.email %></td>
+  <td><%= t distance_of_time_in_words_to_now(user.last_seen_at) %></td>
+  <td><%= t distance_of_time_in_words_to_now(user.created_at) %></td>
   <td align="right">
     <% if !current_user?(user) %>
       <%= link_to t('global.destroy-btn'), [:users, user], method: :delete, data: { confirm: t('global.destroy-confirm') } %>

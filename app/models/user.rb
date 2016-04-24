@@ -83,6 +83,9 @@ class User < ActiveRecord::Base
   validates :activation_ip_address, presence: true, if: :activated?
   validates :activated_at, presence: true, if: :activated?
 
+  scope :actives, -> { where( blocked: false, suspected: false ).order( last_seen_at: :desc ) }
+  scope :newest, -> { order( created_at: :desc ) }
+  
   # Returns the hash digest of the given string.
   def self.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :

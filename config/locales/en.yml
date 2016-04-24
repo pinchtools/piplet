@@ -34,6 +34,18 @@ en:
         list: 'list'
         filters: 'filters'
       dashboard: 'dashboard'
+    users:
+      index:
+        username: 'Username'
+        email: 'Email'
+        last-seen: 'Last connection'
+        created-at: 'Signup'
+        tab:
+          active: 'Active'
+          new: 'New'
+          suspected: 'Suspected'
+          blocked: 'Blocked'
+          staff: 'Staff'
   user:
     links:
       account: 'Account'

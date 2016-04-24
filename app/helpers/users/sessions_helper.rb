@@ -18,7 +18,7 @@ module Users::SessionsHelper
     if (user_id = session[:user_id]) # session exists
       @current_user ||= User.find_by(id: user_id)
       
-      @current_user.update_last_seen!
+      @current_user.update_last_seen! if @current_user.present?
       
       return @current_user
     elsif (user_id = cookies.signed[:user_id]) #persistent session exists
@@ -28,7 +28,7 @@ module Users::SessionsHelper
         log_in user
         @current_user = user
         
-        @current_user.update_last_seen!
+        @current_user.update_last_seen! if @current_user.present?
         
         return @current_user
       end
