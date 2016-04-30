@@ -36,6 +36,7 @@
 #
 
 require 'levenshtein'
+require 'ip_addr'
 
 class User < ActiveRecord::Base
   include Concerns::Loggable
@@ -98,6 +99,17 @@ class User < ActiveRecord::Base
   def self.new_token
     SecureRandom.urlsafe_base64
   end
+  
+  
+  def self.search(input)
+    if ip = IPAddr.new(input) rescue nil
+      where('creation_ip_address <<= :ip', ip: ip.to_cidr_s)
+    else
+      where('username_lower ILIKE :filter OR email ILIKE :filter', filter: "%#{input}%")
+    end
+  end
+  
+  
     
   # Remembers a user in the database for use in persistent sessions.
   def remember

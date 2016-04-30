@@ -4,42 +4,52 @@
 
   <div class="col-md-10">
   
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs" role="tablist">
-      <li class="nav-item">
-        <% active = (list == "active") ? "active" : "" %>
-        <%= link_to t('admin.users.index.tab.active'), list_admin_users_users_path(:list => 'active'), class: "nav-link #{active}" %>
-      </li>
-      <li class="nav-item">
-        <% active = (list == "new") ? "active" : "" %>
-        <%= link_to t('admin.users.index.tab.new'), list_admin_users_users_path(:list => 'new'), class: "nav-link #{active}" %>
-      </li>
-    <li class="nav-item">
-      <% active = (list == "suspected") ? "active" : "" %>
-      <%= link_to t('admin.users.index.tab.suspected'), list_admin_users_users_path(:list => 'suspected'),  class: "nav-link #{active}" %>
-    </li>
-    <li class="nav-item">
-      <% active = (list == "blocked") ? "active" : "" %>
-      <%= link_to t('admin.users.index.tab.blocked'), list_admin_users_users_path(:list => 'blocked'), class: "nav-link #{active}" %>
-    </li>
-    <li class="nav-item">
-      <% active = (list == "staff") ? "active" : "" %>
-      <%= link_to t('admin.users.index.tab.staff'), list_admin_users_users_path(:list => 'staff'), class: "nav-link #{active}" %>
-    </li>
-    </ul>
-    
+    <div class="row">
 
-  
+    
+    <div class="col-md-4 pull-md-right">
+      <%= render partial: 'search_form' %>
+    </div>
+
+      <div class="col-md-12">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item">
+            <% active = (list == "active") ? "active" : "" %>
+            <%= link_to t('admin.users.users.index.tab.active'), list_admin_users_users_path(:list => 'active'), class: "nav-link #{active}" %>
+          </li>
+          <li class="nav-item">
+            <% active = (list == "new") ? "active" : "" %>
+            <%= link_to t('admin.users.users.index.tab.new'), list_admin_users_users_path(:list => 'new'), class: "nav-link #{active}" %>
+          </li>
+        <li class="nav-item">
+          <% active = (list == "suspected") ? "active" : "" %>
+          <%= link_to t('admin.users.users.index.tab.suspected'), list_admin_users_users_path(:list => 'suspected'),  class: "nav-link #{active}" %>
+        </li>
+        <li class="nav-item">
+          <% active = (list == "blocked") ? "active" : "" %>
+          <%= link_to t('admin.users.users.index.tab.blocked'), list_admin_users_users_path(:list => 'blocked'), class: "nav-link #{active}" %>
+        </li>
+        <li class="nav-item">
+          <% active = (list == "staff") ? "active" : "" %>
+          <%= link_to t('admin.users.users.index.tab.staff'), list_admin_users_users_path(:list => 'staff'), class: "nav-link #{active}" %>
+        </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pagination-block">
     <%= will_paginate users , :previous_label => '', :next_label => '' %>
+    </div>
     
     <table class="table table-striped">
     <thead>
       <tr>
         <th></th>
-        <th><%= t 'admin.users.index.username' %></th>
-        <th><%= t 'admin.users.index.email' %></th>
-        <th><%= t 'admin.users.index.last-seen' %></th>
-        <th><%= t 'admin.users.index.created-at' %></th>
+        <th><%= t 'admin.users.users.index.username' %></th>
+        <th><%= t 'admin.users.users.index.email' %></th>
+        <th><%= t 'admin.users.users.index.last-seen' %></th>
+        <th><%= t 'admin.users.users.index.created-at' %></th>
         <th></th>
       </tr>
     </thead>

@@ -33,19 +33,25 @@ en:
         index: 'users'
         list: 'list'
         filters: 'filters'
-      dashboard: 'dashboard'
+        dashboard: 'dashboard'
     users:
-      index:
-        username: 'Username'
-        email: 'Email'
-        last-seen: 'Last connection'
-        created-at: 'Signup'
-        tab:
-          active: 'Active'
-          new: 'New'
-          suspected: 'Suspected'
-          blocked: 'Blocked'
-          staff: 'Staff'
+      users:
+        index:
+          username: 'Username'
+          email: 'Email'
+          last-seen: 'Last connection'
+          created-at: 'Signup'
+          tab:
+            active: 'Active'
+            new: 'New'
+            suspected: 'Suspected'
+            blocked: 'Blocked'
+            staff: 'Staff'
+          search_placeholder: 'username, email, ip address'
+        search:
+          notice:
+            length-must-be-in-interval: 'Search length should be between %{min} and %{max}'
+
   user:
     links:
       account: 'Account'

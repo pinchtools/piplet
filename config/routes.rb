@@ -30,6 +30,7 @@ Rails.application.routes.draw do
       resources :users, only: [:index] do
         collection do
           get 'list/:list' =>'users#index', as: :list
+          get 'search', as: :search
         end
       end
       resources :filters

@@ -1,3 +1,13 @@
-// Place all the styles related to the admin/users/users controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.nav-tabs {
+  margin-top: -35px;
+}
+
+.search-group input,
+.search-group button  {
+  font-size: 0.9rem
+}
+
+.pagination-block {
+  min-height: 50px;
+}

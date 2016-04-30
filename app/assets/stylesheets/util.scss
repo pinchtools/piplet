@@ -43,6 +43,20 @@
   }
 }
 
+
+.input-group .btn-secondary,
+.input-group .btn-secondary:focus,
+.input-group .btn-secondary.focus
+  {
+  border-color: #ccc;
+
+  &:active,
+  &.active,
+  &:hover {
+    border-color: $tertiary-color;
+  }
+}
+
 .btn-default,
 .btn-default:focus,
 .btn-default.focus
