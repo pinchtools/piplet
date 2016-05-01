@@ -223,6 +223,34 @@ RSpec.describe User, type: :model do
     end
   end
   
-
+  describe 'search' do
+    subject { create(:user) }
+      
+    it 'find a user by ip address' do
+      expect(subject.creation_ip_address).to be_present
+      
+      results = User.search(subject.creation_ip_address.to_s)
+      
+      expect(results).to include(subject)
+    end
+    
+    
+    it 'find a user by username' do
+      expect(subject.username).to be_present
+      
+      results = User.search(subject.username)
+      
+      expect(results).to include(subject)
+    end
+    
+    it 'find a user by email' do
+      expect(subject.email).to be_present
+      
+      results = User.search(subject.email)
+      
+      expect(results).to include(subject)
+    end
+    
+  end
   
 end
