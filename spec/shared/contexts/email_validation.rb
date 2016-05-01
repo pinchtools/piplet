@@ -38,7 +38,7 @@ RSpec.shared_context "email validation" do |attribute|
   end
  
  10.times do
-   email = Faker::Internet.email
+   email = Faker::Internet.safe_email
    it "allows #{email}" do
      assert_valid(email)
    end

@@ -18,7 +18,7 @@ class BannedEmailProviders
   end
   
   def self.search(email)
-    @@list.find {|m| !!(email =~ /#{m}\z/i) }
+    @@list.find {|m| !!(email =~ /[\.@]#{m}\z/i) }
   end
 
 end
