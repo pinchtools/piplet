@@ -2,8 +2,7 @@
 <%= stylesheet_link_tag 'application', media: 'all' %>
 
 <%= stylesheet_link_tag 'admin', media: 'all' if staff_member? %>
-<%= stylesheet_link_tag params[:controller] %>
-  
+
 <%= javascript_include_tag 'application' %>
 <%= csrf_meta_tags %>
 

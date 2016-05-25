@@ -14,7 +14,7 @@
         <div class="content-right clearfix">
           
 
-        <div class="main-navigation  animated with-dropdown-buttons">
+        <div class="main-navigation">
 
           <!-- navbar start -->
           <!-- ================ -->
@@ -22,21 +22,35 @@
             <div class="container-fluid text-xs-right">
             
             <% if logged_in? %>
+            
               <ul class="nav navbar-nav  pull-md-right">
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><%= t('user.links.account') %></a>
+                  <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><%= truncate current_user.username, length: 10 %></a>
                   <div class="dropdown-menu">
-                    <%= link_to t('user.links.profile'), users_user_path(current_user), class: 'dropdown-item' %>
-                    <%= link_to t('user.links.settings'), edit_users_user_path(current_user), class: 'dropdown-item' %>
-                    <% if staff_member? %>
-                      <div class="dropdown-divider"></div>
-                      <%= link_to t('admin.links.admin'), admin_dashboard_index_path,  class: 'dropdown-item' %>
-                    <% end %>
+                    <%= link_to t('site.menu.user.dashboard'), users_dashboard_index_path,  class: 'dropdown-item' %>
+                    <%= link_to t('site.menu.user.edit'), edit_users_user_path(current_user), class: 'dropdown-item' %>
+                    <%= link_to t('site.menu.user.preferences'), users_preferences_path, class: 'dropdown-item' %>
+
+                    <%= link_to t('site.menu.user.notifications'), '#', class: 'dropdown-item' %>
+                    
                     <div class="dropdown-divider"></div>
-                    <%= link_to t('user.links.log-out'), logout_path(current_user), method: 'delete', class: 'dropdown-item' %>
+                    <%= link_to t('site.menu.user.log-out'), logout_path(current_user), method: 'delete', class: 'dropdown-item' %>
                   </div>
                   </li>
+                  
+                  <li class="nav-item dropdown nav-general">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i></a>
+                    <div class="dropdown-menu">
+                      <% if staff_member? %>
+                        <%= link_to t('site.menu.general.admin'), admin_dashboard_index_path,  class: 'dropdown-item' %>
+                          <div class="dropdown-divider"></div>
+                        <% end %>
+                      <%= link_to t('site.menu.general.about'), '#', class: 'dropdown-item' %>
+                      <%= link_to t('site.menu.general.help'), '#', class: 'dropdown-item' %>
+                    </div>
+                    </li>
               </ul>
+              
             <% else %>
               <%= link_to t('user.links.log-in'), login_path, class: 'link-primary', role: 'button' %>
               <%= link_to t('user.links.sign-up'), signup_path, class: 'link-primary', role: 'button' %>

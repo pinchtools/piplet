@@ -25,6 +25,14 @@ header .nav-item.dropdown > a {
   color: #FFF;
 }
 
+header .nav .nav-general .dropdown-toggle:after{
+ display:none;
+}
+
+header .nav .nav-general i {
+  font-size: 1.5rem;
+}
+
 #logo,
 #logo > a {
   font-family: 'Prosto One', Arial;

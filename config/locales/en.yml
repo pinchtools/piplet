@@ -22,18 +22,34 @@
 en:
   site:
     title: 'Piplet'
+    menu:
+      user:
+        account: 'Account'
+        sign-up: 'Sign up'
+        log-in: 'Log in'
+        log-out: 'Log out'
+        dashboard: 'Dashboard'
+        show: 'Profile'
+        edit: 'Account'
+        preferences: 'Preferences'
+        notifications: 'Notifications'
+      general:
+        admin: 'Admin'
+        help: 'Help'
+        about: 'about'
+      
   global:
     no-results-found : 'No results found'
     destroy-confirm: 'Are you sure?'
     destroy-btn: 'delete'
   admin: 
     links:
-      admin: 'admin'
       users: 
         index: 'users'
         list: 'list'
         filters: 'filters'
-        dashboard: 'dashboard'
+      dashboard: 
+        index: 'admin'
     users:
       users:
         index:
@@ -51,17 +67,18 @@ en:
         search:
           notice:
             length-must-be-in-interval: 'Search length should be between %{min} and %{max}'
-
-  user:
+  users:
     links:
-      account: 'Account'
-      sign-up: 'Sign up'
-      log-in: 'Log in'
-      log-out: 'Log out'
-      all: 'Users'
-      profile: 'Profile'
-      settings: 'Settings'
-      list: 'All users'
+      users:
+        show: 'Profile'
+        edit: 'Account'
+      dashboard:
+        index: 'Dashboard'
+      preferences:
+        index: 'Preferences'
+      notifications:
+        index: 'Notifications'
+  user:
     form:
       new:
         title: 'Sign up'
