@@ -39,7 +39,7 @@ class Users::PasswordResetsController < ApplicationController
       
       flash[:success] = t('password-reset.notice.success.password-reset')
         
-      redirect_to users_user_path(@user)
+      redirect_to users_dashboard_index_path
     else
       render 'edit'
     end

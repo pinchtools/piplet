@@ -19,7 +19,7 @@ module UserConcerns::Moderatable
     return false unless staff_member?
     
     log(:suspect_user, 
-      link: Rails.application.routes.url_helpers.users_user_path( user.id ))
+      link: Rails.application.routes.url_helpers.users_show_path( user.username_lower ))
     
     options[:suspected_by_id] = id
 
@@ -69,7 +69,7 @@ module UserConcerns::Moderatable
     return false unless staff_member?
     
     log(:block_user, 
-      link: Rails.application.routes.url_helpers.users_user_path( user.id ))
+      link: Rails.application.routes.url_helpers.users_show_path( user.username_lower ))
     
     user.block({ blocked_by_id: id })
   end

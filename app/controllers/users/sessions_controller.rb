@@ -11,7 +11,7 @@ class Users::SessionsController < ApplicationController
         params[:session][:remember_me] == '1' ? remember(user) : forget(user)
           
         if user.regular?
-          redirect_back_or users_user_path(user) 
+          redirect_back_or users_dashboard_index_path
         else
           redirect_back_or admin_dashboard_index_path
         end

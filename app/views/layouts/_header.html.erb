@@ -28,7 +28,7 @@
                   <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><%= truncate current_user.username, length: 10 %></a>
                   <div class="dropdown-menu">
                     <%= link_to t('site.menu.user.dashboard'), users_dashboard_index_path,  class: 'dropdown-item' %>
-                    <%= link_to t('site.menu.user.edit'), edit_users_user_path(current_user), class: 'dropdown-item' %>
+                    <%= link_to t('site.menu.user.edit'), users_edit_path, class: 'dropdown-item' %>
                     <%= link_to t('site.menu.user.preferences'), users_preferences_path, class: 'dropdown-item' %>
 
                     <%= link_to t('site.menu.user.notifications'), '#', class: 'dropdown-item' %>

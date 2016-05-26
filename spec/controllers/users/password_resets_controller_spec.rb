@@ -47,7 +47,7 @@ RSpec.describe Users::PasswordResetsController, type: :controller do
           password_confirmation: 'newfoobar'
        }
       
-      expect(response).to redirect_to( users_user_path(assigns(:user) ))
+      expect(response).to redirect_to( users_dashboard_index_path)
       expect(flash[:success]).to be_present
       expect(assigns(:user).password_digest).not_to eq(old_digest)
     end

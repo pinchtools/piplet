@@ -27,7 +27,8 @@ Rails.application.routes.draw do
     resources :dashboard, only: [:index]
       
     namespace :users do
-      resources :users, only: [:index] do
+      
+      resources :users, only: [:index, :destroy] do
         collection do
           get 'list/:list' =>'users#index', as: :list
           get 'search', as: :search
@@ -37,11 +38,22 @@ Rails.application.routes.draw do
     end
   end
   
-  namespace :users do
-    
-    get 'sessions/new'
-    
-    resources :users
+    namespace :users do
+      
+      get 'sessions/new'
+      
+      # /!\ order has importance here 
+      # if we want edit  not to be considered as a username
+      get 'user/edit' => 'users#edit', as: :edit
+      
+      get 'user/:username' => 'users#show', as: :show
+      
+      patch 'user' => 'users#update', as: :update
+  
+      delete 'user' => 'users#destroy', as: :destroy
+      
+      resources :users, except: [:show, :edit, :update, :destroy] do
+    end
 
     resources :account_activations, only: [:edit]
     

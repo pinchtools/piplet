@@ -14,3 +14,11 @@ nickname
 piplet
 pipletio
 support
+new
+create
+show
+edit
+update
+delete
+destroy
+remove

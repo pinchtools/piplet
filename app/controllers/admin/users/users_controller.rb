@@ -1,4 +1,8 @@
 class Admin::Users::UsersController < Admin::AdminController
+  before_action :find_user, only: :destroy
+  before_action :is_regular_user, only: :destroy
+
+  
   respond_to :html, :js
   
   def index
@@ -28,7 +32,23 @@ class Admin::Users::UsersController < Admin::AdminController
     render :index, locals: { users: @users, list: nil, search: params[:search] }
   end
   
+  def destroy
+      @user.destroy
+      
+      flash[:success] = t 'user.notice.success.destroyed'
+      
+      redirect_to :admin_users_users
+  end
+  
   private
+  
+  def find_user
+    @user = User.find(params[:id])
+  end
+  
+  def is_regular_user
+    redirect_to :admin_users_users unless @user.regular?
+  end
   
   def users_selection(kind)
     case kind

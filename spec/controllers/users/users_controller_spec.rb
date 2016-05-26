@@ -56,20 +56,39 @@ RSpec.describe Users::UsersController, type: :controller do
     
   end # END POST #create
   
+  describe "GET #show" do
+    it 'redirect to root when no username found' do
+      username = 'testnotexists'
+      
+      expect(User.find_by_username_lower(username)).to be nil
+      
+      get :show, :username => username
+      
+      expect(response).to redirect_to(:root)
+    end
+    
+    it 'show profile of existing user' do
+      user = create(:user)
+      
+      get :show, :username => user.username_lower
+      
+      expect(response).to be_success
+    end
+  end
   
   describe "GET #edit" do
     it "need to be logged" do
       user = create(:user)
     
-      get :edit, :user => user.attributes, :id => user.id
+      get :edit
     
       should_redirect_to_login
     end
 
-    it "should forward to edit when you need to login before" do
+    it "should forward to edit when you are invited to logged-in before" do
       user = create(:user)
     
-      get :edit, :id => user.id
+      get :edit
     
       expect(session[:forwarding_url]).to be_present
       
@@ -77,22 +96,13 @@ RSpec.describe Users::UsersController, type: :controller do
 
       log_in_as user
       
-      expect(response).to redirect_to (edit_users_user_path(user.id))
+      expect(response).to redirect_to (users_edit_path)
       expect(session[:forwarding_url]).to be_nil
     end
-        
-    it 'should not be able to edit another user profile' do
-      user = log_in_as create(:user)
-      other_user = create(:user)
-      
-      get :edit, :user => other_user.attributes, :id => other_user.id
-      
-      expect(response).to redirect_to(root_url)
-    end
+    
     
     context 'user is logged' do
       let (:user) { log_in_as( create(:user) ) }
-
 
     end
     
@@ -108,17 +118,7 @@ RSpec.describe Users::UsersController, type: :controller do
       should_redirect_to_login
     end
     
-    
-    it 'should not be able to edit another user profile' do
-      user = log_in_as create(:user)
-      other_user = create(:user)
-
-      patch :update, :user => other_user.attributes, :id => other_user.id
-      
-      expect(response).to redirect_to(root_url)
-
-    end
-    
+        
     context 'when user is logged' do
       let(:user) { log_in_as( create(:user) ) }
         
@@ -144,7 +144,7 @@ RSpec.describe Users::UsersController, type: :controller do
         
         patch :update, :id => user.id, :user => user_params
         expect(flash[:success]).to be_present
-        expect(response).to redirect_to( users_user_path(assigns(:user)))
+        expect(response).to redirect_to( users_edit_path )
         expect(user.password_digest).not_to eq(assigns(:user).password_digest)
         
       end
@@ -157,7 +157,7 @@ RSpec.describe Users::UsersController, type: :controller do
         patch :update, :id => user.id, :user => user.attributes
   
         expect(flash[:success]).to be_present
-        expect(response).to redirect_to( users_user_path(assigns(:user)))
+        expect(response).to redirect_to( users_edit_path )
       end
       
       it 'should not be able to set a user as admin' do
@@ -177,32 +177,34 @@ RSpec.describe Users::UsersController, type: :controller do
   
   describe "DELETE #destroy" do
     
-    it 'redirect non-admin user' do
-      lambda_user = create(:user)
-      
-      user = log_in_as( create(:user) )
+    it 'prevent an admin from removing himself' do
+      log_in_as( create(:admin) )
       count = User.count
-
-      delete :destroy, id: lambda_user.id
       
-      expect(:response).to redirect_to(:root)
+      delete :destroy
+      
+      expect(:response).to redirect_to(:users_dashboard_index)
       expect(User.count).to eq(count)
     end
     
-    it 'effectively destroys an user when we\'re an admin' do
-      lambda_user = create(:user)
+    it 'allows regular user to destroy himself' do
+      log_in_as( create(:user), { remember_me: '1' })
       
-      user = log_in_as( create(:admin) )
       count = User.count
 
-      delete :destroy, id: lambda_user.id
+      expect(cookies).to have_key(:remember_token)
+      expect(cookies).to have_key(:user_id)
       
-      expect(:response).to redirect_to(:users_users)
+      delete :destroy
+      
+      expect(:response).to redirect_to(:root)
+      
       expect(User.count).to eq(count - 1)
-      
+
+      expect(cookies).to_not have_key(:remember_token)
+      expect(cookies).to_not have_key(:user_id)
     end
-    
+      
   end
-  
   
 end

@@ -15,7 +15,7 @@ RSpec.describe Users::AccountActivationsController, type: :controller do
       get :edit, { :id => user.activation_token,
         :email => user.email}
       
-      expect(response).to redirect_to(users_user_url(user))
+      expect(response).to redirect_to(users_dashboard_index_url)
       expect(flash[:success]).to be_present
       expect(assigns(:user)).to be_activated
     end

@@ -41,10 +41,10 @@ RSpec.describe Users::SessionsController, type: :controller do
       log_in_as(user)
       
       expect(session[:user_id]).to eq(user.id)
-      expect(response).to redirect_to( users_user_path(user) )
+      expect(response).to redirect_to( users_dashboard_index_path )
     end
     
-    it "create aan admin session when suceed" do
+    it "create an admin session when suceed" do
       user = create(:admin)
     
       log_in_as(user)
