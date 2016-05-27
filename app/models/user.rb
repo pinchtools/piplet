@@ -18,8 +18,8 @@
 #  username_lower        :string
 #  creation_ip_address   :inet
 #  activation_ip_address :inet
-#  blocked               :boolean
-#  suspected             :boolean
+#  blocked               :boolean          default(FALSE)
+#  suspected             :boolean          default(FALSE)
 #  suspected_note        :string
 #  suspected_by_id       :integer
 #  suspected_at          :datetime
@@ -27,6 +27,7 @@
 #  blocked_at            :datetime
 #  last_seen_at          :datetime
 #  time_zone             :string           default("UTC")
+#  description           :text
 #
 # Indexes
 #
@@ -80,6 +81,8 @@ class User < ActiveRecord::Base
 
   validates :password, password: true
 
+  validates :description, length: { maximum: 200 }
+  
   validates :creation_ip_address, presence: true
   validates :activation_ip_address, presence: true, if: :activated?
   validates :activated_at, presence: true, if: :activated?

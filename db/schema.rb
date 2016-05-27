@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160423141538) do
+ActiveRecord::Schema.define(version: 20160527124232) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,8 +91,8 @@ ActiveRecord::Schema.define(version: 20160423141538) do
     t.string   "username_lower"
     t.inet     "creation_ip_address"
     t.inet     "activation_ip_address"
-    t.boolean  "blocked"
-    t.boolean  "suspected"
+    t.boolean  "blocked",               default: false
+    t.boolean  "suspected",             default: false
     t.string   "suspected_note"
     t.integer  "suspected_by_id"
     t.datetime "suspected_at"
@@ -100,6 +100,7 @@ ActiveRecord::Schema.define(version: 20160423141538) do
     t.datetime "blocked_at"
     t.datetime "last_seen_at"
     t.string   "time_zone",             default: "UTC"
+    t.text     "description"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

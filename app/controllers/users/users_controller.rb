@@ -75,7 +75,8 @@ class Users::UsersController < ApplicationController
       :email,
       :password, 
       :password_confirmation,
-      :time_zone)
+      :time_zone,
+      :description)
   end
   
   

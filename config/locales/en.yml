@@ -84,8 +84,10 @@ en:
         title: 'Sign up'
         submit: 'Create my account'
       edit:
-        title: 'Edit User'
+        title: 'Account'
         submit: 'Save changes'
+      help-text:
+        description: '200 characters max.'
     notice:
       success:
         created: 'Profile created!'
@@ -179,6 +181,7 @@ en:
       email: "Email"
       password: "Password"
       password_confirmation: "Password confirmation"
+      description: "Introduce yourself"
     user_filter:
       rule_kind: "Type"
       list_kind: "List"
