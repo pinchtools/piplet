@@ -8,6 +8,10 @@ input {
   height: auto !important;
 }
 
+input[type=file].form-control {
+  border: 0;
+}
+
 #error_explanation {
 color: red;
   ul {

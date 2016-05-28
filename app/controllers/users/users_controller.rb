@@ -6,8 +6,9 @@ class Users::UsersController < ApplicationController
   
   def new
     @user = User.new
+    @user.build_avatar
     
-    render locals: { user: @user }
+    render locals: { user: UserDecorator.new(@user) }
   end
   
   def create
@@ -20,7 +21,7 @@ class Users::UsersController < ApplicationController
       flash[:info] = t 'user.notice.info.account-need-activation'
       redirect_to root_url
     else
-      render :new, locals: { user: @user }
+      render :new, locals: { user: UserDecorator.new(@user) }
     end
   end
   
@@ -30,11 +31,13 @@ class Users::UsersController < ApplicationController
       redirect_to root_url and return
     end
     
-    render locals: { user: @user }
+    render locals: { user: UserDecorator.new(@user) }
   end
   
   def edit
-    render :edit, locals: { user: @user }
+    @user.build_avatar if @user.avatar.nil?
+    
+    render :edit, locals: { user: UserDecorator.new(@user) }
   end
   
   def update
@@ -42,7 +45,7 @@ class Users::UsersController < ApplicationController
       flash[:success] = t 'user.notice.success.updated'
       redirect_to users_edit_path
     else
-      render :edit, locals: { user: @user }
+      render :edit, locals: { user: UserDecorator.new(@user) }
     end
   end
   
@@ -76,8 +79,9 @@ class Users::UsersController < ApplicationController
       :password, 
       :password_confirmation,
       :time_zone,
-      :description)
+      :description,
+      avatar_attributes: [:kind, :uri, :uri_cache]
+      )
   end
-  
   
 end

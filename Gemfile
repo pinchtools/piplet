@@ -21,6 +21,7 @@ gem 'detect_timezone_rails'
 gem 'bootstrap', '~> 4.0.0.alpha3'
 gem 'font-awesome-rails'
 
+gem 'draper' #decorators view
 
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
@@ -43,6 +44,8 @@ gem 'active_model_serializers'
 # Pagination
 gem 'will_paginate'
 
+gem 'mini_magick'
+gem 'carrierwave'
 
 # Use Puma as the app server
 gem 'puma'

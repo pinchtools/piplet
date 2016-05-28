@@ -48,6 +48,9 @@ class User < ActiveRecord::Base
   
   has_and_belongs_to_many :filters, :class_name => 'UserFilter', :join_table => :users_user_filters
   
+  has_one :avatar, class_name: 'UserAvatar', dependent: :destroy
+  accepts_nested_attributes_for :avatar
+  
   before_validation :strip_downcase_email
   before_validation :update_username_lower
   

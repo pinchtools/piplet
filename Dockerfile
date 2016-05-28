@@ -8,7 +8,8 @@ RUN adduser --disabled-password --gecos '' vincent
 # Debian image, we use apt-get to install those.
 RUN apt-get update && apt-get install -y \ 
   build-essential \ 
-  nodejs
+  nodejs \
+  imagemagick
 
 # Configure the main working directory. This is the base 
 # directory used in any further RUN, COPY, and ENTRYPOINT 

@@ -19,7 +19,7 @@ module Piplet
     config.cache_store = :redis_store, ENV['MEM_STORAGE_URL'],
       { namespace: 'cache' }
     
-    config.autoload_paths += Dir["#{config.root}/lib/validators/"]
+    config.autoload_paths += Dir["#{config.root}/lib/validators/", "#{config.root}/lib/decorators/"]
     
     config.active_job.queue_adapter = :sidekiq
       

@@ -1,5 +1,29 @@
+<% content_for :header do %>
+  <%= javascript_include_tag 'users/user' %>
+  <%= stylesheet_link_tag 'users/user' %>
+<% end %>
 <%= form_for [:users, user], :url => users_update_path do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
+  
+  <%= f.label :avatar %>
+  <div class="row">
+    <div class="col-md-3">
+      <div id="avatar-thumbnail">
+        <%= user.avatar_thumbnail %>
+      </div>
+    </div>
+    <div class="col-md-9">
+
+      <%= f.fields_for :avatar do |a| %>
+      <%= a.select :kind, UserAvatar.kinds.keys.map {|kind| [kind.titleize,kind]}, {}, { class: 'form-control' } %>
+          
+        <%= a.file_field :uri, class: 'form-control', style: (user.avatar.is_upload?) ? '' : 'display:none' %>
+        
+        <%= a.hidden_field :uri_cache %>
+      <% end %>
+
+    </div>
+  </div>
   
   <%= f.label :username %>
   <%= f.text_field :username, class: 'form-control' %>
