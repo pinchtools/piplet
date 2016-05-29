@@ -205,6 +205,13 @@ RSpec.describe User, type: :model do
     expect(subject.last_seen_at).to eq last_seen + 1.minute
   end
   
+  it 'generates a default avatar on creation' do
+    subject.save
+    
+    expect(subject.avatar).to be_present
+    expect(subject.avatar).to be_default
+  end
+  
   context 'with blocked filter' do
     subject { create(:user_blocked_by_filter) }
       

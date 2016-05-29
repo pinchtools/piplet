@@ -12,7 +12,7 @@ class Users::UsersController < ApplicationController
   end
   
   def create
-    @user = User.new(user_params)
+    @user = User.new(user_create_params)
     
     @user.creation_ip_address = request.remote_ip
     
@@ -41,7 +41,7 @@ class Users::UsersController < ApplicationController
   end
   
   def update
-    if @user.update_attributes(user_params)
+    if @user.update_attributes(user_update_params)
       flash[:success] = t 'user.notice.success.updated'
       redirect_to users_edit_path
     else
@@ -73,8 +73,19 @@ class Users::UsersController < ApplicationController
     redirect_to(users_dashboard_index_url) unless @user.regular?
   end
   
-  def user_params
-    params.require(:user).permit( :username, 
+  def user_create_params
+    params.require(:user).permit(
+      :username, 
+      :email,
+      :password, 
+      :password_confirmation,
+      :time_zone,
+      :description
+      )
+  end
+  
+  def user_update_params
+    params.require(:user).permit( 
       :email,
       :password, 
       :password_confirmation,

@@ -46,6 +46,7 @@ gem 'will_paginate'
 
 gem 'mini_magick'
 gem 'carrierwave'
+gem 'letter_avatar'
 
 # Use Puma as the app server
 gem 'puma'

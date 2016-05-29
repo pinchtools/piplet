@@ -55,6 +55,7 @@ class User < ActiveRecord::Base
   before_validation :update_username_lower
   
   before_create :create_activation_digest
+  after_create :create_default_avatar
   
   after_create :log_created
   after_create ->{ delay.check_new_account }
@@ -114,7 +115,6 @@ class User < ActiveRecord::Base
       where('username_lower ILIKE :filter OR email ILIKE :filter', filter: "%#{input}%")
     end
   end
-  
   
     
   # Remembers a user in the database for use in persistent sessions.
@@ -208,6 +208,10 @@ class User < ActiveRecord::Base
   #
   ########
   private
+  
+  def create_default_avatar
+    UserAvatar.create(:kind => UserAvatar.kinds[:default], :user_id => self.id)
+  end
   
   def strip_downcase_email
     if email.present?

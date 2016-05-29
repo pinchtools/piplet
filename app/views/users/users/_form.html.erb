@@ -5,6 +5,7 @@
 <%= form_for [:users, user], :url => users_update_path do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
   
+  <% if !user.new_record? %>
   <%= f.label :avatar %>
   <div class="row">
     <div class="col-md-3">
@@ -17,17 +18,22 @@
       <%= f.fields_for :avatar do |a| %>
       <%= a.select :kind, UserAvatar.kinds.keys.map {|kind| [kind.titleize,kind]}, {}, { class: 'form-control' } %>
           
-        <%= a.file_field :uri, class: 'form-control', style: (user.avatar.is_upload?) ? '' : 'display:none' %>
+        <%= a.file_field :uri, class: 'form-control', style: (user.avatar.upload?) ? '' : 'display:none' %>
         
         <%= a.hidden_field :uri_cache %>
       <% end %>
 
     </div>
   </div>
+<% end %>
   
   <%= f.label :username %>
-  <%= f.text_field :username, class: 'form-control' %>
-  <%= f.label :email %>
+  <% if user.id.present? %>
+    <%= f.text_field :username, class: 'form-control', readonly: true %>
+  <% else %>
+    <%= f.text_field :username, class: 'form-control' %>
+  <% end %>
+    <%= f.label :email %>
   <%= f.email_field :email, class: 'form-control' %>
   <%= f.label :description %>
   <%= f.text_area :description, class: 'form-control' %>

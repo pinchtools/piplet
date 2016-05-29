@@ -1,17 +1,19 @@
+require 'letter_avatar/avatar_helper'
+
 class UserDecorator < Draper::Decorator
   include Draper::LazyHelpers
+  include LetterAvatar::AvatarHelper
   
   delegate_all
   
 
   def avatar_thumbnail (options = { size: 80 })
     
-    if model.avatar.is_gravatar? then gravatar_thumbnail(options)
-    elsif model.avatar.is_upload? then upload_thumbnail(options)
-    else default_thumbnail(options)
+    if model.avatar.gravatar? then gravatar_thumbnail(options)
+    elsif model.avatar.upload? then upload_thumbnail(options)
+    elsif !model.new_record? then default_thumbnail(options)
     end
   end
-  
   
   private
   
@@ -41,7 +43,19 @@ class UserDecorator < Draper::Decorator
   
   
   def default_thumbnail (options = { size: 80 })
-    image_tag("/ze", alt: model.username)
+    size = options[:size]
+    
+    thumbnail_size = DefaultAvatar.large_size
+    
+    if size <= DefaultAvatar.small_size
+      thumbnail_size = DefaultAvatar.small_size
+    elsif size <= DefaultAvatar.medium_size
+      thumbnail_size = DefaultAvatar.medium_size
+    end
+      
+    url = letter_avatar_url(model.username, thumbnail_size)
+    
+    image_tag(url, alt: model.username)
   end
 
 

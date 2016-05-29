@@ -19,5 +19,8 @@
 *.env
 
 
-#ignore uploads
+#uploads
 /public/uploads
+
+#default avatars
+/public/images/avatars
