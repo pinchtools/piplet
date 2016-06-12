@@ -18,6 +18,7 @@
 #Ignore env files
 *.env
 
+/public/assets
 
 #uploads
 /public/uploads

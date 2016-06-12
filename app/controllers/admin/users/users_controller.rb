@@ -10,7 +10,7 @@ class Admin::Users::UsersController < Admin::AdminController
 
     @users = users_selection(params[:list]).paginate(page: params[:page])
 
-    render locals: { users: @users, list: params[:list] }
+    render locals: { users: UsersDecorator.new(@users), list: params[:list] }
   end
   
   def search
@@ -29,7 +29,7 @@ class Admin::Users::UsersController < Admin::AdminController
       @users = User.search( params[:search] ).paginate(page: params[:page])
     end
 
-    render :index, locals: { users: @users, list: nil, search: params[:search] }
+    render :index, locals: { users: UserDecorator.new(@users), list: nil, search: params[:search] }
   end
   
   def destroy
