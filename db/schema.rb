@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160528102720) do
+ActiveRecord::Schema.define(version: 20160619100624) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,19 @@ ActiveRecord::Schema.define(version: 20160528102720) do
   add_index "logs", ["action_user_id"], name: "index_logs_on_action_user_id", using: :btree
   add_index "logs", ["level"], name: "index_logs_on_level", using: :btree
   add_index "logs", ["loggable_type", "loggable_id"], name: "index_logs_on_loggable_type_and_loggable_id", using: :btree
+
+  create_table "notifications", force: :cascade do |t|
+    t.string   "title"
+    t.text     "description"
+    t.integer  "kind"
+    t.boolean  "read",        default: false
+    t.integer  "user_id"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
+
+  add_index "notifications", ["kind"], name: "index_notifications_on_kind", using: :btree
+  add_index "notifications", ["user_id"], name: "index_notifications_on_user_id", using: :btree
 
   create_table "settings", force: :cascade do |t|
     t.string   "var",                   null: false
@@ -109,6 +122,7 @@ ActiveRecord::Schema.define(version: 20160528102720) do
     t.datetime "last_seen_at"
     t.string   "time_zone",             default: "UTC"
     t.text     "description"
+    t.integer  "username_renew_count"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

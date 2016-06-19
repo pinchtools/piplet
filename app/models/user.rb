@@ -28,6 +28,7 @@
 #  last_seen_at          :datetime
 #  time_zone             :string           default("UTC")
 #  description           :text
+#  username_renew_count  :integer
 #
 # Indexes
 #
@@ -47,8 +48,11 @@ class User < ActiveRecord::Base
   attr_accessor :remember_token, :activation_token, :reset_token
   
   has_and_belongs_to_many :filters, :class_name => 'UserFilter', :join_table => :users_user_filters
+
+  has_many :notifications, dependent: :destroy
   
   has_one :avatar, class_name: 'UserAvatar', dependent: :destroy
+
   accepts_nested_attributes_for :avatar
   
   before_validation :strip_downcase_email
