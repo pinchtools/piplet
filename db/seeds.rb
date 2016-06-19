@@ -13,7 +13,7 @@ User.create!(username: "Example",
   activation_ip_address: '127.6.4.98')
 
 49.times do |n|
-    name = "fastandfurious#{n+1}"
+    name = "example-#{n+1}"
     email = "example-#{n+1}@piplet.io"
     password = "foobar"
     
