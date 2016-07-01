@@ -1,0 +1,7 @@
+en:
+  notifications:
+    username_change:
+     title: "Your username has been changed."
+     description: |-
+       %{username} is now your new username.\n
+       Please note that you can change it only a limited number of times.

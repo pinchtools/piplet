@@ -28,7 +28,8 @@
 #  last_seen_at          :datetime
 #  time_zone             :string           default("UTC")
 #  description           :text
-#  username_renew_count  :integer
+#  username_renew_count  :integer          default(0)
+#  locale                :string
 #
 # Indexes
 #
@@ -64,6 +65,8 @@ class User < ActiveRecord::Base
   after_create :log_created
   after_create ->{ delay.check_new_account }
   after_create :update_last_seen!
+  
+  after_update :notify_username_changed, :if => :username_updated?
 
   has_secure_password
 
@@ -232,6 +235,22 @@ class User < ActiveRecord::Base
     # Create the token and digest.
     self.activation_token = User.new_token
     self.activation_digest = User.digest(activation_token)
+  end
+  
+  def username_updated?
+    username.changed? && username.present?  && username_was.present?
+  end
+  
+  def notify_username_changed
+    I18n.locale = self.locale if locale.present?
+    
+    Notification.send_to(self) do |notif|
+      notif.title = I18n.t 'notifications.username_change.subject'
+      notif.description = I18n.t 'notifications.username_change.description', username: username
+      notif.kind = Notification.kinds[:username_changed]
+    end
+    
+    increment!(:username_renew_count)
   end
   
   def log_created
