@@ -213,6 +213,49 @@ RSpec.describe User, type: :model do
     expect(subject.avatar).to be_default
   end
   
+  context 'after update'
+  
+  end
+  it 'increments renew countdown when username is update' do
+    expect(subject.username_renew_count).to eq(0)
+    expect(subject.username).to be_present
+    
+    subject.save
+    
+    subject.username += "a"
+    
+    subject.save
+    
+    expect(subject.username_renew_count).to eq(1)
+  end
+  
+  it 'send a notification when username is renew' do
+    expect(subject.username_renew_count).to eq(0)
+    expect(subject.username).to be_present
+    
+    subject.save
+    
+    subject.username += "a"
+    
+    expect(Notification).to receive(:send_to)
+    
+    subject.save
+    
+  end
+  
+  it 'doesn\'t send a username notification changed after a creation' do
+    expect(subject.username_renew_count).to eq(0)
+    expect(subject.username).to be_present
+    
+    subject.save
+    
+    expect(subject.username_renew_count).to eq(0)
+  end
+  
+  it 'blocks username update when limit is reach' do
+    
+  end
+  
   context 'with blocked filter' do
     subject { create(:user_blocked_by_filter) }
       

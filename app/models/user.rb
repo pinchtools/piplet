@@ -66,7 +66,7 @@ class User < ActiveRecord::Base
   after_create ->{ delay.check_new_account }
   after_create :update_last_seen!
   
-  after_update :notify_username_changed, :if => :username_updated?
+  after_commit :notify_username_changed, on: :update, if: :username_updated?
 
   has_secure_password
 
@@ -238,11 +238,13 @@ class User < ActiveRecord::Base
   end
   
   def username_updated?
-    username.changed? && username.present?  && username_was.present?
+    username_changed? && username.present?  && username_was.present?
   end
   
   def notify_username_changed
     I18n.locale = self.locale if locale.present?
+    
+    Rails.logger.error 'notify! ' + username + " " + username_was + " " + self.errors.to_json
     
     Notification.send_to(self) do |notif|
       notif.title = I18n.t 'notifications.username_change.subject'
