@@ -213,9 +213,10 @@ RSpec.describe User, type: :model do
     expect(subject.avatar).to be_default
   end
   
-  context 'after update'
+  context 'after update' do
   
   end
+  
   it 'increments renew countdown when username is update' do
     expect(subject.username_renew_count).to eq(0)
     expect(subject.username).to be_present
@@ -243,7 +244,7 @@ RSpec.describe User, type: :model do
     
   end
   
-  it 'doesn\'t send a username notification changed after a creation' do
+  it 'doesn\'t count an username renewal  after a creation' do
     expect(subject.username_renew_count).to eq(0)
     expect(subject.username).to be_present
     
