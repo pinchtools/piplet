@@ -213,10 +213,7 @@ RSpec.describe User, type: :model do
     expect(subject.avatar).to be_default
   end
   
-  context 'after update' do
-  
-  end
-  
+
   it 'increments renew countdown when username is update' do
     expect(subject.username_renew_count).to eq(0)
     expect(subject.username).to be_present
@@ -254,7 +251,22 @@ RSpec.describe User, type: :model do
   end
   
   it 'blocks username update when limit is reach' do
+    Setting['user.max_username_renew'] = 2
     
+    subject.save # creation
+    
+    Setting['user.max_username_renew'].times.each do 
+      subject.username += "a"
+          
+      expect(subject.save).to be_truthy
+          
+    end
+    
+    subject.username += "a"
+    
+    expect(subject).not_to be_valid
+    expect(subject.errors).to have_key(:username)
+      
   end
   
   context 'with blocked filter' do

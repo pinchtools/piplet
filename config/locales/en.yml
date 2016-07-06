@@ -118,6 +118,7 @@ en:
         must-not-contain-two-special-chars-in-seq: "must not contain a sequence of 2 or more special chars (.-_)"
         must-not-contain-confusing-suffix: "must not contain a confusing suffix like .json or .png etc."
         reserved: "That username is not allowed."
+        max-renewal: "has been renewed %{max} times already, you can't renew it another time"
       password:
         common: "is one of the 10000 most common passwords. Please use a more secure password."
         same-as-username: "is the same as your username. Please use a more secure password."

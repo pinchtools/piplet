@@ -17,6 +17,8 @@ class UsernameValidator < ActiveModel::EachValidator
     no_double_special?
     does_not_end_with_confusing_suffix?
     reserved?
+    renewed_max?
+    
   end
   
 
@@ -64,4 +66,10 @@ class UsernameValidator < ActiveModel::EachValidator
     end
   end
 
+  def renewed_max?
+    if record.username_renew_count + 1 > Setting['user.max_username_renew']
+      record.errors.add(attribute, I18n.t('user.errors.username.max-renewal', :max => Setting['user.max_username_renew'] ))
+    end
+  end
+  
 end
