@@ -36,6 +36,16 @@ class Setting < RailsSettings::CachedSettings
     end
   end
   
+  
+  def self.[](var_name)
+    if var = object(var_name)
+      val = var.value
+    else
+      val = self.defaults[var_name]
+    end
+    val
+  end
+  
   private
   
   
