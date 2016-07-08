@@ -12,7 +12,7 @@ app:
 postgres:
   image: postgres:9.4
   ports:
-    - "5434:5432"
+    - "5435:5432"
   volumes_from:
     - db-data
   env_file: config/db.env
