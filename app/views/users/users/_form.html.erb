@@ -28,12 +28,8 @@
 <% end %>
   
   <%= f.label :username %>
-  <% if user.id.present? %>
-    <%= f.text_field :username, class: 'form-control', readonly: true %>
-  <% else %>
-    <%= f.text_field :username, class: 'form-control' %>
-  <% end %>
-    <%= f.label :email %>
+  <%= f.text_field :username, class: 'form-control' %>
+  <%= f.label :email %>
   <%= f.email_field :email, class: 'form-control' %>
   <%= f.label :description %>
   <%= f.text_area :description, class: 'form-control' %>
