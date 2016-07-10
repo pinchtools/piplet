@@ -1,6 +1,6 @@
-class Users::UsersController < ApplicationController
+class Users::UsersController < Users::BaseController
   before_action :logged_in_user, only: [ :edit, :update, :destroy]
-  before_action :correct_user, only: [:edit, :update, :destroy]
+  before_action :use_current_user, only: [:edit, :update, :destroy]
   before_action :existing_username, only: :show
   before_action :is_regular_user, only: :destroy
   
@@ -58,11 +58,6 @@ class Users::UsersController < ApplicationController
   end
   
   private
-  
-  def correct_user
-    @user = @current_user
-    redirect_to(root_url) unless current_user?(@user)
-  end
   
   def existing_username
     @user = User.find_by_username_lower(params[:username])
