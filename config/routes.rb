@@ -38,30 +38,32 @@ Rails.application.routes.draw do
     end
   end
   
-    namespace :users do
-      
-      get 'sessions/new'
-      
-      # /!\ order has importance here 
-      # if we want edit  not to be considered as a username
-      get 'user/edit' => 'users#edit', as: :edit
-      
-      get 'user/:username' => 'users#show', as: :show
-      
-      patch 'user' => 'users#update', as: :update
+  namespace :users do
+    
+    get 'sessions/new'
+    
+    # /!\ order has importance here 
+    # if we want edit  not to be considered as a username
+    get 'user/edit' => 'users#edit', as: :edit
+    
+    get 'user/:username' => 'users#show', as: :show
+    
+    patch 'user' => 'users#update', as: :update
   
-      delete 'user' => 'users#destroy', as: :destroy
-      
-      resources :users, except: [:show, :edit, :update, :destroy] do
+    delete 'user' => 'users#destroy', as: :destroy
+    
+    resources :users, except: [:show, :edit, :update, :destroy] do
     end
 
     resources :account_activations, only: [:edit]
     
     resources :password_resets, only: [:new, :create, :edit, :update]
-
+  
     resources :dashboard, only: [:index]
     
     resources :preferences, only: [:index]
+    
+    resources :notifications, only: [:index]
   end # namespace users
 
   # The priority is based upon order of creation: first created -> highest priority.

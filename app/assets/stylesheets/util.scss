@@ -9,6 +9,10 @@
 /* Override bootstrap styles
 ----------------------------------------------------------------------------- */
   
+.btn i::after {
+  content: '\00a0';
+}
+  
 .btn-primary-outline,
 .btn-primary-outline:focus,
 .btn-primary-outline.focus
@@ -29,7 +33,7 @@
 .btn-secondary:focus,
 .btn-secondary.focus
   {
-  border-color: $primary-color;
+  border-color: $tertiary-color;
   color: $tertiary-color;
   background-color: $primary-color;
     

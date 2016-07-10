@@ -9,3 +9,16 @@ h1, h2, h3, h3, h5, h6 {
 .hidden {
   display: none;
 }
+
+.row-section {
+  margin-top: 20px;
+}
+
+.table-striped tbody tr.row-unread {
+  background-color: #FFFCD1;
+}
+
+
+.table-striped tbody tr.row-unread:nth-of-type(2n+1) {
+  background-color: #FCF88A;
+}

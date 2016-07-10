@@ -1,0 +1,5 @@
+<tr class="<%= 'row-unread' unless notification.read? %>">
+  <td>sdsd</td>
+  <td><%= notification.title %></td>
+  <td><%= distance_of_time_in_words_to_now(notification.created_at) %></td>
+</tr>

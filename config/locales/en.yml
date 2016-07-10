@@ -78,6 +78,9 @@ en:
         index: 'Preferences'
       notifications:
         index: 'Notifications'
+    notifications:
+      index:
+        mark-all-as-read-btn: 'mark all as read'
   user:
     form:
       new:
