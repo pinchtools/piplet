@@ -1,7 +1,4 @@
 en:
   notifications:
     username_change:
-     subject: "Your username has been changed."
-     description: |-
-       %{username} is now your new username.\n
-       Please note that you can change it only a limited number of times.
+     subject: "Your username is now %{username}."

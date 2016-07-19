@@ -3,13 +3,15 @@ $secondary-color: #00C566;
 $tertiary-color :#0275D8;
 
 $primary-font-color: #525252;
+$secondary-font-color : $tertiary-color;
+
 
 $gray-medium-light: #eaeaea;
 
-$link-primary-color: #0275d8;
+$link-primary-color: $secondary-color;
 $link-hover-primary-color: #025AA5;
 $link-secondary-color: #99979C;
-$link-hover-secondary-color: #525252;
+$link-hover-secondary-color: $primary-font-color;
 
 $header-height: 50px;
 

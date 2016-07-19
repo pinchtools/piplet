@@ -246,8 +246,7 @@ class User < ActiveRecord::Base
     I18n.locale = self.locale if locale.present?
     
     Notification.send_to(self) do |notif|
-      notif.title = I18n.t 'notifications.username_change.subject'
-      notif.description = I18n.t 'notifications.username_change.description', username: username
+      notif.title = I18n.t 'notifications.username_change.subject', username: username
       notif.kind = Notification.kinds[:username_changed]
     end
     
