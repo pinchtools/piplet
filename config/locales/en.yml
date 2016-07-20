@@ -33,6 +33,7 @@ en:
         edit: 'Account'
         preferences: 'Preferences'
         notifications: 'Notifications'
+        view_all_notifications: "view all notifications"
       general:
         admin: 'Admin'
         help: 'Help'

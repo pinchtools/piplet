@@ -1,5 +1,8 @@
 <tr class="<%= 'row-unread' unless notification.read? %>">
-  <td class="text-xs-center"><i class="fa fa-user font-second-color" aria-hidden="true"></i></td>
-  <td><%= notification.title %></td>
+  <td class="text-xs-center"><i class="fa fa-<%= notification.icon %> font-second-color" aria-hidden="true"></i></td>
+  <td>
+    <%= notification.title if notification.link.blank? %>
+    <%= link_to(notification.title, notification.link) if notification.link.present? %>
+  </td>
   <td><%= distance_of_time_in_words_to_now(notification.created_at) %></td>
 </tr>

@@ -11,6 +11,7 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  link        :string
+#  icon        :string
 #
 # Indexes
 #
@@ -22,10 +23,17 @@ class Notification < ActiveRecord::Base
   
   belongs_to :user
   
+  before_validation :define_icon, unless: -> { icon.present? }
+  
   validates :title, presence: true
   validates :kind, presence: true
   validates :user_id, presence: true
+  validates :icon, presence: true
   
+  
+  scope :unread, -> { where( read: false ) }
+  scope :latest, -> (limit) { order(created_at: :desc).limit(limit) }
+    
   enum kind: [
     :unknown,
     :acquired_badge,
@@ -59,5 +67,14 @@ class Notification < ActiveRecord::Base
 #    
 #    notif.save
   end
-    
+  
+  private
+  
+  def define_icon
+    self.icon = case kind
+      when Notification.kinds[:username_changed] then "user"
+      else "flag"
+      end
+  end
+  
 end

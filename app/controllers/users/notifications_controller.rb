@@ -7,4 +7,10 @@ class Users::NotificationsController < Users::BaseController
     
     render locals: { notifications: notifications }
   end
+  
+  def unread_all
+    @user.notifications.unread.update_all( read: true )
+    
+    
+  end
 end

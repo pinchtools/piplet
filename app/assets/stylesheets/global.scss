@@ -15,14 +15,74 @@ h1, h2, h3, h3, h5, h6 {
 }
 
 .table-striped tbody tr.row-unread {
-  background-color: #FFFCD1;
+  background-color: $unread-bg-color-even;
 }
 
 
 .table-striped tbody tr.row-unread:nth-of-type(2n+1) {
-  background-color: #FCF88A;
+  background-color: $unread-bg-color-odd;
 }
+
 
 .font-second-color {
   color: $secondary-font-color;
+}
+
+/**
+  * Pagination
+*/
+  
+.pagination {
+  
+  .previous_page:before {
+    font-family: FontAwesome;
+    content: "\f060";
+  }
+  
+  .next_page:after {
+    font-family: FontAwesome;
+    content: "\f061";
+  }
+  
+  a, span, em {
+    padding: 0.2em 0.5em;
+  }
+  
+  .disabled {
+      color: #99979c;
+   }
+  
+  .current {
+      font-style: normal;
+      font-weight: bold;
+      background: $tertiary-color;
+      color: #FFF;
+      border-radius: 0.1rem;
+   }
+   
+   a {
+     color: $primary-font-color;
+     text-decoration: none;
+
+   }
+   
+  a:hover, .pagination a:focus {
+        background: #eceeef;
+        border-radius: 0.1rem;
+  }
+  
+  a.next_page,
+  a.previous_page {
+    border-width: 0;
+  }
+  
+  
+  .previous_page {
+    margin-right: 0.8em;
+  }
+  
+  .next_page {
+    margin-left: 0.8em; 
+  }
+   
 }

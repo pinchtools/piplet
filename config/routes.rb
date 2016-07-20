@@ -63,7 +63,11 @@ Rails.application.routes.draw do
     
     resources :preferences, only: [:index]
     
-    resources :notifications, only: [:index]
+    resources :notifications, only: [:index] do
+      collection do
+        get 'unread_all'
+      end
+    end
   end # namespace users
 
   # The priority is based upon order of creation: first created -> highest priority.

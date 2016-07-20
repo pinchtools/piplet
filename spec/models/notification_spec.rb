@@ -24,7 +24,6 @@ RSpec.describe Notification, type: :model do
       end
       
       expect(notif).to be_valid
-      
     end
     
     it 'does not support invalid kind' do
