@@ -84,6 +84,13 @@ header .link-secondary {
   margin-right: 0.8rem;
 }
 
+#user-dropdown .nav-link sup {
+  background-color: #FF4E46;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  padding: 2px 6px;
+}
+
 .row-unread {
   background-color: $unread-bg-color-even;
 }

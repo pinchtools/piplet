@@ -25,7 +25,10 @@
             
               <ul class="nav navbar-nav  pull-md-right">
                 <li id="user-dropdown" class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><%= truncate current_user.username, length: 10 %></a>
+                  <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    <%= truncate current_user.username, length: 10 %>
+                    <%= raw "<sup>#{current_user.notifications.unread.count}</sup>" if current_user.notifications.unread.any? %>
+                  </a>
                   <div class="dropdown-menu">
                     <%= link_to t('site.menu.user.dashboard'), users_dashboard_index_path,  class: 'dropdown-item' %>
                     <%= link_to t('site.menu.user.edit'), users_edit_path, class: 'dropdown-item' %>
