@@ -17,6 +17,7 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 
 gem 'detect_timezone_rails'
+gem 'http_accept_language'
 
 gem 'bootstrap', '~> 4.0.0.alpha3'
 gem 'font-awesome-rails'

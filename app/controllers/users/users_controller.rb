@@ -16,6 +16,9 @@ class Users::UsersController < Users::BaseController
     
     @user.creation_ip_address = request.remote_ip
     
+    @user.locale = http_accept_language.preferred_language_from(I18n.available_locales) ||
+      http_accept_language.compatible_language_from(I18n.available_locales)
+    
     if @user.save
       @user.send_activation_email
       flash[:info] = t 'user.notice.info.account-need-activation'
@@ -86,6 +89,7 @@ class Users::UsersController < Users::BaseController
       :password, 
       :password_confirmation,
       :time_zone,
+      :locale,
       :description,
       avatar_attributes: [:kind, :uri, :uri_cache]
       )

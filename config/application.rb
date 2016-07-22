@@ -18,13 +18,15 @@ module Piplet
 
     config.cache_store = :redis_store, ENV['MEM_STORAGE_URL'],
       { namespace: 'cache' }
-    
+    #"#{config.root}/lib/core_ext/"
     config.autoload_paths += Dir["#{config.root}/lib/validators/", "#{config.root}/lib/decorators/"]
+    config.autoload_paths += Dir[File.join(Rails.root, "lib", "core_ext", "*.rb")].each {|l| require l }
     
     config.active_job.queue_adapter = :sidekiq
       
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
+    config.i18n.available_locales = [:en]
     # config.i18n.default_locale = :de
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
