@@ -34,6 +34,10 @@
   <%= f.label :description %>
   <%= f.text_area :description, class: 'form-control' %>
   <p class="text-muted"><small><%= t 'user.form.help-text.description' %></small></p>
+  
+  <%= f.label :locale %>
+  <%= f.select :locale, I18n.available_locales.map {|l| [l.to_s.capitalize_first,l]}, {}, { class: 'form-control' } %>
+
   <%= f.label :password %>
   <%= f.password_field :password, class: 'form-control' %>
   <%= f.label :password_confirmation %>

@@ -30,28 +30,57 @@ RSpec.describe Users::UsersController, type: :controller do
 
     end
     
-    
-    it "create a valid user" do
-      ActionMailer::Base.deliveries.clear
+    context "valid user" do
       
-      user_params = build(:user).attributes.merge({
-        :password => 'foobar',
-        :password_confirmation => 'foobar',
-        :activated => false
-      })
+      let(:user_params) {
+         build(:user).attributes.merge({
+                  :password => 'foobar',
+                  :password_confirmation => 'foobar',
+                  :activated => false
+                })
+      }
       
-      count = User.count
+      it "create a valid user" do
+        ActionMailer::Base.deliveries.clear
+        
+        count = User.count
+        
+        expect(Sidekiq::Extensions::DelayedMailer.jobs.size).to eq(0)
+  
+        post :create, :user => user_params
+        
+        expect(Sidekiq::Extensions::DelayedMailer.jobs.size).to eq(1)
+        
+        expect(User.count).to eq(count + 1) # add a new User
+        expect(response).to redirect_to(:root)
+        expect(assigns(:user)).not_to be_activated
+        expect(flash[:info]).to be_present
+      end
       
-      expect(Sidekiq::Extensions::DelayedMailer.jobs.size).to eq(0)
-
-      post :create, :user => user_params
+      it "set a default locale when available" do
+        locale = :en
+        
+        expect(I18n.available_locales).to include(locale)
+        
+        request.headers['Accept-Language'] = 'en-US'
+        
+        post :create, { user: user_params }
+          
+        expect(assigns(:user).locale).to eq(locale.to_s)
+      end
       
-      expect(Sidekiq::Extensions::DelayedMailer.jobs.size).to eq(1)
+      it "let locale empty if browser locale is not available" do
+        locale = 'zzz'
+        
+        expect(I18n.available_locales).not_to include(locale)
+        
+        request.headers['Accept-Language'] = locale
+        
+        post :create, { :user => user_params }
+          
+        expect(assigns(:user).locale).to be_nil
+      end
       
-      expect(User.count).to eq(count + 1) # add a new User
-      expect(response).to redirect_to(:root)
-      expect(assigns(:user)).not_to be_activated
-      expect(flash[:info]).to be_present
     end
     
   end # END POST #create
@@ -159,6 +188,7 @@ RSpec.describe Users::UsersController, type: :controller do
         expect(flash[:success]).to be_present
         expect(response).to redirect_to( users_edit_path )
       end
+      
       
       it 'should not be able to set a user as admin' do
         
