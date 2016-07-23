@@ -20,6 +20,7 @@
 #
 
 class Notification < ActiveRecord::Base
+  include Concerns::Loggable
   
   belongs_to :user
   
@@ -30,6 +31,7 @@ class Notification < ActiveRecord::Base
   validates :user_id, presence: true
   validates :icon, presence: true
   
+  after_create :write_log
   
   scope :unread, -> { where( read: false ) }
   scope :latest, -> (limit) { order(created_at: :desc).limit(limit) }
@@ -75,6 +77,10 @@ class Notification < ActiveRecord::Base
       when Notification.kinds[:username_changed] then "user"
       else "flag"
       end
+  end
+  
+  def write_log
+    log(:notified, message: title)
   end
   
 end

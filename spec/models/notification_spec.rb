@@ -26,6 +26,21 @@ RSpec.describe Notification, type: :model do
       expect(notif).to be_valid
     end
     
+    it 'generate a log' do
+      user.save
+      
+      expect(Log).to receive(:delay).and_return(Log)
+      expect(Log).to receive(:create).with( hash_including( :action => Log.actions[:notified] ) )
+            
+      notif = Notification.send_to(user) do |notif|
+              notif.title = 'test'
+              notif.kind = Notification.kinds[:unknown]
+            end
+            
+      
+      
+    end
+    
     it 'does not support invalid kind' do
       invalid_kind = 199
         
