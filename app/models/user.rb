@@ -87,7 +87,7 @@ class User < ActiveRecord::Base
       
   validates :password,
     presence: true,
-    length: { in: 6..255 },
+    length: { in: 8..255 },
     allow_nil: true
 
   validates :password, password: true
