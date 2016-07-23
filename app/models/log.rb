@@ -43,27 +43,30 @@ class Log < ActiveRecord::Base
   
   def self.normal_actions
     @info_actions ||= Enum.new(
-      generic: 1
+      generic: 1,
+      request_password_reset: 2,
+      password_reset: 3,
+      notified: 4
     )
   end
   
   
   def self.important_actions
     @important_actions ||= Enum.new(
-      created: 1000
+      created: 1000,
+      activated: 1001,
+      removed: 1002,
+      login: 1003
     )
   end
-
+  
   
   def self.sensitive_actions
+    # can only be triggered by a staff member
     @sensitive_actions ||= Enum.new(
       suspected: 2000,
       admin: 2001,
       set_user_admin: 2002,
-      request_password_reset: 2003,
-      password_reset: 2004,
-      activated: 2005,
-      login: 2006,
       block_user: 2007,
       blocked: 2008,
       suspect_user: 2009,
