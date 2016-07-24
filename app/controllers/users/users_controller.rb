@@ -60,6 +60,17 @@ class Users::UsersController < Users::BaseController
     redirect_to root_path
   end
   
+  def check_username
+    
+    user = User.new(username: params[:username])
+      
+    if !user.valid? && user.errors.key?(:username)
+      return render json: {message: user.errors[:username].first}, :status => :bad_request
+    end
+    
+    render nothing: true
+  end
+  
   private
   
   def existing_username

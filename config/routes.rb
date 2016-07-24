@@ -42,19 +42,25 @@ Rails.application.routes.draw do
     
     get 'sessions/new'
     
-    # /!\ order has importance here 
-    # if we want edit  not to be considered as a username
     get 'user/edit' => 'users#edit', as: :edit
     
-    get 'user/:username' => 'users#show', as: :show
     
     patch 'user' => 'users#update', as: :update
   
     delete 'user' => 'users#destroy', as: :destroy
     
     resources :users, except: [:show, :edit, :update, :destroy] do
+      collection do
+        get 'check_username', as: :check_username
+      end
     end
 
+    # /!\ order has importance here 
+    # if we want default actions  not to be considered as a username
+    # please let this line after other 'users' routes
+    get 'user/:username' => 'users#show', as: :show
+
+    
     resources :account_activations, only: [:edit]
     
     resources :password_resets, only: [:new, :create, :edit, :update]

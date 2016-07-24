@@ -237,4 +237,24 @@ RSpec.describe Users::UsersController, type: :controller do
       
   end
   
+  describe "GET check_username" do
+    it 'returns an error when username already exists' do
+      user = create(:user)
+      
+      get :check_username, :username => user.username
+      
+      expect(response).to have_http_status(:bad_request)
+    end
+    
+    it 'returns an empty error when username is ok' do
+      username="randOm02"
+      
+      expect(User.find_by_username(username)).to be_nil
+      
+      get :check_username, :username => username
+      
+      expect(response).to have_http_status(:success)
+    end
+  end
+  
 end

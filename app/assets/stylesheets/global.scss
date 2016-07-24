@@ -28,6 +28,54 @@ h1, h2, h3, h3, h5, h6 {
   color: $secondary-font-color;
 }
 
+.notice-danger {
+  font-size: 0.85em;
+}
+
+.notice-danger:before {
+  color: #FF4E46;
+  font-family: FontAwesome;
+  font-size: 1.2em;
+  content: "\f071";
+  margin-right: 0.5em;
+}
+
+.notice-warning {
+  font-size: 0.85em;
+}
+
+.notice-warning:before {
+  color: #ffc228;
+  font-family: FontAwesome;
+  font-size: 1.2em;
+  content: "\f071";
+  margin-right: 0.5em;
+}
+
+.notice-success {
+  font-size: 0.85em;
+}
+
+.notice-success:before {
+  color: #3c763d;
+  font-family: FontAwesome;
+  font-size: 1.2em;
+  content: "\f00c";
+  margin-right: 0.5em;
+}
+
+.notice-loading {
+  font-size: 0.85em;
+}
+
+.notice-loading:before {
+  font-family: FontAwesome;
+  font-size: 1.2em;
+  content: "\f021";
+  margin-right: 0.5em;
+}
+
+
 /**
   * Pagination
 */

@@ -1,0 +1,103 @@
+//= require detect_timezone
+//= require jquery.detect_timezone
+
+$(document).ready(function(){
+    $('#user_time_zone').set_timezone({format: 'city'});
+    
+    $('#user_avatar_attributes_kind').change(function(value) {
+      var upload_input = $('#user_avatar_attributes_uri');
+      
+      if ($(this).val() == 'upload' ) upload_input.show();
+      else upload_input.hide();
+      
+    });
+    
+    var display_success_notice = function(container, message) {
+      container.html("<span class='notice-success'>" + message + "</span>");
+    }
+    
+    var display_warning_notice = function(container, message) {
+      container.html("<span class='notice-warning'>" + message + "</span>");
+    }
+    
+    var display_danger_notice = function(container, message) {
+      container.html("<span class='notice-danger'>" + message + "</span>");
+    }
+    
+    var display_loading_notice = function(container, message) {
+      container.html("<span class='notice-loading'>" + message + "</span>");
+    }
+    
+    var clear_notice = function(container) {
+      container.html("");
+    }
+    
+    var check_username = function() {
+      var value = $(this).val();
+      
+      if (value.length < 3) {
+        display_danger_notice( $("#notice-username"), "<%= I18n.t 'user.notice.danger.username-too-short' %>" );
+      } else if (value.length > 50 ) {
+        display_danger_notice( $("#notice-username"), "<%= I18n.t 'user.notice.danger.username-too-long' %>" );
+      } else if (value.match(/[^A-Za-z0-9_\.\-]/)) {
+        display_danger_notice( $("#notice-username"), "<%= I18n.t 'user.notice.danger.username-invalid-characters' %>" );
+      } else if (value.match(/^[^A-Za-z0-9_]/)) {
+        display_danger_notice( $("#notice-username"), "<%= I18n.t 'user.notice.danger.username-invalid-first-character' %>" );
+      } else if (value.match(/[^A-Za-z0-9_]$/)) {
+        display_danger_notice( $("#notice-username"), "<%= I18n.t 'user.notice.danger.username-invalid-last-character' %>" );
+      } else {
+        //make a backend check
+        
+        display_loading_notice( $("#notice-username"), "<%= I18n.t 'user.notice.loading.username-check-in-progress' %>" );
+        
+        $.ajax({
+          url: '<%= Rails.application.routes.url_helpers.check_username_users_users_path %>',
+          data: { username: value}
+        }).fail(function(data) {
+          response = data.responseJSON;
+          
+          if (data.status == 400) {
+            display_danger_notice( $("#notice-username"), response.message );
+          }
+        }).success(function() {
+          display_success_notice( $("#notice-username"), "<%= I18n.t 'user.notice.success.username-valid' %>" );
+        });
+      
+      
+       
+      }
+      
+    };
+    
+    var check_email = function() {
+      var value = $(this).val();
+      
+      if (value.length > 255 ) {
+        display_danger_notice( $("#notice-email"), "<%= I18n.t 'user.notice.danger.email-too-long' %>" );
+      } else if (!value.match(/^[^@]+@[^\@\.]+\.[^\@\.]{2,}$/)) {
+        display_danger_notice( $("#notice-email"), "<%= I18n.t 'user.notice.danger.email-invalid' %>" );
+      } else {
+        clear_notice( $("#notice-email") );
+      }
+      
+    };
+    
+    var check_password = function() { 
+      var value = $(this).val();
+      
+      if (value.length < 8) {
+        display_danger_notice( $("#notice-password"), "<%= I18n.t 'user.notice.danger.password-too-short' %>" );
+      } else if (value.length > 255 ) {
+        display_danger_notice( $("#notice-password"), "<%= I18n.t 'user.notice.danger.password-too-long' %>" );
+      } else if ( !value.match(/[A-Z]/) || !value.match(/[a-z]/) || !value.match(/[0-9]/)) {
+        display_warning_notice( $("#notice-password"), "<%= I18n.t 'user.notice.warning.password-weakness-entropy' %>" );
+      } else {
+        clear_notice( $("#notice-password") );
+      }
+      
+    };
+    
+    $('#user_username').keyup(check_username);
+    $('#user_email').keyup(check_email);
+    $('#user_password').keyup(check_password);
+})

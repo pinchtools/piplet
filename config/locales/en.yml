@@ -94,20 +94,33 @@ en:
         description: '200 characters max.'
     notice:
       success:
+        username-valid: 'Your username is valid'
         created: 'Profile created!'
         updated: 'Profile updated!'
         destroyed: 'User deleted'
         account-activated: 'Account activated!'
       warning:
+        password-weakness-entropy: 'Your password may include at least one upper case letter, one lower case letter and one number.'
         account-not-activated: |
           Account not activated.
           Check your email for the activation link.
       danger:
+        username-too-short: 'Your username is too short'
+        username-too-long: 'Your username is too long'
+        username-invalid-characters: 'Your username must only include numbers, letters and underscores'
+        username-invalid-first-character: 'Your username must begin with a letter, a number or an underscore'
+        username-invalid-last-character: 'Your username must end by a letter, a number or an underscore'
+        email-invalid: 'Your email is invalid'
+        email-too-long: 'Your email is too long'
+        password-too-short: 'Your password is too short'
+        password-too-long: 'Your password is too long'
         not-logged: 'Please log in.'
         invalid-login: 'Invalid email/password combination'
         invalid-activation-link: 'Invalid activation link'
       info:
         account-need-activation: 'Please check your email to activate your account.'
+      loading:
+        username-check-in-progress: 'Checking is in progress'
     mailer:
       account-activation: 'Account activation'
       password-reset: 'Password reset'
