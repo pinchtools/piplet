@@ -74,7 +74,7 @@ $(document).ready(function(){
       
       if (value.length > 255 ) {
         display_danger_notice( $("#notice-email"), "<%= I18n.t 'user.notice.danger.email-too-long' %>" );
-      } else if (!value.match(/^[^@]+@[^\@\.]+\.[^\@\.]{2,}$/)) {
+      } else if (!value.match(/^[^@\s]+@[^\@\s\.]+\.[^\@\s]+[^\@\.\s]+$/)) {
         display_danger_notice( $("#notice-email"), "<%= I18n.t 'user.notice.danger.email-invalid' %>" );
       } else {
         clear_notice( $("#notice-email") );

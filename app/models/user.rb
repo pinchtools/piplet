@@ -81,7 +81,7 @@ class User < ActiveRecord::Base
     presence: true,
     uniqueness: { case_sensitive: false },
     length: { maximum: 255 },
-    format: { with:  /\A[^@]+@[^\@\.]+\.[^\@\.]{2,}\z/ }
+    format: { with:  /\A[^@\s]+@[^\@\s\.]+\.[^\@\s]+[^\@\.\s]+\z/ }
 
   validates :email, email: true
       
