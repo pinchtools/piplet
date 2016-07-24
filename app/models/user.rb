@@ -73,7 +73,7 @@ class User < ActiveRecord::Base
   validates :username,
     presence: true, 
     uniqueness: { case_sensitive: false },
-    length: { in: 5..50 }
+    length: { in: 3..50 }
 
   validates :username, username: true
       
