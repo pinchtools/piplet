@@ -57,6 +57,11 @@ header .link-secondary{
 
 header .link-secondary {
   color: #FFF;
+  
+  &:active,
+  &:hover {
+    color: #FFF;
+  }
 }
 
 #user-dropdown .dropdown-menu {

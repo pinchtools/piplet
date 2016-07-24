@@ -63,11 +63,9 @@
               </ul>
               
             <% else %>
-              <%= link_to t('user.links.log-in'), login_path, class: 'link-primary', role: 'button' %>
-              <%= link_to t('user.links.sign-up'), signup_path, class: 'link-primary', role: 'button' %>
+              <%= link_to t('site.menu.user.log-in'), login_path, class: 'link-secondary', role: 'button' %>
+              <%= link_to t('site.menu.user.sign-up'), signup_path, class: 'link-secondary', role: 'button' %>
             <% end %>
-
-
 
             </div>
           </nav>
