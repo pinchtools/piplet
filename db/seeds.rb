@@ -4,8 +4,8 @@
 
 User.create!(username: "Example",
   email: "example@piplet.io",
-  password: "foobar",
-  password_confirmation: "foobar",
+  password: "foobarfoobar",
+  password_confirmation: "foobarfoobar",
   admin: true,
   activated: true,
   activated_at: Time.zone.now,
@@ -15,7 +15,7 @@ User.create!(username: "Example",
 49.times do |n|
     name = "example-#{n+1}"
     email = "example-#{n+1}@piplet.io"
-    password = "foobar"
+    password = "foobarfoobar"
     
     User.create!(username: name,
     email: email,

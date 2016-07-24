@@ -34,8 +34,8 @@ RSpec.describe Users::UsersController, type: :controller do
       
       let(:user_params) {
          build(:user).attributes.merge({
-                  :password => 'foobar',
-                  :password_confirmation => 'foobar',
+                  :password => 'foobarfoobar',
+                  :password_confirmation => 'foobarfoobar',
                   :activated => false
                 })
       }
@@ -162,7 +162,7 @@ RSpec.describe Users::UsersController, type: :controller do
       
       
       it 'update valid form' do
-        new_password = 'foobar2'
+        new_password = 'foobarfoobar2'
         
         expect(user.password).not_to eq(new_password)
         
