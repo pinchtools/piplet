@@ -48,6 +48,12 @@ class User < ActiveRecord::Base
   
   attr_accessor :remember_token, :activation_token, :reset_token
   
+  @@MIN_USERNAME_CHARACTERS = 3
+  @@MAX_USERNAME_CHARACTERS = 50
+  
+  @@MIN_PASSWORD_CHARACTERS = 6
+  @@MAX_PASSWORD_CHARACTERS = 50
+  
   has_and_belongs_to_many :filters, :class_name => 'UserFilter', :join_table => :users_user_filters
 
   has_many :notifications, dependent: :destroy
@@ -72,8 +78,7 @@ class User < ActiveRecord::Base
 
   validates :username,
     presence: true, 
-    uniqueness: { case_sensitive: false },
-    length: { in: 3..50 }
+    uniqueness: { case_sensitive: false }
 
   validates :username, username: true
       
@@ -87,7 +92,6 @@ class User < ActiveRecord::Base
       
   validates :password,
     presence: true,
-    length: { in: 8..255 },
     allow_nil: true
 
   validates :password, password: true
@@ -101,6 +105,23 @@ class User < ActiveRecord::Base
   scope :actives, -> { where( blocked: false, suspected: false ).order( last_seen_at: :desc ) }
   scope :newest, -> { order( created_at: :desc ) }
   
+  def self.min_username_characters
+    [ Setting['user.min_username_character'].to_i, @@MIN_USERNAME_CHARACTERS ].max
+  end
+  
+  def self.max_username_characters
+    @@MAX_USERNAME_CHARACTERS
+  end
+  
+  
+  def self.min_password_characters
+    [ Setting['user.min_password_character'].to_i, @@MIN_PASSWORD_CHARACTERS].max
+  end
+  
+  def self.max_password_characters
+    @@MAX_PASSWORD_CHARACTERS
+  end
+    
   # Returns the hash digest of the given string.
   def self.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :

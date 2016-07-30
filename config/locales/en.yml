@@ -129,6 +129,7 @@ en:
         email_similar: 'Email is similar to a blocked one : %{user_email} - %{blocked_email}'
     errors:
       username:
+        must-be-within-characters: "must be within %{min} to %{max} characters"
         characters: "must only include numbers, letters and underscores"
         must-begin-with-alphanumeric: "must begin with a letter or number or an underscore"
         must-end-with-alphanumeric: "must end with a letter or number or an underscore"
@@ -137,6 +138,7 @@ en:
         reserved: "That username is not allowed."
         max-renewal: "has been renewed %{max} times already, you can't renew it another time"
       password:
+        must-be-within-characters: "must be within %{min} to %{max} characters"
         common: "is one of the 10000 most common passwords. Please use a more secure password."
         same-as-username: "is the same as your username. Please use a more secure password."
         same-as-email: "is the same as your email. Please use a more secure password."

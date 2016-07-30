@@ -35,9 +35,9 @@ $(document).ready(function(){
     var check_username = function() {
       var value = $(this).val();
       
-      if (value.length < 3) {
+      if (value.length < <%= User.min_username_characters %>) {
         display_danger_notice( $("#notice-username"), "<%= I18n.t 'user.notice.danger.username-too-short' %>" );
-      } else if (value.length > 50 ) {
+      } else if (value.length > <%= User.max_username_characters %> ) {
         display_danger_notice( $("#notice-username"), "<%= I18n.t 'user.notice.danger.username-too-long' %>" );
       } else if (value.match(/[^A-Za-z0-9_\.\-]/)) {
         display_danger_notice( $("#notice-username"), "<%= I18n.t 'user.notice.danger.username-invalid-characters' %>" );
@@ -85,9 +85,9 @@ $(document).ready(function(){
     var check_password = function() { 
       var value = $(this).val();
       
-      if (value.length < 8) {
+      if (value.length < <%= User.min_password_characters %>) {
         display_danger_notice( $("#notice-password"), "<%= I18n.t 'user.notice.danger.password-too-short' %>" );
-      } else if (value.length > 255 ) {
+      } else if (value.length > <%= User.max_password_characters %> ) {
         display_danger_notice( $("#notice-password"), "<%= I18n.t 'user.notice.danger.password-too-long' %>" );
       } else if ( !value.match(/[A-Z]/) || !value.match(/[a-z]/) || !value.match(/[0-9]/)) {
         display_warning_notice( $("#notice-password"), "<%= I18n.t 'user.notice.warning.password-weakness-entropy' %>" );

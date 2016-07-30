@@ -4,6 +4,7 @@ class UsernameValidator < ActiveModel::EachValidator
 
   attr_accessor :record, :attribute, :value
   
+  
   def validate_each(record, attribute, value)
     return if value.blank?
     
@@ -11,6 +12,7 @@ class UsernameValidator < ActiveModel::EachValidator
     self.attribute = attribute
     self.value = value
 
+    length_valid?
     char_valid?
     first_char_valid?
     last_char_valid?
@@ -23,6 +25,14 @@ class UsernameValidator < ActiveModel::EachValidator
   
 
   private
+  
+  def length_valid?
+    range = record.class.min_username_characters..record.class.max_username_characters
+    
+    unless range.member? self.value.length
+      record.errors.add self.attribute, I18n.t(:'user.errors.username.must-be-within-characters', min: range.first, max: range.last)
+    end
+  end
 
   def char_valid?
     return unless record.errors.empty?

@@ -1,3 +1,5 @@
 suspect_email_similar_to_banned_one: true
 considered_email_similar_when_x_characters: 2
 max_username_renew: 3
+min_username_character: 3
+min_password_character: 8
