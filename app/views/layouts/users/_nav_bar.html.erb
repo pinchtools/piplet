@@ -3,15 +3,12 @@
     <%= active_link_to t('users.links.dashboard.index'), users_dashboard_index_path, :class => 'nav-link' %>
   </li>
   <li class="nav-item">
-    <%= active_link_to t('users.links.users.show'), users_show_path(current_user.username_lower), :class => 'nav-link' %>
+    <%= active_link_to t('users.links.notifications.index'), users_notifications_path , :class => 'nav-link' %>
   </li>
   <li class="nav-item">
     <%= active_link_to t('users.links.users.edit'), users_edit_path, :class => 'nav-link' %>
   </li>
   <li class="nav-item">
     <%= active_link_to t('users.links.preferences.index'), users_preferences_path, :class => 'nav-link' %>
-  </li>
-  <li class="nav-item">
-    <%= active_link_to t('users.links.notifications.index'), users_notifications_path , :class => 'nav-link' %>
   </li>
 </ul>
