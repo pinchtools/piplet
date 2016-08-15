@@ -28,13 +28,26 @@ Rails.application.routes.draw do
       
     namespace :users do
       
-      resources :users, only: [:index, :destroy] do
+      resources :users, param: :username do
         collection do
           get 'list/:list' =>'users#index', as: :list
           get 'search', as: :search
         end
       end
+      
       resources :filters
+      
+      scope(':username') do
+        resources :dashboard, only: [:index]
+        
+        resources :preferences, only: [:index]
+        
+        resources :notifications, only: [:index]
+        
+        resources :permissions, only: [:index]
+        
+        resources :logs, only: [:index]
+      end
     end
   end
   
