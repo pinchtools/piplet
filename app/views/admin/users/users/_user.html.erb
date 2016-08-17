@@ -1,12 +1,13 @@
 <tr>
   <td><%= user.avatar_thumbnail_tag(size: 50) %></td>
-  <td><%= link_to user.username, users_show_path(user.username_lower) %></td>
+  <td><%= link_to user.username, admin_users_dashboard_index_path(user.username_lower) %></td>
   <td><%= user.email %></td>
   <td><%= distance_of_time_in_words_to_now(user.last_seen_at) %></td>
   <td><%= distance_of_time_in_words_to_now(user.created_at) %></td>
+  <!--
   <td align="right">
     <% if !current_user?(user) %>
       <%= link_to t('global.destroy-btn'), [:admin, :users, user], method: :delete, data: { confirm: t('global.destroy-confirm') } %>
     <% end %>
-  </td>
+  </td>-->
 </tr>
