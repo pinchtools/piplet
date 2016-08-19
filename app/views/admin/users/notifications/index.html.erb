@@ -1,2 +1,22 @@
-<h1>Admin::Users::Notifications#index</h1>
-<p>Find me in app/views/admin/users/notifications/index.html.erb</p>
+<div class="container">
+  <%= render 'layouts/admin/users/nav_bar' , locals: { username: @user.username_lower } %>
+
+  <div class="col-md-12">
+  
+    <div class="row row-section">
+    
+      <%= will_paginate notifications , :previous_label => '', :next_label => '' %>
+    
+      <table class="table table-striped">
+        <tbody>
+          <%= render notifications %>
+        </tbody>
+      </table>
+    
+      <%= will_paginate notifications, :previous_label => '', :next_label => '' %>
+    
+    </div>
+    
+  </div>
+
+</div>

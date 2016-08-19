@@ -1,0 +1,13 @@
+<% provide(:title, user.username) %>
+
+<%= render 'layouts/users/nav_bar', :current_user => current_user if current_user && current_user == user %>
+
+<div class="row">
+  <aside class="col-md-4">
+    <section class="user_info">
+    <h1>
+    <%= user.username %>
+    </h1>
+    </section>
+  </aside>
+</div>

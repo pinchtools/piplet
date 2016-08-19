@@ -1,2 +1,12 @@
-<h1>Admin::Users::Dashboard#index</h1>
-<p>Find me in app/views/admin/users/dashboard/index.html.erb</p>
+<div class="container">
+  <%= render 'layouts/admin/users/nav_bar' , locals: { username: @user.username_lower } %>
+
+  <div class="col-md-10 col-md-offset-1">
+  
+    <div class="row row-section">
+      <%= link_to t('users.links.users.show'), admin_users_user_path(@user.username_lower) %>
+    </div>
+    
+  </div>
+
+</div>

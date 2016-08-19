@@ -1,5 +1,8 @@
 class Admin::Users::UsersController < Admin::AdminController
-  before_action :find_user, only: :destroy
+  include Admin::Users::UsersHelper
+  
+  before_action :identify_user, except: [:index, :search]
+  
   before_action :is_regular_user, only: :destroy
 
   
@@ -12,6 +15,7 @@ class Admin::Users::UsersController < Admin::AdminController
 
     render locals: { users: UsersDecorator.new(@users), list: params[:list] }
   end
+  
   
   def search
     params[:search] ||= ""
@@ -32,6 +36,34 @@ class Admin::Users::UsersController < Admin::AdminController
     render :index, locals: { users: UserDecorator.new(@users), list: nil, search: params[:search] }
   end
   
+  
+  def show
+
+    unless @user.activated?
+      redirect_to root_url and return
+    end
+    
+    render locals: { user: UserDecorator.new(@user) }
+  end
+  
+  
+  def edit
+    @user.build_avatar if @user.avatar.nil?
+    
+    render :edit, locals: { user: UserDecorator.new(@user) }
+  end
+  
+  
+  def update
+    if @user.update_attributes(user_update_params)
+      flash[:success] = t 'user.notice.success.updated'
+      redirect_to users_edit_path
+    else
+      render :edit, locals: { user: UserDecorator.new(@user) }
+    end
+  end
+  
+  
   def destroy
       @user.destroy
       
@@ -40,7 +72,9 @@ class Admin::Users::UsersController < Admin::AdminController
       redirect_to :admin_users_users
   end
   
+  
   private
+  
   
   def find_user
     @user = User.find(params[:id])
@@ -50,6 +84,7 @@ class Admin::Users::UsersController < Admin::AdminController
     redirect_to :admin_users_users unless @user.regular?
   end
   
+  
   def users_selection(kind)
     case kind
       when 'new' then User.newest
@@ -58,6 +93,18 @@ class Admin::Users::UsersController < Admin::AdminController
       when 'suspected' then User.suspects
       else User.actives
     end
+  end
+  
+  def user_update_params
+    params.require(:user).permit(
+      :username,
+      :email,
+      :password, 
+      :password_confirmation,
+      :locale,
+      :description,
+      avatar_attributes: [:kind, :uri, :uri_cache]
+      )
   end
   
 end

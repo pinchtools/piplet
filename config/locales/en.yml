@@ -79,6 +79,10 @@ en:
         index: 'Preferences'
       notifications:
         index: 'Notifications'
+      permissions:
+        index: 'Permissions'
+      logs:
+        index: 'Logs'
     notifications:
       index:
         mark-all-as-read-btn: 'mark all as read'
