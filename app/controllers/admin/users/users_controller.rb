@@ -57,7 +57,7 @@ class Admin::Users::UsersController < Admin::AdminController
   def update
     if @user.update_attributes(user_update_params)
       flash[:success] = t 'user.notice.success.updated'
-      redirect_to users_edit_path
+      redirect_to edit_admin_users_user_path
     else
       render :edit, locals: { user: UserDecorator.new(@user) }
     end

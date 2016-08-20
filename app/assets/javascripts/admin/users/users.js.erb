@@ -1,0 +1,10 @@
+$(document).ready(function(){
+    $('#user_avatar_attributes_kind').change(function(value) {
+      var upload_input = $('#user_avatar_attributes_uri');
+      
+      if ($(this).val() == 'upload' ) upload_input.show();
+      else upload_input.hide();
+      
+    });
+    
+})

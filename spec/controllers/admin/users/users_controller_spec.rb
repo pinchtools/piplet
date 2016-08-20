@@ -34,6 +34,7 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
     end # logged ctx
   end # GET search
 
+=begin
   describe "DELETE #destroy" do
     
     it 'prevent an admin from removing himself' do
@@ -83,7 +84,7 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
       should_redirect_to_login
     end
   end
-
+=end
   
     
 end

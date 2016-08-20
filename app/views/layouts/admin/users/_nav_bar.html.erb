@@ -1,6 +1,9 @@
   <div class="col-md-12">
   <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item">
+      <%= link_to @user.username, '#', :class => 'nav-link disabled' %>
+    </li>
+    <li class="nav-item">
       <%= active_link_to t('users.links.dashboard.index'), admin_users_dashboard_index_path(@user.username_lower), :class => 'nav-link' %>
     </li>
     <li class="nav-item">
