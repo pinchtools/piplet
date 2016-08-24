@@ -76,6 +76,40 @@
   }
 }
 
+
+.btn-danger,
+.btn-danger:focus,
+.btn-danger.focus
+  {
+  border-color: #FF4E46;
+  color: $primary-color;
+  background-color: #FF4E46;
+  
+  &:active,
+  &.active,
+  &:hover {
+    border-color: #DE4E46;
+    background-color: #DE4E46;
+  }
+}
+
+.btn-primary-outline,
+.btn-primary-outline:focus,
+.btn-primary-outline.focus
+  {
+  border-color: #FF4E46;
+  color: #FF4E46;
+  
+  &:active,
+  &.active,
+  &:hover {
+    background-color: #DE4E46;
+    color: $primary-color;
+    border-color: #DE4E46;
+  }
+}
+
+
 .alert-danger {
   background-color: #FF4E46;
   border: 0px solid transparent;

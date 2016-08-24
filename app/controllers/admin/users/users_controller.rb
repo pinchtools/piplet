@@ -3,8 +3,7 @@ class Admin::Users::UsersController < Admin::AdminController
   
   before_action :identify_user, except: [:index, :search]
   
-  before_action :is_regular_user, only: :destroy
-
+  before_action :prevent_only_admin_removal, only: :destroy
   
   respond_to :html, :js
   
@@ -38,12 +37,7 @@ class Admin::Users::UsersController < Admin::AdminController
   
   
   def show
-
-    unless @user.activated?
-      redirect_to root_url and return
-    end
-    
-    render locals: { user: UserDecorator.new(@user) }
+    redirect_to admin_users_dashboard_index_path(params[:username])
   end
   
   
@@ -65,23 +59,26 @@ class Admin::Users::UsersController < Admin::AdminController
   
   
   def destroy
-      @user.destroy
-      
-      flash[:success] = t 'user.notice.success.destroyed'
-      
-      redirect_to :admin_users_users
+#      @user.destroy
+#      
+#      flash[:success] = t 'user.notice.success.destroyed'
+#      
+#      redirect_to :admin_users_users
   end
   
   
   private
   
   
-  def find_user
-    @user = User.find(params[:id])
+  def prevent_only_admin_removal
+    if @user.admin? && !User.admins.many?
+      flash[:danger] = t('user.notice.danger.only-admin-removal')
+      redirect_to :admin_users_users
+    end
   end
   
-  def is_regular_user
-    redirect_to :admin_users_users unless @user.regular?
+  def find_user
+    @user = User.find(params[:id])
   end
   
   

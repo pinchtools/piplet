@@ -111,8 +111,20 @@
   
     <div class="row">
       <div class="col-md-8">
-        <%= f.submit yield(:button_text), class: "btn btn-primary" %>
+        <%= f.submit  t('user.form.edit.submit'), class: "btn btn-primary" %>
       </div>
     </div>
   
+    <div class="row">
+      <div class="col-md-8">
+        <%= button_tag t('admin.users.users.edit.destroy'), 
+          class: "btn btn-block btn-sm btn-danger-outline",
+          type: "button",
+          data: {toggle: "modal",target: "#removalModal"}
+        %>
+      </div>
+    </div>
+    
 <% end %>
+
+<%= render 'modal_removal', user: user %>

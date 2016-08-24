@@ -1,0 +1,28 @@
+<!-- Modal -->
+<div class="modal fade" id="removalModal" tabindex="-1" role="dialog" aria-labelledby="removalModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <%= form_for :user, url: admin_users_user_path, method: :delete do |f| %>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title" id="removalModalLabel"><%= t('admin.users.users.removal.title') %></h4>
+        </div>
+        <div class="modal-body">
+          <% if user  == @current_user %>
+            <div class="alert alert-warning" role="alert"><%= t("admin.users.users.removal.yourself-notice") %></div>
+          <% elsif user.admin? %>
+            <div class="alert alert-warning" role="alert"><%= t("admin.users.users.removal.admin-notice") %></div>
+          <% end %>
+          
+          <%= simple_format t("admin.users.users.removal.method-notices.#{User.removal_method.to_s}", days: 5) %>
+        </div>
+        <div class="modal-footer">
+          <%= button_tag t('admin.users.users.removal.close'), class: 'btn btn-default', 'type': 'button', 'data-dismiss': "modal" %>
+          <%= button_tag t('admin.users.users.removal.remove'), class: 'btn btn-danger' %>
+        </div>
+      <% end %>
+      </div>
+  </div>
+</div>

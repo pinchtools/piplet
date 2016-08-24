@@ -48,12 +48,22 @@ class User < ActiveRecord::Base
   
   attr_accessor :remember_token, :activation_token, :reset_token
   
+
   @@MIN_USERNAME_CHARACTERS = 3
   @@MAX_USERNAME_CHARACTERS = 50
   
   @@MIN_PASSWORD_CHARACTERS = 6
   @@MAX_PASSWORD_CHARACTERS = 50
   
+  @@REMOVAL_METHOD = nil
+  
+  enum removal_method: [
+    :delay,
+    :perform,
+    :deactivate
+    ]
+  
+    
   has_and_belongs_to_many :filters, :class_name => 'UserFilter', :join_table => :users_user_filters
 
   has_many :notifications, dependent: :destroy
@@ -122,6 +132,12 @@ class User < ActiveRecord::Base
     @@MAX_PASSWORD_CHARACTERS
   end
     
+  def self.removal_method
+    @@REMOVAL_METHOD = Setting['user.removal_method'] if @@REMOVAL_METHOD.nil?
+    
+    (User.removal_methods[@@REMOVAL_METHOD].present?) ? @@REMOVAL_METHOD : User.removal_methods.first
+  end
+  
   # Returns the hash digest of the given string.
   def self.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
@@ -229,6 +245,8 @@ class User < ActiveRecord::Base
   def update_last_seen!(date = Time.current)
     update_column(:last_seen_at, date) unless last_seen_at.present? && date - last_seen_at < 1.minute
   end
+  
+
   
   ########
   #
