@@ -30,7 +30,7 @@
 #  description           :text
 #  username_renew_count  :integer          default(0)
 #  locale                :string
-#  deactived             :boolean          default(FALSE)
+#  deactivated           :boolean          default(FALSE)
 #  deactivated_at        :datetime
 #  delayed_removal       :boolean          default(FALSE)
 #
@@ -59,6 +59,7 @@ class User < ActiveRecord::Base
   @@MAX_PASSWORD_CHARACTERS = 50
   
   @@REMOVAL_METHOD = nil
+  @@REMOVAL_DELAY_DURATION = nil
   
   enum removal_method: [
     :delay,
@@ -137,8 +138,8 @@ class User < ActiveRecord::Base
     
   def self.removal_method
     @@REMOVAL_METHOD = Setting['user.removal_method'] if @@REMOVAL_METHOD.nil?
-    
-    (User.removal_methods[@@REMOVAL_METHOD].present?) ? @@REMOVAL_METHOD : User.removal_methods.first
+
+    (User.removal_methods[@@REMOVAL_METHOD].present?) ? @@REMOVAL_METHOD : :delay
   end
   
   def self.removal_delay_duration
@@ -257,19 +258,19 @@ class User < ActiveRecord::Base
   
 
   def trigger_destroy
-    self.send("#{self.removal_method}_destroy")
+    self.send("#{User.removal_method}_destroy")
   end
   
   def delay_destroy
-    nb = self.removal_delay_duration.to_i
+    nb = User.removal_delay_duration.to_i
     
-    if duration > 0
-      User.find(self.id).delay(duration.days).destroy
+    if nb > 0
+      User.delay_for(nb.days).destroy(self.id)
       
       #deactivate right now before definitive removal
       deactivate_destroy
       
-      log( :delayed_destroy, message_vars: { days: duration } )
+      log( :delayed_destroy, message_vars: { days: nb } )
     end
     
   end

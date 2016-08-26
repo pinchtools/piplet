@@ -149,8 +149,8 @@ RSpec.describe User, type: :model do
   
   
   it 'should not have a mail similar to a blocked one' do
-    Setting['user.suspect_email_similar_to_banned_one'] = true
-    Setting['user.considered_email_similar_when_x_characters'] = 2
+    Setting.defaults['user.suspect_email_similar_to_banned_one'] = true
+    Setting.defaults['user.considered_email_similar_when_x_characters'] = 2
     
     subject.email = "mail-similar@example.com"
     
@@ -305,6 +305,7 @@ RSpec.describe User, type: :model do
       expect(results).to include(subject)
     end
     
+    
     it 'find a user by email' do
       expect(subject.email).to be_present
       
@@ -313,6 +314,86 @@ RSpec.describe User, type: :model do
       expect(results).to include(subject)
     end
     
+  end
+  
+  describe 'removal' do
+    subject { create(:user) }
+    before(:each) {
+      User.class_variable_set :@@REMOVAL_METHOD, nil
+    }
+      
+
+    
+    
+    it 'delays destroy when setting is unknown' do
+      Setting.defaults['user.removal_method'] = :random
+      
+      expect(subject).to receive(:delay_destroy)
+      
+      subject.trigger_destroy
+    end
+    
+    
+    context 'delay' do
+      before { Setting.defaults['removal_method'] = :delay }
+        
+      it 'calls delay_destroy on trigger_destroy' do
+        expect(subject).to receive(:delay_destroy)
+        
+        subject.trigger_destroy
+      end
+        
+      it 'delayed and log' do
+        expect(User.removal_delay_duration).to be > 0
+        expect(User).to receive(:delay_for).and_return(User)
+        expect(User).to receive(:destroy)
+        expect(subject).to receive(:deactivate_destroy)
+        expect(subject).to receive(:log)
+        
+        subject.trigger_destroy
+      end
+      
+    end
+    
+    context 'perform' do
+      before { Setting.defaults['user.removal_method'] = :perform }
+        
+      it 'calls perform_destroy on trigger_destroy' do
+        expect(subject).to receive(:perform_destroy)
+        
+        subject.trigger_destroy
+      end
+      
+      it 'calls destroy' do
+        expect(subject).to receive(:destroy)
+        
+        # TODO test destroy method and relations deletions apart
+        
+        subject.trigger_destroy
+      end
+        
+    end
+    
+    context 'deactivate' do
+      before { Setting.defaults['user.removal_method'] = :deactivate }
+      
+      it 'calls deactivate_destroy on trigger_destroy' do
+        expect(subject).to receive(:deactivate_destroy)
+        
+        subject.trigger_destroy
+      end
+      
+      it 'deactivates account' do
+        expect(subject).to receive(:log)
+        
+        subject.trigger_destroy
+        
+        expect(subject.deactivated).to be_truthy
+        expect(subject.deactivated_at).to be_present
+      end
+      
+    end
+      
   end
   
 end
