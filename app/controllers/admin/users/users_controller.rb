@@ -59,11 +59,11 @@ class Admin::Users::UsersController < Admin::AdminController
   
   
   def destroy
-#      @user.destroy
-#      
-#      flash[:success] = t 'user.notice.success.destroyed'
-#      
-#      redirect_to :admin_users_users
+    @user.trigger_destroy
+
+    flash[:success] = t 'user.notice.success.destroyed'
+
+    redirect_to :admin_users_users
   end
   
   

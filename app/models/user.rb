@@ -30,6 +30,9 @@
 #  description           :text
 #  username_renew_count  :integer          default(0)
 #  locale                :string
+#  deactived             :boolean          default(FALSE)
+#  deactivated_at        :datetime
+#  delayed_removal       :boolean          default(FALSE)
 #
 # Indexes
 #
@@ -136,6 +139,12 @@ class User < ActiveRecord::Base
     @@REMOVAL_METHOD = Setting['user.removal_method'] if @@REMOVAL_METHOD.nil?
     
     (User.removal_methods[@@REMOVAL_METHOD].present?) ? @@REMOVAL_METHOD : User.removal_methods.first
+  end
+  
+  def self.removal_delay_duration
+    @@REMOVAL_DELAY_DURATION = Setting['user.removal_delay_duration'] if @@REMOVAL_DELAY_DURATION.nil?
+    
+    @@REMOVAL_DELAY_DURATION
   end
   
   # Returns the hash digest of the given string.
@@ -246,6 +255,37 @@ class User < ActiveRecord::Base
     update_column(:last_seen_at, date) unless last_seen_at.present? && date - last_seen_at < 1.minute
   end
   
+
+  def trigger_destroy
+    self.send("#{self.removal_method}_destroy")
+  end
+  
+  def delay_destroy
+    nb = self.removal_delay_duration.to_i
+    
+    if duration > 0
+      User.find(self.id).delay(duration.days).destroy
+      
+      #deactivate right now before definitive removal
+      deactivate_destroy
+      
+      log( :delayed_destroy, message_vars: { days: duration } )
+    end
+    
+  end
+  
+  def perform_destroy
+    destroy
+  end
+
+  def deactivate_destroy
+    update_columns(
+      deactivated: true, 
+      deactivated_at: Time.zone.now
+      )
+      
+      log( :deactivated )
+  end
 
   
   ########

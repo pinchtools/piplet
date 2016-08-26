@@ -3,4 +3,5 @@ considered_email_similar_when_x_characters: 2
 max_username_renew: 3
 min_username_character: 3
 min_password_character: 8
-removal_method: :delay
+removal_method: :delay # delay perform deactivate
+removal_delay_duration: 20

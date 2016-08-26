@@ -12,7 +12,7 @@ module Concerns::Loggable
        :action => Log.actions[action]
     }
     
-    attributes[:message] = options[:message] || "log.messages.#{action}"
+    attributes[:message] = options[:message] || "logs.messages.#{action}"
 
     attributes[:message_vars] = options[:message_vars] if options[:message_vars].present? 
     attributes[:data] = options[:data] if options[:data].present?

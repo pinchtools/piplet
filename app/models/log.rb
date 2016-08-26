@@ -55,8 +55,9 @@ class Log < ActiveRecord::Base
     @important_actions ||= Enum.new(
       created: 1000,
       activated: 1001,
-      removed: 1002,
-      login: 1003
+      login: 1002,
+      delayed_destroy: 1003,
+      deactivated: 1004
     )
   end
   
@@ -128,7 +129,7 @@ class Log < ActiveRecord::Base
     return if action_user.nil?
 
     if level == Log.levels[:sensitive] && action_user.regular?
-      self.errors.add(:action_user, I18n.t(:'log.errors.action-user.must-be-staff-member'))
+      self.errors.add(:action_user, I18n.t(:'logs.errors.action-user.must-be-staff-member'))
     end
 
   end

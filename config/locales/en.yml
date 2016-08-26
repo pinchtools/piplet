@@ -206,21 +206,6 @@ en:
         trusted-xor-blocked: 'Must be a trusting filter or a blocking one, but not both'
       ip_address:
         invalid: 'Invalid ip address or wildcard'
-  log:
-    errors:
-      action-user:
-        must-be-staff-member: 'Action user must be a staff member'
-    messages:
-      created: 'User has been created.'
-      activated: 'User confirms his mail, account activated.' 
-      request_password_reset: 'User ask for a new password.'
-      password_reset: 'Password as been reset.'
-      email_similar: 'Email %{email} is similar to the blocked email %{blocked_email}'
-      block_user: 'User blocked another user'
-      blocked: 'User has been blocked'
-      apply_filter: 'Apply filter to existing users'
-      filter_ignored: 'The filter conflicts with another one or the current use state and will not be applied'
-      
   attributes:  &attributes
     user:
       avatar: "Avatar"
