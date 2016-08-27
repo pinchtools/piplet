@@ -13,6 +13,9 @@ RSpec.describe Admin::Users::PreferencesController, type: :controller do
     
     it_behaves_like 'a request by username', :index
     
+    it_behaves_like 'a restricted access to admin only' do 
+      let(:request) { get :index, username: 'a' }
+    end
   end
 
 end

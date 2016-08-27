@@ -9,5 +9,10 @@ RSpec.describe Admin::Users::FiltersController, type: :controller do
       
       should_redirect_to_login
     end
+    
+    it_behaves_like 'a restricted access to admin only' do 
+      let(:request) { get :index }
+    end
+    
   end
 end

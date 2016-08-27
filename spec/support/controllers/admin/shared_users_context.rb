@@ -18,3 +18,32 @@ shared_context 'a request by username' do |path|
   end
 
 end
+
+shared_context 'a restricted access to admin only' do
+  context 'admin' do
+    let(:user) { create(:admin) }
+    before {
+      log_in_as(user)
+    }
+    
+    it 'has access', :focus do
+      request
+      
+      expect(response).not_to redirect_to(:login)
+    end
+  end
+  
+  context 'regular' do
+    let(:user) { create(:user) }
+    before {
+      log_in_as(user)
+    }
+    
+    it 'has access', :focus do
+      request
+      
+      expect(response).to redirect_to(:login)
+    end
+
+  end
+end
