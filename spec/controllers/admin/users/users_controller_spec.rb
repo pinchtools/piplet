@@ -9,9 +9,17 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
       
       should_redirect_to_login
     end
+    
+    it_behaves_like 'a restricted access to admin only' do 
+      let(:request) { get :index }
+    end
   end
 
-  describe "GET # search" do
+  describe "GET #search" do
+    
+    it_behaves_like 'a restricted access to admin only' do 
+      let(:request) { get :search, :search => '' }
+    end
     
     context "logged" do
       before {
@@ -34,57 +42,25 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
     end # logged ctx
   end # GET search
 
-=begin
-  describe "DELETE #destroy" do
-    
-    it 'prevent an admin from removing himself' do
-      user = log_in_as( create(:admin) )
-      count = User.count
-
-      delete :destroy, id: user.id
-      
-      expect(:response).to redirect_to(:admin_users_users)
-      expect(User.count).to eq(count)
-      
-    end
-    
-    it 'prevent an admin from removing another staff member' do
-      
-      user = log_in_as( create(:admin) )
-      another_admin = create(:admin)
-      
-      count = User.count
-
-      delete :destroy, id: another_admin.id
-      
-      expect(:response).to redirect_to(:admin_users_users)
-      expect(User.count).to eq(count)
-      
-    end
-
-    it 'allows an admin to remove a regular user' do
-      lambda_user = create(:user)
-      
-      user = log_in_as( create(:admin) )
-      count = User.count
-
-      delete :destroy, id: lambda_user.id
-      
-      expect(:response).to redirect_to(:admin_users_users)
-      expect(User.count).to eq(count - 1)
-      
-    end
-    
-    
-    it 'redirect non-admin user' do
-      lambda_user = log_in_as( create(:user) )
-      
-      delete :destroy, id: lambda_user.id
-      
-      should_redirect_to_login
-    end
-  end
-=end
   
+  describe "DELETE #destroy" do
+    let!(:admin) { FactoryGirl.create(:admin) }
     
+    
+    it_behaves_like 'a restricted access to admin only' do 
+      let(:request) { delete :destroy, username: admin.username_lower }
+    end
+    
+    it "should redirect when there is only one admin" do
+      expect(User.admins.count).to eq(1)
+      
+      log_in_as(admin)
+      
+      delete :destroy, username: admin.username_lower
+      
+      expect(:response).to redirect_to(:admin_users_users)
+      expect(flash[:danger]).to be_present
+    end
+    
+  end
 end
