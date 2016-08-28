@@ -19,49 +19,40 @@
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
           <li class="nav-item">
-            <% active = (list == "active") ? "active" : "" %>
+            <% active = (["active", "new", "staff"].include?(list)) ? "active" : "" %>
             <%= link_to t('admin.users.users.index.tab.active'), list_admin_users_users_path(:list => 'active'), class: "nav-link #{active}" %>
           </li>
           <li class="nav-item">
-            <% active = (list == "new") ? "active" : "" %>
-            <%= link_to t('admin.users.users.index.tab.new'), list_admin_users_users_path(:list => 'new'), class: "nav-link #{active}" %>
+            <% active = (list == "suspected") ? "active" : "" %>
+            <%= link_to t('admin.users.users.index.tab.suspected'), list_admin_users_users_path(:list => 'suspected'),  class: "nav-link #{active}" %>
           </li>
-        <li class="nav-item">
-          <% active = (list == "suspected") ? "active" : "" %>
-          <%= link_to t('admin.users.users.index.tab.suspected'), list_admin_users_users_path(:list => 'suspected'),  class: "nav-link #{active}" %>
-        </li>
-        <li class="nav-item">
-          <% active = (list == "blocked") ? "active" : "" %>
-          <%= link_to t('admin.users.users.index.tab.blocked'), list_admin_users_users_path(:list => 'blocked'), class: "nav-link #{active}" %>
-        </li>
-        <li class="nav-item">
-          <% active = (list == "staff") ? "active" : "" %>
-          <%= link_to t('admin.users.users.index.tab.staff'), list_admin_users_users_path(:list => 'staff'), class: "nav-link #{active}" %>
-        </li>
+          <li class="nav-item">
+            <% active = (list == "blocked") ? "active" : "" %>
+            <%= link_to t('admin.users.users.index.tab.blocked'), list_admin_users_users_path(:list => 'blocked'), class: "nav-link #{active}" %>
+          </li>
+          <% if User.all_deactivated.any? %>
+          <li class="nav-item">
+            <% active = (list == "deactivated") ? "active" : "" %>
+            <%= link_to t('admin.users.users.index.tab.deactivated'), list_admin_users_users_path(:list => 'deactivated'), class: "nav-link #{active}" %>
+          </li>
+          <% end %>
+          <% if User.all_to_be_deleted.any? %>
+          <li class="nav-item">
+            <% active = (list == "to_be_deleted") ? "active" : "" %>
+            <%= link_to t('admin.users.users.index.tab.to-be-deleted'), list_admin_users_users_path(:list => 'to_be_deleted'), class: "nav-link #{active}" %>
+          </li>
+          <% end %>
         </ul>
       </div>
     </div>
-
-    <div class="pagination-block">
-    <%= will_paginate users , :previous_label => '', :next_label => '' %>
-    </div>
     
-    <table class="table table-striped">
-    <thead>
-      <tr>
-        <th></th>
-        <th><%= t 'admin.users.users.index.username' %></th>
-        <th><%= t 'admin.users.users.index.email' %></th>
-        <th><%= t 'admin.users.users.index.last-seen' %></th>
-        <th><%= t 'admin.users.users.index.created-at' %></th>
-      </tr>
-    </thead>
-      <tbody>
-        <%= render users %>
-      </tbody>
-    </table>
+    <% case list 
+      when "suspected", "blocked", "deactivated", "to_be_deleted"
+    %>
+      <%= render partial: "#{list}_list", locals: { users: users, list: list } %>
+    <% else %>
+      <%= render partial: "default_list", locals: { users: users, list: list } %>
+    <% end %>
     
-    <%= will_paginate users, :previous_label => '', :next_label => '' %>
-  
   </div>
 </div>

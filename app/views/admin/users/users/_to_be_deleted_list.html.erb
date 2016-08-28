@@ -1,0 +1,18 @@
+<%= will_paginate users , :previous_label => '', :next_label => '' %>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th><%= t 'admin.users.users.index.username' %></th>
+      <th><%= t 'admin.users.users.index.email' %></th>
+      <th><%= t 'admin.users.users.index.last-seen' %></th>
+      <th><%= t 'admin.users.users.index.to-be-deleted-at' %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render partial: 'to_be_deleted_list_body', collection: users, as: :user %>
+  </tbody>
+</table>
+
+<%= will_paginate users, :previous_label => '', :next_label => '' %>

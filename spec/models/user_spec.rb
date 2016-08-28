@@ -351,6 +351,9 @@ RSpec.describe User, type: :model do
         expect(subject).to receive(:log)
         
         subject.trigger_destroy
+        
+        expect(subject.to_be_deleted).to be_truthy
+        expect(subject.to_be_deleted_at).to be_present
       end
       
     end

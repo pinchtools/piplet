@@ -3,7 +3,7 @@ module UserConcerns::Moderatable
   
   included do
     scope :suspects, -> { where(suspected: true) }
-    scope :all_blocked, -> { where(blocked: true) }
+    scope :all_blocked, -> { where(blocked: true).order( blocked_at: :desc ) }
   end
 
   def blocked?

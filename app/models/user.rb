@@ -32,7 +32,8 @@
 #  locale                :string
 #  deactivated           :boolean          default(FALSE)
 #  deactivated_at        :datetime
-#  delayed_removal       :boolean          default(FALSE)
+#  to_be_deleted         :boolean          default(FALSE)
+#  to_be_deleted_at      :datetime
 #
 # Indexes
 #
@@ -116,7 +117,9 @@ class User < ActiveRecord::Base
   validates :activation_ip_address, presence: true, if: :activated?
   validates :activated_at, presence: true, if: :activated?
 
-  scope :actives, -> { where( blocked: false, suspected: false ).order( last_seen_at: :desc ) }
+  scope :actives, -> { where( blocked: false, suspected: false, deactivated: false ).order( last_seen_at: :desc ) }
+  scope :all_deactivated, -> { where( deactivated: true, to_be_deleted:false) }
+  scope :all_to_be_deleted, -> { where( to_be_deleted: true ) }
   scope :newest, -> { order( created_at: :desc ) }
   
   def self.min_username_characters
@@ -266,6 +269,11 @@ class User < ActiveRecord::Base
     
     if nb > 0
       User.delay_for(nb.days).destroy(self.id)
+      
+      update_columns(
+        to_be_deleted: true,
+        to_be_deleted_at: nb.days.from_now
+      )
       
       #deactivate right now before definitive removal
       deactivate_destroy

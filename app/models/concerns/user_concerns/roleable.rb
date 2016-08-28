@@ -3,7 +3,7 @@ module UserConcerns::Roleable
   
   included do
     scope :admins, -> { where(admin: true) }
-    scope :staff, -> { where("admin") }
+    scope :staff, -> { where(admin: true).order( created_at: :asc ) }
   end
 
   def staff_member?

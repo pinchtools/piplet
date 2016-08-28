@@ -88,6 +88,8 @@ class Admin::Users::UsersController < Admin::AdminController
       when 'staff' then User.staff
       when 'blocked' then User.all_blocked
       when 'suspected' then User.suspects
+      when 'deactivated' then User.all_deactivated
+      when 'to_be_deleted' then User.all_to_be_deleted
       else User.actives
     end
   end

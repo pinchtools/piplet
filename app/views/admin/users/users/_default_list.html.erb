@@ -1,0 +1,30 @@
+<nav class="nav nav-inline nav-filters">
+  <% active = (list == "active") ? "active" : "" %>
+  <%= link_to t('admin.users.users.index.tab.active-filter'), list_admin_users_users_path(:list => 'active'), class: "nav-link #{active}" %>
+
+  <% active = (list == "new") ? "active" : "" %>
+  <%= link_to t('admin.users.users.index.tab.new-filter'), list_admin_users_users_path(:list => 'new'), class: "nav-link #{active}" %>
+
+  <% active = (list == "staff") ? "active" : "" %>
+  <%= link_to t('admin.users.users.index.tab.staff-filter'), list_admin_users_users_path(:list => 'staff'), class: "nav-link #{active}" %>
+</nav>
+
+
+<%= will_paginate users , :previous_label => '', :next_label => '' %>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th><%= t 'admin.users.users.index.username' %></th>
+      <th><%= t 'admin.users.users.index.email' %></th>
+      <th><%= t 'admin.users.users.index.last-seen' %></th>
+      <th><%= t 'admin.users.users.index.created-at' %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render users %>
+  </tbody>
+</table>
+
+<%= will_paginate users, :previous_label => '', :next_label => '' %>

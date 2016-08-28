@@ -58,12 +58,19 @@ en:
           email: 'Email'
           last-seen: 'Last connection'
           created-at: 'Signup'
+          blocked-at: 'Blocked at'
+          suspected-at: 'Suspected at'
+          deactivated-at: 'Deactivation date'
+          to-be-deleted-at: 'Remaining time'
           tab:
             active: 'Active'
-            new: 'New'
+            active-filter: 'All'
+            new-filter: 'New'
+            staff-filter: 'Staff'
             suspected: 'Suspected'
             blocked: 'Blocked'
-            staff: 'Staff'
+            deactivated: 'Deactivated'
+            to-be-deleted: 'To be deleted'
           search_placeholder: 'username, email, ip address'
         search:
           notice:
