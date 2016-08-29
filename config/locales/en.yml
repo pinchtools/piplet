@@ -235,6 +235,11 @@ en:
     attributes:
       <<: *attributes
       
+  datetime:
+    distance_in_words_with_directions:
+      past: "%{distance} ago"
+      future: "in %{distance}"
+      
   errors:
     messages:
       wrong_size: "is the wrong size (should be %{file_size})"
