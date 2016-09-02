@@ -1,6 +1,6 @@
 <tr>
   <td><%= user.avatar_thumbnail_tag(size: 50) %></td>
-  <td><%= link_to user.username, admin_users_dashboard_index_path(user.username_lower) %></td>
+  <td><%= link_to user.username, edit_admin_users_user_path(user.username_lower) %></td>
   <td><%= user.email %></td>
   <td><%= distance_of_time_in_words_to_now(user.last_seen_at) %></td>
   <td><%= l user.deactivated_at, format: :short %></td>

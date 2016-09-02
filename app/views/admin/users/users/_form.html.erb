@@ -117,7 +117,14 @@
   
     <div class="row">
       <div class="col-md-8">
-        <%= button_tag t('admin.users.users.edit.destroy'), 
+        <%
+        rm_label = if user.to_be_deleted? then t('admin.users.users.edit.destroy-now')
+        elsif user.deactivated? then t('admin.users.users.edit.destroy-data')
+        else t('admin.users.users.edit.destroy')
+        end
+        %>
+      
+        <%= button_tag rm_label, 
           class: "btn btn-block btn-sm btn-danger-outline",
           type: "button",
           data: {toggle: "modal",target: "#removalModal"}

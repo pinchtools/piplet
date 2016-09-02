@@ -77,6 +77,8 @@ en:
             length-must-be-in-interval: 'Search length should be between %{min} and %{max}'
         edit:
           destroy: 'Remove user'
+          destroy-now: 'Remove user immediately'
+          destroy-data: 'Remove user for good'
         removal:
           title: 'Remove user'
           method-notices:
