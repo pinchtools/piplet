@@ -345,8 +345,6 @@ RSpec.describe User, type: :model do
         
       it 'delayed and log' do
         expect(User.removal_delay_duration).to be > 0
-        expect(User).to receive(:delay_for).and_return(User)
-        expect(User).to receive(:destroy)
         expect(subject).to receive(:deactivate_destroy)
         expect(subject).to receive(:log)
         
