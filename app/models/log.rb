@@ -57,7 +57,9 @@ class Log < ActiveRecord::Base
       activated: 1001,
       login: 1002,
       delayed_destroy: 1003,
-      deactivated: 1004
+      deactivated: 1004,
+      revert_deactivation: 1005,
+      revert_deletion: 1006
     )
   end
   

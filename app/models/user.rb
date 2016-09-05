@@ -268,7 +268,7 @@ class User < ActiveRecord::Base
     nb = User.removal_delay_duration.to_i
     
     if nb > 0
-      User.delay_for(nb.days).destroy(self.id)
+      #User.delay_for(nb.days).destroy(self.id)
       
       update_columns(
         to_be_deleted: true,
@@ -296,6 +296,36 @@ class User < ActiveRecord::Base
       log( :deactivated )
   end
 
+  def revert_removal
+    # /!\ conds order have importance here
+    # has to_be_deleted user also have deactivated status
+    if to_be_deleted?
+      revert_delayed_deletion
+    elsif deactivated?
+      revert_deactivation
+    end
+  end
+  
+  def revert_deactivation
+    update_columns(
+      deactivated: false, 
+      deactivated_at: nil
+    )
+    
+    log( :revert_deactivation )
+  end
+  
+  def revert_delayed_deletion
+    update_columns(
+      to_be_deleted: false,
+      to_be_deleted_at: nil,
+      deactivated: false, 
+      deactivated_at: nil
+    )
+    
+    log( :revert_deletion )
+  end
+  
   
   ########
   #

@@ -26,7 +26,7 @@ shared_context 'a restricted access to admin only' do
       log_in_as(user)
     }
     
-    it 'has access', :focus do
+    it 'has access' do
       request
       
       expect(response).not_to redirect_to(:login)
@@ -39,7 +39,7 @@ shared_context 'a restricted access to admin only' do
       log_in_as(user)
     }
     
-    it 'has access', :focus do
+    it 'has access' do
       request
       
       expect(response).to redirect_to(:login)

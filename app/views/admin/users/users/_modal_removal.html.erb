@@ -15,8 +15,12 @@
           <% elsif user.admin? %>
             <div class="alert alert-warning" role="alert"><%= t("admin.users.users.removal.admin-notice") %></div>
           <% end %>
-          
-          <%= simple_format t("admin.users.users.removal.method-notices.#{User.removal_method.to_s}", days: 5) %>
+
+          <% if user.deactivated? || user.to_be_deleted? %>
+            <%= simple_format t("admin.users.users.removal.method-notices.perform") %>
+          <% else %>
+            <%= simple_format t("admin.users.users.removal.method-notices.#{User.removal_method.to_s}", days: 5) %>
+          <% end %>
         </div>
         <div class="modal-footer">
           <%= button_tag t('admin.users.users.removal.close'), class: 'btn btn-default', 'type': 'button', 'data-dismiss': "modal" %>

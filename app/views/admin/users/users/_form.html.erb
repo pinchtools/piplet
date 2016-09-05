@@ -109,13 +109,21 @@
       <div class="col-md-4 col-notice"></div>
     </div>
   
-    <div class="row">
+    <div class="row row-section">
       <div class="col-md-8">
-        <%= f.submit  t('user.form.edit.submit'), class: "btn btn-primary" %>
+        <% if user.deactivated? %>
+          <%= button_tag t('admin.users.users.edit.revert-removal'), 
+            class: "btn btn-block btn-sm btn-primary",
+            type: "button",
+            data: {toggle: "modal",target: "#revertModal"}
+          %>
+        <% else %>
+          <%= f.submit  t('user.form.edit.submit'), class: "btn btn-primary" %>
+        <% end %>
       </div>
     </div>
   
-    <div class="row">
+    <div class="row row-section">
       <div class="col-md-8">
         <%
         rm_label = if user.to_be_deleted? then t('admin.users.users.edit.destroy-now')
@@ -135,3 +143,4 @@
 <% end %>
 
 <%= render 'modal_removal', user: user %>
+<%= render 'modal_revert', user: user %>

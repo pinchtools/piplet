@@ -33,6 +33,10 @@ Rails.application.routes.draw do
           get 'list/:list' =>'users#index', as: :list
           get 'search', as: :search
         end
+        
+        member do
+          post 'revert_removal', as: :revert_removal
+        end
       end
       
       resources :filters

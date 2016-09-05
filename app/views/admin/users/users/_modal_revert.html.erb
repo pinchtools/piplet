@@ -1,0 +1,22 @@
+<!-- Modal -->
+<div class="modal fade" id="revertModal" tabindex="-1" role="dialog" aria-labelledby="revertModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <%= form_for :user, url: admin_users_user_path, method: :delete do |f| %>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title" id="revertModalLabel"><%= t('admin.users.users.revert-modal.title') %></h4>
+        </div>
+        <div class="modal-body">
+            <%= simple_format t("admin.users.users.revert-modal.notice") %>
+        </div>
+        <div class="modal-footer">
+          <%= button_tag t('admin.users.users.revert-modal.close'), class: 'btn btn-default', 'type': 'button', 'data-dismiss': "modal" %>
+          <%= button_tag t('admin.users.users.revert-modal.remove'), class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+      </div>
+  </div>
+</div>

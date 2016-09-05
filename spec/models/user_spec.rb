@@ -399,4 +399,50 @@ RSpec.describe User, type: :model do
       
   end
   
+  describe "revert removal", :focus do
+    
+    context "when use is deactivate" do
+      subject { create(:user_deactivated) }
+        
+      it 'correctly revert deactivation' do
+        expect(subject.deactivated).to be_truthy
+        expect(subject.deactivated_at).to be_present
+        expect(subject.to_be_deleted).to be_falsy
+        expect(subject.to_be_deleted_at).to be_nil
+        
+        expect(subject).to receive(:log)
+        
+        
+        subject.revert_removal
+        
+        expect(subject.deactivated).to be_falsy
+        expect(subject.deactivated_at).to be_nil
+        expect(subject.to_be_deleted).to be_falsy
+        expect(subject.to_be_deleted_at).to be_nil
+      end
+    end
+    
+    context "when use will be deleted" do
+      subject { create(:user_to_be_deleted) }
+        
+      it 'correctly revert deletion' do
+        expect(subject.deactivated).to be_truthy
+        expect(subject.deactivated_at).to be_present
+        expect(subject.to_be_deleted).to be_truthy
+        expect(subject.to_be_deleted_at).to be_present
+        
+        expect(subject).to receive(:log)
+
+        subject.revert_removal
+        
+        expect(subject.deactivated).to be_falsy
+        expect(subject.deactivated_at).to be_nil
+        expect(subject.to_be_deleted).to be_falsy
+        expect(subject.to_be_deleted_at).to be_nil
+        
+      end
+    end
+    
+  end
+  
 end

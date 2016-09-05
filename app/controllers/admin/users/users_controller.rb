@@ -57,6 +57,16 @@ class Admin::Users::UsersController < Admin::AdminController
     end
   end
   
+  def revert_removal
+    if @user.present? && @user.deactivated?
+      @user.revert_removal
+      flash[:success] = t 'user.notice.success.removal-reverted'
+    else
+      flash[:warning] = t 'user.notice.warning.removal-revert-failed'
+    end
+    
+    redirect_to edit_admin_users_user_path
+  end
   
   def destroy
     @user.trigger_destroy

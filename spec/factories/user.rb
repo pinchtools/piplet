@@ -19,6 +19,19 @@ FactoryGirl.define do
       blocked true
     end
     
+    trait :is_deactivated do
+      deactivated true
+      deactivated_at Time.zone.now
+    end
+    
+    trait :is_to_be_deleted do
+      deactivated true
+      deactivated_at Time.zone.now
+      to_be_deleted true
+      to_be_deleted_at Time.zone.now
+
+    end
+    
     trait :with_blocked_filter do
       after(:create) do |user|
         user.filters << create(:user_filter_blocked_email)
@@ -49,4 +62,12 @@ FactoryGirl.define do
     with_trusted_filter
   end
 
+  factory :user_deactivated, parent: :user do
+    is_deactivated
+  end
+  
+  factory :user_to_be_deleted, parent: :user do
+    is_to_be_deleted
+  end
+  
 end

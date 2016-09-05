@@ -15,3 +15,5 @@ en:
       filter_ignored: 'The filter conflicts with another one or the current use state and will not be applied'
       delayed_destroy: 'User is deactivated and will be completely removed in %{days} days'
       deactivated: 'User has been deactivated'
+      revert_deactivation: 'User has been re-activated'
+      revert_deletion: 'Removal of user as been canceled'
