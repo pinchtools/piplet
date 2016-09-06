@@ -16,7 +16,7 @@
             <div class="alert alert-warning" role="alert"><%= t("admin.users.users.removal.admin-notice") %></div>
           <% end %>
 
-          <% if user.deactivated? || user.to_be_deleted? %>
+          <% if user.deactivated? %>
             <%= simple_format t("admin.users.users.removal.method-notices.perform") %>
           <% else %>
             <%= simple_format t("admin.users.users.removal.method-notices.#{User.removal_method.to_s}", days: 5) %>

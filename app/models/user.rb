@@ -261,7 +261,8 @@ class User < ActiveRecord::Base
   
 
   def trigger_destroy
-    self.send("#{User.removal_method}_destroy")
+    # if user is already deactivated it must be a definitive destroy
+    (deactivated?) ? perform_destroy : self.send("#{User.removal_method}_destroy")
   end
   
   def delay_destroy

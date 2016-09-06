@@ -354,6 +354,23 @@ RSpec.describe User, type: :model do
         expect(subject.to_be_deleted_at).to be_present
       end
       
+      describe 'user in attempt to be deleted' do
+        subject{ create(:user_to_be_deleted)}
+        
+        it 'calls perform_destroy on trigger_destrsoy' do
+          expect(subject).to receive(:perform_destroy)
+          
+          subject.trigger_destroy
+        end
+        
+        it 'calls destroy on trigger_destroy' do
+          expect(subject).to receive(:destroy)
+          
+          subject.trigger_destroy
+        end
+        
+      end
+      
     end
     
     context 'perform' do
@@ -393,11 +410,28 @@ RSpec.describe User, type: :model do
         expect(subject.deactivated_at).to be_present
       end
       
+      describe 'user already deactivate' do
+        subject{ create(:user_deactivated)}
+        
+        it 'calls perform_destroy on trigger_destrsoy' do
+          expect(subject).to receive(:perform_destroy)
+          
+          subject.trigger_destroy
+        end
+        
+        it 'calls destroy on trigger_destroy' do
+          expect(subject).to receive(:destroy)
+          
+          subject.trigger_destroy
+        end
+        
+      end
+      
     end
       
   end
   
-  describe "revert removal", :focus do
+  describe "revert removal" do
     
     context "when use is deactivate" do
       subject { create(:user_deactivated) }
