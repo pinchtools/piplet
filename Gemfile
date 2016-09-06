@@ -36,6 +36,7 @@ gem 'redis-rails'
 
 # background processing
 gem 'sidekiq'
+gem 'sidekiq-scheduler', '~> 2.0'
 gem 'sidekiq-statistic'
 
 gem 'responders', '~> 2.0'
