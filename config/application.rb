@@ -18,9 +18,11 @@ module Piplet
 
     config.cache_store = :redis_store, ENV['MEM_STORAGE_URL'],
       { namespace: 'cache' }
-    #"#{config.root}/lib/core_ext/"
+    
     config.autoload_paths += Dir["#{config.root}/lib/validators/", "#{config.root}/lib/decorators/"]
     config.autoload_paths += Dir[File.join(Rails.root, "lib", "core_ext", "*.rb")].each {|l| require l }
+    
+    config.eager_load_paths += ["#{config.root}/lib/workers"]
     
     config.active_job.queue_adapter = :sidekiq
       

@@ -267,6 +267,71 @@ RSpec.describe User, type: :model do
       
   end
   
+  describe 'all_to_be_deleted scope' do
+    
+    it 'includes to_be_deleted users' do
+      expect(User.all_to_be_deleted).to be_empty
+      
+      user = create(:user_to_be_deleted)
+      
+      expect(user.to_be_deleted).to be_truthy
+      expect(user.to_be_deleted_at).to be_present
+      
+      expect(User.all_to_be_deleted).to be_present
+    end
+    
+    it 'excludes not to_be_deleted users' do
+      expect(User.all_to_be_deleted).to be_empty
+      
+      user = create(:user)
+      
+      expect(user.to_be_deleted).to be_falsy
+      expect(user.to_be_deleted_at).to be_nil
+      
+      expect(User.all_to_be_deleted).to be_empty
+    end
+  end
+  
+  describe 'deletion_ready scope' do
+    it 'includes users with past or present to_be_deleted_at date' do
+      expect(User.deletion_ready).to be_empty
+      
+      user = create(:user_to_be_deleted)
+      
+      expect(user.to_be_deleted).to be_truthy
+      expect(user.to_be_deleted_at).to be_present
+      expect(user.to_be_deleted_at).to be <= Time.zone.now
+      
+      expect(User.deletion_ready).to be_present
+    end
+    
+    it 'excludes users with future to_be_deleted_at date' do
+      expect(User.deletion_ready).to be_empty
+      
+      user = create(:user_to_be_deleted)
+      
+      user.update_column(:to_be_deleted_at, 1.day.from_now)
+      
+      expect(user.to_be_deleted).to be_truthy
+      expect(user.to_be_deleted_at).to be_present
+      expect(user.to_be_deleted_at).to be > Time.zone.now
+      
+      expect(User.deletion_ready).to be_empty
+    end
+
+    it 'exclude not to_be_deleted users' do
+      expect(User.deletion_ready).to be_empty
+      
+      user = create(:user)
+      
+      expect(user.to_be_deleted).to be_falsy
+      expect(user.to_be_deleted_at).to be_nil
+      
+      expect(User.deletion_ready).to be_empty
+    end
+  end
+  
+  
   context 'with blocked filter' do
     subject { create(:user_blocked_by_filter) }
       

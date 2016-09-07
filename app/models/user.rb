@@ -120,6 +120,7 @@ class User < ActiveRecord::Base
   scope :actives, -> { where( blocked: false, suspected: false, deactivated: false ).order( last_seen_at: :desc ) }
   scope :all_deactivated, -> { where( deactivated: true, to_be_deleted:false).order( deactivated_at: :desc ) }
   scope :all_to_be_deleted, -> { where( to_be_deleted: true ).order( to_be_deleted_at: :asc ) }
+  scope :deletion_ready, -> { where( to_be_deleted: true ).where('to_be_deleted_at <= ?', Time.zone.now) }
   scope :newest, -> { order( created_at: :desc ) }
   
   def self.min_username_characters
