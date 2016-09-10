@@ -118,10 +118,22 @@
   <%= f.hidden_field :time_zone %>
   
 
-    <div class="row">
+    <div class="row row-section">
       <div class="col-md-8">
         <%= f.submit yield(:button_text), class: "btn btn-primary" %>
       </div>
     </div>
+    
+    <div class="row row-section">
+      <div class="col-md-8">
+        <%= button_tag t('user.form.edit.destroy'), 
+          class: "btn btn-block btn-sm btn-danger-outline",
+          type: "button",
+          data: {toggle: "modal",target: "#removalModal"}
+        %>
+      </div>
+    </div>
   
 <% end %>
+
+<%= render 'modal_removal', user: user %>

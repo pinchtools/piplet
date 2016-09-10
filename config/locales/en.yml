@@ -97,7 +97,7 @@ en:
               Still, his/her data are not removed and you will be able to revert this action or definitely erase this account.
           yourself-notice: 'This is your own account'
           admin-notice: 'This is an admin account'
-          closer: 'Close'
+          close: 'Close'
           remove: 'Remove'
         revert-modal:
           title: 'Revert removal'
@@ -131,6 +131,7 @@ en:
       edit:
         title: 'Account'
         submit: 'Save changes'
+        destroy: 'Remove account'
       help-text:
         description: '200 characters max.'
     notice:
@@ -165,6 +166,13 @@ en:
         account-need-activation: 'Please check your email to activate your account.'
       loading:
         username-check-in-progress: 'Checking is in progress'
+    removal:
+      title: 'Remove account'
+      notice: |
+        You're about to remove your account.
+        All your comments will be removed and you'll not be able to login anymore.
+      close: 'Close'
+      remove: 'Remove'
     mailer:
       account-activation: 'Account activation'
       password-reset: 'Password reset'

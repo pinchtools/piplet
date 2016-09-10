@@ -108,7 +108,7 @@
       </div>
       <div class="col-md-4 col-notice"></div>
     </div>
-  
+
     <div class="row row-section">
       <div class="col-md-8">
         <% if user.deactivated? %>
@@ -122,24 +122,25 @@
         <% end %>
       </div>
     </div>
-  
-    <div class="row row-section">
-      <div class="col-md-8">
-        <%
-        rm_label = if user.to_be_deleted? then t('admin.users.users.edit.destroy-now')
-        elsif user.deactivated? then t('admin.users.users.edit.destroy-data')
-        else t('admin.users.users.edit.destroy')
-        end
-        %>
-      
-        <%= button_tag rm_label, 
-          class: "btn btn-block btn-sm btn-danger-outline",
-          type: "button",
-          data: {toggle: "modal",target: "#removalModal"}
-        %>
+
+    <% if !user.deactivated? || user.removable? %>
+      <div class="row row-section">
+        <div class="col-md-8">
+          <%
+          rm_label = if user.to_be_deleted? then t('admin.users.users.edit.destroy-now')
+          elsif user.deactivated? then t('admin.users.users.edit.destroy-data')
+          else t('admin.users.users.edit.destroy')
+          end
+          %>
+
+          <%= button_tag rm_label, 
+            class: "btn btn-block btn-sm btn-danger-outline",
+            type: "button",
+            data: {toggle: "modal",target: "#removalModal"}
+          %>
+        </div>
       </div>
-    </div>
-    
+    <% end %>
 <% end %>
 
 <%= render 'modal_removal', user: user %>

@@ -17,6 +17,12 @@ FactoryGirl.define do
     
     trait :is_blocked do
       blocked true
+      blocked_at Time.zone.now
+    end
+    
+    trait :is_suspected do
+      suspected true
+      suspected_at Time.zone.now
     end
     
     trait :is_deactivated do
@@ -62,6 +68,10 @@ FactoryGirl.define do
     with_trusted_filter
   end
 
+  factory :user_suspected, parent: :user do
+    is_suspected
+  end
+  
   factory :user_deactivated, parent: :user do
     is_deactivated
   end

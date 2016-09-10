@@ -19,7 +19,7 @@
           <% if user.deactivated? %>
             <%= simple_format t("admin.users.users.removal.method-notices.perform") %>
           <% else %>
-            <%= simple_format t("admin.users.users.removal.method-notices.#{User.removal_method.to_s}", days: 5) %>
+            <%= simple_format t("admin.users.users.removal.method-notices.delay", days: @removal_delay) %>
           <% end %>
         </div>
         <div class="modal-footer">

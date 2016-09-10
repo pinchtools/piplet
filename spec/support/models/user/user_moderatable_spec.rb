@@ -2,6 +2,8 @@ RSpec.shared_examples "user moderatable" do
 
   context 'admin' do
     before(:all) do
+      
+      
       @admin = build(:admin)
       @user = build(:user)
       @another_admin = build(:admin)
@@ -11,15 +13,15 @@ RSpec.shared_examples "user moderatable" do
       @user.email = "regular-user1@example.com"
       @another_admin.email = "admin-user1@example.com"
       
+      User.destroy_all(email: [@admin.email, @user.email, @another_admin.email ] )
+      
       @admin.save
       @user.save
       @another_admin.save
     end
     
     after(:all) do
-      User.destroy(@admin.id)
-      User.destroy(@user.id)
-      User.destroy(@another_admin.id)
+      User.destroy_all(email: [@admin.email, @user.email, @another_admin.email ] )
     end
     
     it 'should be able to mark/unmark user as suspect' do
@@ -76,20 +78,22 @@ RSpec.shared_examples "user moderatable" do
       @admin = build(:admin)
       @another_user = build(:user)
       
-      @user.email = "regular-user@example.com"
-      @admin.email = "admin-user@example.com"
-      @another_user.email = "regular-user1@example.com"
+      @user.email = "regular-user2@example.com"
+      @admin.email = "admin-user3@example.com"
+      @another_user.email = "regular-user3@example.com"
       
+      User.destroy_all(email: [@user.email, @admin.email, @another_user.email ] )
+            
+        
       @user.save
       @admin.save
       @another_user.save
     end
     
     after(:all) do
-      User.destroy(@admin.id)
-      User.destroy(@user.id)
-      User.destroy(@another_user.id)
+      User.destroy_all(email: [@user.email, @admin.email, @another_user.email ] )
     end
+    
     
     it 'can\'t suspect anyone ' do
       expect(@user.suspect_user(@admin)).to be false

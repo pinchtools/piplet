@@ -2,7 +2,8 @@ class Users::UsersController < Users::BaseController
   before_action :logged_in_user, only: [ :edit, :update, :destroy]
   before_action :use_current_user, only: [:edit, :update, :destroy]
   before_action :existing_username, only: :show
-  before_action :is_regular_user, only: :destroy
+  
+  before_action :prevent_only_admin_removal, only: :destroy
   
   def new
     @user = User.new
@@ -55,6 +56,7 @@ class Users::UsersController < Users::BaseController
   def destroy
     log_out
     @user.destroy
+    
     flash[:success] = t 'user.notice.success.destroyed'
       
     redirect_to root_path
@@ -78,8 +80,11 @@ class Users::UsersController < Users::BaseController
     redirect_to(root_url) unless @user
   end
   
-  def is_regular_user
-    redirect_to(users_dashboard_index_url) unless @user.regular?
+  def prevent_only_admin_removal
+    if @user.admin? && !User.admins.many?
+      flash[:danger] = t('user.notice.danger.only-admin-removal')
+      redirect_to :root
+    end
   end
   
   def user_create_params

@@ -207,20 +207,25 @@ RSpec.describe Users::UsersController, type: :controller do
   
   describe "DELETE #destroy" do
     
-    it 'prevent an admin from removing himself' do
-      log_in_as( create(:admin) )
-      count = User.count
+    it "should redirect when there is only one admin" do
+      User.admins.destroy_all
       
-      delete :destroy
+      admin = FactoryGirl.create(:admin)
       
-      expect(:response).to redirect_to(:users_dashboard_index)
-      expect(User.count).to eq(count)
+      expect(User.admins.count).to eq(1)
+      
+      log_in_as(admin)
+      
+      delete :destroy, username: admin.username_lower
+      
+      expect(:response).to redirect_to(:root)
+      expect(flash[:danger]).to be_present
     end
     
     it 'allows regular user to destroy himself' do
       log_in_as( create(:user), { remember_me: '1' })
       
-      count = User.count
+      count = User.actives.count
 
       expect(cookies).to have_key(:remember_token)
       expect(cookies).to have_key(:user_id)
@@ -229,7 +234,7 @@ RSpec.describe Users::UsersController, type: :controller do
       
       expect(:response).to redirect_to(:root)
       
-      expect(User.count).to eq(count - 1)
+      expect(User.actives.count).to eq(count - 1)
 
       expect(cookies).to_not have_key(:remember_token)
       expect(cookies).to_not have_key(:user_id)

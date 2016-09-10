@@ -44,8 +44,10 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
 
   
   describe "DELETE #destroy" do
+    before {
+      User.admins.destroy_all
+    }
     let!(:admin) { FactoryGirl.create(:admin) }
-    
     
     it_behaves_like 'a restricted access to admin only' do 
       let(:request) { delete :destroy, username: admin.username_lower }

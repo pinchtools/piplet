@@ -268,6 +268,10 @@ RSpec.describe User, type: :model do
   end
   
   describe 'all_to_be_deleted scope' do
+    before {
+      User.all_to_be_deleted.destroy_all
+    }
+    
     
     it 'includes to_be_deleted users' do
       expect(User.all_to_be_deleted).to be_empty
@@ -332,24 +336,6 @@ RSpec.describe User, type: :model do
   end
   
   
-  context 'with blocked filter' do
-    subject { create(:user_blocked_by_filter) }
-      
-    it 'should remove relation with user_filters when destroyed' do
-      expect(subject.filters).not_to be_empty
-      
-      filter_id = subject.filters.first.id
-      
-      #look if the filter is link to the user
-      expect(UserFilter.find(filter_id).users.find_by(:id => subject.id)).to be_present
-      
-      expect(subject.destroy).not_to be(false)
-      
-      #look if the link between filter and user has been removed
-      expect(UserFilter.find(filter_id).users.find_by(:id => subject.id)).to be_nil
-    end
-  end
-  
   describe 'search' do
     subject { create(:user) }
       
@@ -381,119 +367,298 @@ RSpec.describe User, type: :model do
     
   end
   
+  describe 'removable?' do
+    
+    it 'should be already deactivate' do
+          expect(subject.deactivated?).to be_falsy
+          
+          expect(subject.removable?).to be_falsy
+    end
+    
+    it 'should be true for user not suspected neither blocked' do
+      subject.deactivated = true
+      
+      expect(subject.suspected?).to be_falsy
+      expect(subject.blocked?).to be_falsy
+            
+      expect(subject.removable?).to be_truthy
+    end
+    
+    it 'should be true for suspected user if conf setting is set to true' do
+      subject.deactivated = true
+      subject.suspected = true
+      
+      expect(User).to receive(:suspect_user_removable?).and_return(true)
+      
+      
+      expect(subject.removable?).to be_truthy
+    end
+    
+    it 'should be false for suspected user if conf setting is set to false' do
+      subject.deactivated = true
+      subject.suspected = true
+      
+      expect(User).to receive(:suspect_user_removable?).and_return(false)
+      
+      
+      expect(subject.removable?).to be_falsy
+    end
+    
+    it 'should be true for blocked user if conf setting is set to true' do
+      subject.deactivated = true
+      subject.blocked = true
+      
+      expect(User).to receive(:blocked_user_removable?).and_return(true)
+      
+      
+      expect(subject.removable?).to be_truthy
+    end
+    
+    it 'should be false for blocked user if conf setting is set to false' do
+      subject.deactivated = true
+      subject.blocked = true
+      
+      expect(User).to receive(:blocked_user_removable?).and_return(false)
+      
+      
+      expect(subject.removable?).to be_falsy
+    end
+    
+  end
+
+  
   describe 'removal' do
     subject { create(:user) }
-    before(:each) {
-      User.class_variable_set :@@REMOVAL_METHOD, nil
-    }
-      
-
     
-    
-    it 'delays destroy when setting is unknown' do
-      Setting.defaults['user.removal_method'] = :random
+    it 'deactivates' do
+      expect(subject.deactivated).to be_falsy
+      expect(subject.deactivated_at).to be_nil
       
-      expect(subject).to receive(:delay_destroy)
+      subject.deactivate
       
-      subject.trigger_destroy
+      expect(subject.deactivated).to be_truthy
+      expect(subject.deactivated_at).to be_present
     end
+      
     
-    
-    context 'delay' do
-      before { Setting.defaults['removal_method'] = :delay }
-        
-      it 'calls delay_destroy on trigger_destroy' do
+    context 'for not already deactivated user' do
+      
+      it 'should call delay_destroy' do
         expect(subject).to receive(:delay_destroy)
         
-        subject.trigger_destroy
-      end
-        
-      it 'delayed and log' do
-        expect(User.removal_delay_duration).to be > 0
-        expect(subject).to receive(:deactivate_destroy)
-        expect(subject).to receive(:log)
-        
-        subject.trigger_destroy
-        
-        expect(subject.to_be_deleted).to be_truthy
-        expect(subject.to_be_deleted_at).to be_present
+        expect{ subject.destroy }.to_not change(User, :count)
       end
       
-      describe 'user in attempt to be deleted' do
-        subject{ create(:user_to_be_deleted)}
+      it 'should deactivates user' do
+        expect(subject).to receive(:deactivate)
         
-        it 'calls perform_destroy on trigger_destrsoy' do
-          expect(subject).to receive(:perform_destroy)
-          
-          subject.trigger_destroy
-        end
-        
-        it 'calls destroy on trigger_destroy' do
-          expect(subject).to receive(:destroy)
-          
-          subject.trigger_destroy
-        end
-        
+        expect{ subject.destroy }.to_not change(User, :count)
       end
-      
     end
     
-    context 'perform' do
-      before { Setting.defaults['user.removal_method'] = :perform }
+    context 'for already deactivate user' do
+      subject{ create(:user_deactivated)}
         
-      it 'calls perform_destroy on trigger_destroy' do
-        expect(subject).to receive(:perform_destroy)
+        it 'should call destroy' do
+          expect(subject).not_to receive(:delay_destroy)
+          
+          # TODO test destroy method and relations deletions apart
+          expect{ subject.destroy }.to change(User, :count).by(-1)
+        end
+    end
+    
+    context 'for to be deleted user' do
+      subject{ create(:user_to_be_deleted)}
         
-        subject.trigger_destroy
-      end
-      
-      it 'calls destroy' do
-        expect(subject).to receive(:destroy)
-        
+      it 'should call destroy' do
         # TODO test destroy method and relations deletions apart
+        expect(subject).not_to receive(:delay_destroy)
         
-        subject.trigger_destroy
+        expect{ subject.destroy }.to change(User, :count).by(-1)
       end
-        
     end
     
-    context 'deactivate' do
-      before { Setting.defaults['user.removal_method'] = :deactivate }
+    
+    describe 'for suspected user' do
+      subject{ create(:user_suspected)}
       
-      it 'calls deactivate_destroy on trigger_destroy' do
-        expect(subject).to receive(:deactivate_destroy)
+      context 'when removal is permitted' do
+        before {
+          User.class_variable_set :@@IS_SUSPECT_USER_REMOVABLE, true
+        }
         
-        subject.trigger_destroy
-      end
-      
-      it 'deactivates account' do
-        expect(subject).to receive(:log)
-        
-        subject.trigger_destroy
-        
-        expect(subject.deactivated).to be_truthy
-        expect(subject.deactivated_at).to be_present
-      end
-      
-      describe 'user already deactivate' do
-        subject{ create(:user_deactivated)}
-        
-        it 'calls perform_destroy on trigger_destrsoy' do
-          expect(subject).to receive(:perform_destroy)
+        it 'should call delay_destroy when not deactivated' do
+          expect(subject.deactivated).to be_falsy
+          expect(subject.deactivated_at).to be_nil
           
-          subject.trigger_destroy
+          expect(subject).to receive(:delay_destroy)
+
+          expect{ subject.destroy }.not_to change(User, :count)
         end
         
-        it 'calls destroy on trigger_destroy' do
-          expect(subject).to receive(:destroy)
+        it 'should set deleted_at when a delay is set' do
+          User.class_variable_set :@@REMOVAL_DELAY_DURATION, 20
           
-          subject.trigger_destroy
+          expect(subject.deactivated).to be_falsy
+          expect(subject.deactivated_at).to be_nil
+          
+          expect(subject.to_be_deleted).to be_falsy
+          expect(subject.to_be_deleted_at).to be_nil
+          
+          subject.destroy
+          
+          expect(subject.to_be_deleted).to be_truthy
+          expect(subject.to_be_deleted_at).to be_present
+        end
+        
+        it 'should remove user when already deactivated' do
+          subject.deactivate
+          
+          expect(User).to receive(:suspect_user_removable?).and_return(true)
+
+          expect(subject.deactivated).to be_truthy
+          expect(subject.deactivated_at).to be_present
+          
+          expect(subject).not_to receive(:delay_destroy)
+          
+          expect{ subject.destroy }.to change(User, :count).by(-1)
         end
         
       end
       
+      context 'when removals not permitted' do
+        before {
+          User.class_variable_set :@@IS_SUSPECT_USER_REMOVABLE, false
+        }
+        
+        it 'should call delay_destroy when not deactivated' do
+          expect(subject.deactivated).to be_falsy
+          expect(subject.deactivated_at).to be_nil
+          
+          expect(subject).to receive(:delay_destroy)
+          
+          expect{ subject.destroy }.not_to change(User, :count)
+        end
+        
+        it 'should  not set deleted_at even if a delay is set' do
+          User.class_variable_set :@@REMOVAL_DELAY_DURATION, 20
+          
+          expect(subject.deactivated).to be_falsy
+          expect(subject.deactivated_at).to be_nil
+          
+          expect(subject.to_be_deleted).to be_falsy
+          expect(subject.to_be_deleted_at).to be_nil
+          
+          subject.destroy
+          
+          expect(subject.to_be_deleted).to be_falsy
+          expect(subject.to_be_deleted_at).to be_nil
+        end
+        
+        it 'should do nothing when already deactivated' do
+          subject.deactivate
+          
+          expect(subject).not_to receive(:delay_destroy)
+
+          expect{ subject.destroy }.not_to change(User, :count)
+        end
+
+      end
     end
+    
+    describe 'for blocked user' do
+      subject{ create(:user_blocked)}
+      before {
+        User.class_variable_set :@@IS_BLOCKED_USER_REMOVABLE, true
+      }
+        
+      context 'when removal is permitted' do
+        
+        it 'should call delay_destroy when not deactivated' do
+          expect(User.blocked_user_removable?).to be_truthy
+          expect(subject.deactivated).to be_falsy
+          expect(subject.deactivated_at).to be_nil
+          
+          expect(subject).to receive(:delay_destroy)
+
+          expect{ subject.destroy }.not_to change(User, :count)
+        end
+        
+        it 'should set deleted_at when a delay is set' do
+          User.class_variable_set :@@REMOVAL_DELAY_DURATION, 20
+          
+          expect(subject.deactivated).to be_falsy
+          expect(subject.deactivated_at).to be_nil
+          
+          expect(subject.to_be_deleted).to be_falsy
+          expect(subject.to_be_deleted_at).to be_nil
+          
+          subject.destroy
+          
+          expect(subject.to_be_deleted).to be_truthy
+          expect(subject.to_be_deleted_at).to be_present
+        end
+        
+        it 'should remove user when already deactivated' do
+          expect(User.blocked_user_removable?).to be_truthy
+          
+          subject.deactivate
+          
+          expect(subject.deactivated).to be_truthy
+          expect(subject.deactivated_at).to be_present
+          
+          expect(subject).not_to receive(:delay_destroy)
+          
+          expect{ subject.destroy }.to change(User, :count).by(-1)
+        end
+      end
       
+      context 'when removal is not permitted' do
+        before {
+          User.class_variable_set :@@IS_BLOCKED_USER_REMOVABLE, false
+        }
+        
+        it 'should call delay_destroy when not deactivated' do
+          expect(User.blocked_user_removable?).to be_falsy
+          expect(subject.deactivated).to be_falsy
+          expect(subject.deactivated_at).to be_nil
+          
+          expect(subject).to receive(:delay_destroy)
+
+          expect{ subject.destroy }.not_to change(User, :count)
+        end
+        
+        
+        it 'should  not set deleted_at even if a delay is set' do
+          User.class_variable_set :@@REMOVAL_DELAY_DURATION, 20
+          
+          expect(subject.deactivated).to be_falsy
+          expect(subject.deactivated_at).to be_nil
+          
+          expect(subject.to_be_deleted).to be_falsy
+          expect(subject.to_be_deleted_at).to be_nil
+          
+          subject.destroy
+          
+          expect(subject.to_be_deleted).to be_falsy
+          expect(subject.to_be_deleted_at).to be_nil
+        end
+        
+        it 'should not do anything when already deactivated' do
+          subject.deactivate
+          
+          #this case should never happened
+          expect(subject).not_to receive(:delay_destroy)
+
+          expect{ subject.destroy }.not_to change(User, :count)
+        end
+        
+      end
+    end
+    
+    
+
+   
   end
   
   describe "revert removal" do

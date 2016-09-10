@@ -59,15 +59,9 @@ class User < ActiveRecord::Base
   @@MIN_PASSWORD_CHARACTERS = 6
   @@MAX_PASSWORD_CHARACTERS = 50
   
-  @@REMOVAL_METHOD = nil
   @@REMOVAL_DELAY_DURATION = nil
-  
-  enum removal_method: [
-    :delay,
-    :perform,
-    :deactivate
-    ]
-  
+  @@IS_SUSPECT_USER_REMOVABLE = nil
+  @@IS_BLOCKED_USER_REMOVABLE = nil
     
   has_and_belongs_to_many :filters, :class_name => 'UserFilter', :join_table => :users_user_filters
 
@@ -139,18 +133,25 @@ class User < ActiveRecord::Base
   def self.max_password_characters
     @@MAX_PASSWORD_CHARACTERS
   end
-    
-  def self.removal_method
-    @@REMOVAL_METHOD = Setting['user.removal_method'] if @@REMOVAL_METHOD.nil?
-
-    (User.removal_methods[@@REMOVAL_METHOD].present?) ? @@REMOVAL_METHOD : :delay
-  end
   
   def self.removal_delay_duration
     @@REMOVAL_DELAY_DURATION = Setting['user.removal_delay_duration'] if @@REMOVAL_DELAY_DURATION.nil?
     
     @@REMOVAL_DELAY_DURATION
   end
+  
+  def self.suspect_user_removable?
+    @@IS_SUSPECT_USER_REMOVABLE = Setting['user.is_suspect_user_removable'] if @@IS_SUSPECT_USER_REMOVABLE.nil?
+
+    @@IS_SUSPECT_USER_REMOVABLE
+  end
+  
+  def self.blocked_user_removable?
+      @@IS_BLOCKED_USER_REMOVABLE = Setting['user.is_blocked_user_removable'] if @@IS_BLOCKED_USER_REMOVABLE.nil?
+      
+      @@IS_BLOCKED_USER_REMOVABLE
+    end
+    
   
   # Returns the hash digest of the given string.
   def self.digest(string)
@@ -259,37 +260,49 @@ class User < ActiveRecord::Base
   def update_last_seen!(date = Time.current)
     update_column(:last_seen_at, date) unless last_seen_at.present? && date - last_seen_at < 1.minute
   end
-  
 
-  def trigger_destroy
-    # if user is already deactivated it must be a definitive destroy
-    (deactivated?) ? perform_destroy : self.send("#{User.removal_method}_destroy")
+  def removable_suspected_user?
+    suspected? && deactivated? && User.suspect_user_removable?
+  end
+  
+  def removable_blocked_user?
+    blocked? && deactivated? && User.blocked_user_removable?
+  end
+  
+  
+  def removable?
+    return false if !deactivated? # can't remove data if not deactivated previously
+    return true unless suspected? || blocked?
+    return true if removable_suspected_user?
+    return true if removable_blocked_user?
+    return false
+  end
+
+  def destroy
+    if !deactivated?
+      self.delay_destroy
+    elsif removable?
+      super
+    end
   end
   
   def delay_destroy
+    deactivate
+    
     nb = User.removal_delay_duration.to_i
     
-    if nb > 0
-      #User.delay_for(nb.days).destroy(self.id)
-      
+    if nb > 0 && removable?
       update_columns(
         to_be_deleted: true,
         to_be_deleted_at: nb.days.from_now
       )
-      
-      #deactivate right now before definitive removal
-      deactivate_destroy
       
       log( :delayed_destroy, message_vars: { days: nb } )
     end
     
   end
   
-  def perform_destroy
-    destroy
-  end
-
-  def deactivate_destroy
+  def deactivate
     update_columns(
       deactivated: true, 
       deactivated_at: Time.zone.now

@@ -35,6 +35,15 @@ RSpec.describe Users::SessionsController, type: :controller do
       expect(flash[:warning]).to be_present
     end
     
+    it "fails if user is blocked" do
+      user = create(:user_blocked)
+      
+      log_in_as(user)
+      
+      expect(response).to render_template(:new)
+      expect(flash[:danger]).to be_present
+    end
+    
     it "create a regular session when suceed" do
       user = create(:user)
     

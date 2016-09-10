@@ -5,6 +5,8 @@ class Admin::Users::UsersController < Admin::AdminController
   
   before_action :prevent_only_admin_removal, only: :destroy
   
+  before_action :load_settings, only: [ :new, :create, :edit, :update ]
+  
   respond_to :html, :js
   
   def index
@@ -69,7 +71,7 @@ class Admin::Users::UsersController < Admin::AdminController
   end
   
   def destroy
-    @user.trigger_destroy
+    @user.destroy
 
     flash[:success] = t 'user.notice.success.destroyed'
 
@@ -91,6 +93,9 @@ class Admin::Users::UsersController < Admin::AdminController
     @user = User.find(params[:id])
   end
   
+  def load_settings
+    @removal_delay = User.removal_delay_duration
+  end
   
   def users_selection(kind)
     case kind

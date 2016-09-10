@@ -31,7 +31,7 @@ RSpec.shared_context "password validation" do |attribute|
   end
   
   
-  it 'should have a length include into an accepted range', :focus do
+  it 'should have a length include into an accepted range' do
     password = "R0d"
     range = User.min_password_characters..User.max_password_characters
     
