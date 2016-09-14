@@ -388,8 +388,7 @@ RSpec.describe User, type: :model do
       subject.deactivated = true
       subject.suspected = true
       
-      expect(User).to receive(:suspect_user_removable?).and_return(true)
-      
+      User.is_suspect_user_removable = true
       
       expect(subject.removable?).to be_truthy
     end
@@ -398,8 +397,7 @@ RSpec.describe User, type: :model do
       subject.deactivated = true
       subject.suspected = true
       
-      expect(User).to receive(:suspect_user_removable?).and_return(false)
-      
+      User.is_suspect_user_removable = false
       
       expect(subject.removable?).to be_falsy
     end
@@ -408,8 +406,7 @@ RSpec.describe User, type: :model do
       subject.deactivated = true
       subject.blocked = true
       
-      expect(User).to receive(:blocked_user_removable?).and_return(true)
-      
+      User.is_blocked_user_removable = true
       
       expect(subject.removable?).to be_truthy
     end
@@ -418,8 +415,7 @@ RSpec.describe User, type: :model do
       subject.deactivated = true
       subject.blocked = true
       
-      expect(User).to receive(:blocked_user_removable?).and_return(false)
-      
+      User.is_blocked_user_removable = false
       
       expect(subject.removable?).to be_falsy
     end
@@ -484,7 +480,7 @@ RSpec.describe User, type: :model do
       
       context 'when removal is permitted' do
         before {
-          User.class_variable_set :@@IS_SUSPECT_USER_REMOVABLE, true
+          User.is_suspect_user_removable = true
         }
         
         it 'should call delay_destroy when not deactivated' do
@@ -497,7 +493,7 @@ RSpec.describe User, type: :model do
         end
         
         it 'should set deleted_at when a delay is set' do
-          User.class_variable_set :@@REMOVAL_DELAY_DURATION, 20
+          User.removal_delay_duration = 20
           
           expect(subject.deactivated).to be_falsy
           expect(subject.deactivated_at).to be_nil
@@ -514,8 +510,8 @@ RSpec.describe User, type: :model do
         it 'should remove user when already deactivated' do
           subject.deactivate
           
-          expect(User).to receive(:suspect_user_removable?).and_return(true)
-
+          User.is_suspect_user_removable = true
+          
           expect(subject.deactivated).to be_truthy
           expect(subject.deactivated_at).to be_present
           
@@ -528,7 +524,7 @@ RSpec.describe User, type: :model do
       
       context 'when removals not permitted' do
         before {
-          User.class_variable_set :@@IS_SUSPECT_USER_REMOVABLE, false
+          User.is_suspect_user_removable = false
         }
         
         it 'should call delay_destroy when not deactivated' do
@@ -541,7 +537,7 @@ RSpec.describe User, type: :model do
         end
         
         it 'should  not set deleted_at even if a delay is set' do
-          User.class_variable_set :@@REMOVAL_DELAY_DURATION, 20
+          User.removal_delay_duration = 20
           
           expect(subject.deactivated).to be_falsy
           expect(subject.deactivated_at).to be_nil
@@ -569,13 +565,13 @@ RSpec.describe User, type: :model do
     describe 'for blocked user' do
       subject{ create(:user_blocked)}
       before {
-        User.class_variable_set :@@IS_BLOCKED_USER_REMOVABLE, true
+        User.is_blocked_user_removable = true
       }
         
       context 'when removal is permitted' do
         
         it 'should call delay_destroy when not deactivated' do
-          expect(User.blocked_user_removable?).to be_truthy
+          expect(User.is_blocked_user_removable).to be_truthy
           expect(subject.deactivated).to be_falsy
           expect(subject.deactivated_at).to be_nil
           
@@ -585,7 +581,7 @@ RSpec.describe User, type: :model do
         end
         
         it 'should set deleted_at when a delay is set' do
-          User.class_variable_set :@@REMOVAL_DELAY_DURATION, 20
+          User.removal_delay_duration = 20
           
           expect(subject.deactivated).to be_falsy
           expect(subject.deactivated_at).to be_nil
@@ -600,7 +596,7 @@ RSpec.describe User, type: :model do
         end
         
         it 'should remove user when already deactivated' do
-          expect(User.blocked_user_removable?).to be_truthy
+          expect(User.is_blocked_user_removable).to be_truthy
           
           subject.deactivate
           
@@ -615,11 +611,11 @@ RSpec.describe User, type: :model do
       
       context 'when removal is not permitted' do
         before {
-          User.class_variable_set :@@IS_BLOCKED_USER_REMOVABLE, false
+          User.is_blocked_user_removable = false
         }
         
         it 'should call delay_destroy when not deactivated' do
-          expect(User.blocked_user_removable?).to be_falsy
+          expect(User.is_blocked_user_removable).to be_falsy
           expect(subject.deactivated).to be_falsy
           expect(subject.deactivated_at).to be_nil
           
@@ -630,7 +626,7 @@ RSpec.describe User, type: :model do
         
         
         it 'should  not set deleted_at even if a delay is set' do
-          User.class_variable_set :@@REMOVAL_DELAY_DURATION, 20
+          User.removal_delay_duration  = 20
           
           expect(subject.deactivated).to be_falsy
           expect(subject.deactivated_at).to be_nil

@@ -59,9 +59,7 @@ class User < ActiveRecord::Base
   @@MIN_PASSWORD_CHARACTERS = 6
   @@MAX_PASSWORD_CHARACTERS = 50
   
-  @@REMOVAL_DELAY_DURATION = nil
-  @@IS_SUSPECT_USER_REMOVABLE = nil
-  @@IS_BLOCKED_USER_REMOVABLE = nil
+  @@SETTINGS = {}
     
   has_and_belongs_to_many :filters, :class_name => 'UserFilter', :join_table => :users_user_filters
 
@@ -134,24 +132,27 @@ class User < ActiveRecord::Base
     @@MAX_PASSWORD_CHARACTERS
   end
   
-  def self.removal_delay_duration
-    @@REMOVAL_DELAY_DURATION = Setting['user.removal_delay_duration'] if @@REMOVAL_DELAY_DURATION.nil?
+  def self.method_missing(method_name, *arguments, &block)
     
-    @@REMOVAL_DELAY_DURATION
-  end
-  
-  def self.suspect_user_removable?
-    @@IS_SUSPECT_USER_REMOVABLE = Setting['user.is_suspect_user_removable'] if @@IS_SUSPECT_USER_REMOVABLE.nil?
-
-    @@IS_SUSPECT_USER_REMOVABLE
-  end
-  
-  def self.blocked_user_removable?
-      @@IS_BLOCKED_USER_REMOVABLE = Setting['user.is_blocked_user_removable'] if @@IS_BLOCKED_USER_REMOVABLE.nil?
+    if method_name =~ /\A(\w+)=\z/ && Setting.defaults.key?("user.#{$1}")
+      # affectation
+      self.settings[$1.to_sym] = arguments[0]
       
-      @@IS_BLOCKED_USER_REMOVABLE
+      Setting["user.#{$1}"] = arguments[0]
+      return
+    elsif Setting.defaults.key?("user.#{method_name}")
+      # undefined method should ask for setting
+      return self.settings[method_name] if self.settings.key?(method_name)
+      
+      #when not already set search in db or yml
+      self.settings[method_name] = Setting["user.#{method_name}"]
+        
+      return self.settings[method_name]
     end
     
+    super
+  end
+  
   
   # Returns the hash digest of the given string.
   def self.digest(string)
@@ -231,6 +232,8 @@ class User < ActiveRecord::Base
   
   
   def check_new_account
+    
+    
     if blocked_email = find_email_similar_to_blocked_one
       suspect(note: 'user.errors.email.similar-to-blocked-one')
       
@@ -242,15 +245,13 @@ class User < ActiveRecord::Base
   
   
   def find_email_similar_to_blocked_one
-    return false unless Setting['user.suspect_email_similar_to_banned_one']
-    
+    return false unless Setting['user.signaled_matching_with_blocked_account']
     
     max_distance = Setting['user.considered_email_similar_when_x_characters'] || 2
     
+    # /!\ this method may be inefficient for large amount of blocked profiles
     emails_blocked = User.all_blocked
-      .where('blocked_at >  ? ', 7.days.ago)
       .order(:blocked_at => :desc)
-      .limit(500)
       .pluck(:email)
       
     return emails_blocked.find{|e| Levenshtein.distance(email, e) <= max_distance}
@@ -262,11 +263,11 @@ class User < ActiveRecord::Base
   end
 
   def removable_suspected_user?
-    suspected? && deactivated? && User.suspect_user_removable?
+    suspected? && deactivated? && User.is_suspect_user_removable
   end
   
   def removable_blocked_user?
-    blocked? && deactivated? && User.blocked_user_removable?
+    blocked? && deactivated? && User.is_blocked_user_removable
   end
   
   
@@ -348,6 +349,10 @@ class User < ActiveRecord::Base
   #
   ########
   private
+  
+  def self.settings
+    @@SETTINGS
+  end
   
   def create_default_avatar
     UserAvatar.create(:kind => UserAvatar.kinds[:default], :user_id => self.id)
