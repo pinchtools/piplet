@@ -1,5 +1,8 @@
-suspect_email_similar_to_banned_one: true
+signaled_matching_with_blocked_account: true
+signaled_matching_with_suspected_account: true
 considered_email_similar_when_x_characters: 2
+considered_username_similar_when_x_characters: 2
+signaled_matching_with_suspected_account: true
 max_username_renew: 3
 min_username_character: 3
 min_password_character: 8

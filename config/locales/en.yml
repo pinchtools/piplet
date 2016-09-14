@@ -178,7 +178,8 @@ en:
       password-reset: 'Password reset'
     moderation:
       suspect:
-        email_similar: 'Email is similar to a blocked one : %{user_email} - %{blocked_email}'
+        email_similar: 'Email is similar to a blocked one : %{email} - %{email_found}'
+        username_similar: 'Email is similar to a blocked one : %{username} - %{username_found}'
     errors:
       username:
         must-be-within-characters: "must be within %{min} to %{max} characters"
@@ -189,6 +190,8 @@ en:
         must-not-contain-confusing-suffix: "must not contain a confusing suffix like .json or .png etc."
         reserved: "That username is not allowed."
         max-renewal: "has been renewed %{max} times already, you can't renew it another time"
+        similar-to-blocked-one: "Username is similar to a blocked one, please see logs for further details"
+        similar-to-suspected-one: "Username is similar to a suspected one, please see logs for further details"
       password:
         must-be-within-characters: "must be within %{min} to %{max} characters"
         common: "is one of the 10000 most common passwords. Please use a more secure password."
@@ -197,6 +200,7 @@ en:
       email:
         provider-banned: "Invalid email"
         similar-to-blocked-one: "Email is similar to a blocked one, please see logs for further details"
+        similar-to-suspected-one: "Email is similar to a suspected one, please see logs for further details"
   session:
     sign-up-btn: 'Sign up now!'
     remember-me: 'Remember me'

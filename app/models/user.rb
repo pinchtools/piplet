@@ -232,31 +232,71 @@ class User < ActiveRecord::Base
   
   
   def check_new_account
-    
-    
-    if blocked_email = find_email_similar_to_blocked_one
-      suspect(note: 'user.errors.email.similar-to-blocked-one')
+    # blocked accounts matching
+    if User.signaled_matching_with_blocked_account == true
       
-      log(:suspected,
-        message: 'log.messages.email_similar',
-        message_vars: { email: email, bloqued_email: blocked_email }.to_json )
+      if username_found = find_username_similar_on_scope(:all_blocked)
+        suspect(note: 'user.errors.username.similar-to-blocked-one')
+        
+        log(:suspected,
+          message: 'log.messages.username_similar',
+          message_vars: { username: username, username_found: username_found }.to_json )
+        return
+      elsif email_found = find_email_similar_on_scope(:all_blocked)
+        suspect(note: 'user.errors.email.similar-to-blocked-one')
+        
+        log(:suspected,
+          message: 'log.messages.email_similar',
+          message_vars: { email: email, email_found: email_found }.to_json )
+        return
+      end
+      
     end
+    
+    #suspected accounts matching
+    if User.signaled_matching_with_suspected_account == true
+      if username_found = find_username_similar_on_scope(:all_blocked)
+        suspect(note: 'user.errors.username.similar-to-suspected-one')
+        
+        log(:suspected,
+          message: 'log.messages.username_similar',
+          message_vars: { username: username, username_found: username_found }.to_json )
+        return
+      elsif email_found = find_email_similar_on_scope(:suspects)
+        suspect(note: 'user.errors.email.similar-to-suspected-one')
+        
+        log(:suspected,
+          message: 'log.messages.email_similar',
+          message_vars: { email: email, email_found: email_found }.to_json )
+        return
+      end
+      
+    end
+    
+
   end
   
-  
-  def find_email_similar_to_blocked_one
-    return false unless Setting['user.signaled_matching_with_blocked_account']
-    
+  def find_email_similar_on_scope(scope)
     max_distance = Setting['user.considered_email_similar_when_x_characters'] || 2
-    
-    # /!\ this method may be inefficient for large amount of blocked profiles
-    emails_blocked = User.all_blocked
+      
+    # /!\ this method might be inefficient for large amount of concerned users
+    emails_blocked = User.send(scope)
       .order(:blocked_at => :desc)
       .pluck(:email)
       
     return emails_blocked.find{|e| Levenshtein.distance(email, e) <= max_distance}
   end
   
+  def find_username_similar_on_scope(scope)
+    max_distance = Setting['user.considered_username_similar_when_x_characters'] || 2
+      
+    # /!\ this method might be inefficient for large amount of concerned users
+    usernames_blocked = User.send(scope)
+      .order(:blocked_at => :desc)
+      .pluck(:username)
+      
+    return usernames_blocked.find{|u| Levenshtein.distance(username, u) <= max_distance}
+  end
   
   def update_last_seen!(date = Time.current)
     update_column(:last_seen_at, date) unless last_seen_at.present? && date - last_seen_at < 1.minute
