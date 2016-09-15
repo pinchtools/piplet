@@ -8,4 +8,4 @@ min_username_character: 3
 min_password_character: 8
 removal_delay_duration: 20 # nil if we want to keep removed users in database
 is_suspect_user_removable: false # false ensure this pseudo won't be used again & similars new accounts will be signaled to admin
-is_blocked_user_removable: false # same as below
+is_blocked_user_removable: false # same as above
