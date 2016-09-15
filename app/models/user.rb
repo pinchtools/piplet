@@ -34,6 +34,7 @@
 #  deactivated_at        :datetime
 #  to_be_deleted         :boolean          default(FALSE)
 #  to_be_deleted_at      :datetime
+#  blocked_note          :string
 #
 # Indexes
 #

@@ -59,6 +59,18 @@ class Admin::Users::UsersController < Admin::AdminController
     end
   end
   
+  def block
+  end
+  
+  def revert_block
+  end
+  
+  def suspect
+  end
+  
+  def revert_suspect
+  end
+  
   def revert_removal
     if @user.present? && @user.deactivated?
       @user.revert_removal

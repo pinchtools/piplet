@@ -37,6 +37,10 @@ Rails.application.routes.draw do
         
         member do
           post 'revert_removal', as: :revert_removal
+          post 'block', as: :block
+          post 'revert_block', as: :revert_block
+          post 'suspect', as: :suspect
+          post 'revert_suspect', as: :revert_suspect
         end
       end
       
