@@ -2,8 +2,10 @@
   <%= render 'layouts/admin/users/nav_bar' , locals: { username: @user.username_lower } %>
 
   <div class="col-md-10 col-md-offset-1">
-  
     <div class="row row-section">
+      <%= content_tag(:div, t('admin.users.dashboard.notice.warning.blocked'), class: "alert alert-warning") if @user.blocked? %>
+      <%= content_tag(:div, t('admin.users.dashboard.notice.warning.suspected'), class: "alert alert-warning") if @user.suspected? && !@user.blocked? %>
+    
       <%= link_to t('users.links.users.show'), admin_users_user_path(@user.username_lower) %>
     </div>
     

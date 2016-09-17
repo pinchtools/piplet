@@ -132,6 +132,11 @@ en:
           notice: |
             User will be removed from the suspected list.
           submit: 'Submit'
+      dashboard:
+        notice:
+          warning:
+            blocked: 'This account has been blocked'
+            suspected: 'This account has been marked as suspect'
   users:
     links:
       users:
