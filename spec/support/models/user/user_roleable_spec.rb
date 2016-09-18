@@ -5,7 +5,7 @@ RSpec.shared_examples "user roleable" do
     
     it 'should be regular user' do
       expect(subject.regular?).to be true
-      expect(subject.staff_member?).to be false
+      expect(subject.admin?).to be false
     end
   end
   
@@ -14,7 +14,7 @@ RSpec.shared_examples "user roleable" do
     
     it 'should be staff member user' do
       expect(subject.regular?).to be false
-      expect(subject.staff_member?).to be true
+      expect(subject.admin?).to be true
     end
     
   end

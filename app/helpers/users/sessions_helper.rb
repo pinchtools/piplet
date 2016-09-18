@@ -59,11 +59,7 @@ module Users::SessionsHelper
   def logged_in?
     !!current_user
   end
-  
-  def staff_member?
-    logged_in? && current_user.staff_member?
-  end
-  
+
   def admin?
     logged_in? && current_user.admin?
   end

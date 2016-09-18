@@ -6,12 +6,8 @@ module UserConcerns::Roleable
     scope :staff, -> { where(admin: true).order( created_at: :asc ) }
   end
 
-  def staff_member?
-    admin
-  end
-
   def regular?
-    !staff_member?
+    !admin?
   end
 
   def grant_admin!

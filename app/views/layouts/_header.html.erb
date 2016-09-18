@@ -52,7 +52,7 @@
                   <li class="nav-item dropdown nav-general">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i></a>
                     <div class="dropdown-menu">
-                      <% if staff_member? %>
+                      <% if admin? %>
                         <%= link_to t('site.menu.general.admin'), admin_dashboard_index_path,  class: 'dropdown-item' %>
                           <div class="dropdown-divider"></div>
                         <% end %>

@@ -16,7 +16,7 @@ module UserConcerns::Moderatable
   end
   
   def suspect_user(user, options = {})
-    return false unless staff_member?
+    return false unless admin?
     
     log(:suspect_user, 
       link: Rails.application.routes.url_helpers.admin_users_dashboard_index_path( user.username_lower ))
@@ -30,7 +30,7 @@ module UserConcerns::Moderatable
   def suspect(options = {})
     # TODO some user shouldn't be suspected base on
     # trust level like leaders or regular
-    return false if staff_member?
+    return false if admin?
     
     #unblock user if needed
     unblock if blocked?
@@ -58,7 +58,7 @@ module UserConcerns::Moderatable
   
   #cancel a user suspection
   def trust_user(user)
-    return false unless staff_member?
+    return false unless admin?
     
     log(:trust_user, 
       link: Rails.application.routes.url_helpers.admin_users_dashboard_index_path( user.username_lower ))
@@ -69,7 +69,7 @@ module UserConcerns::Moderatable
   
   #cancel suspection
   def trust
-    return false if staff_member?
+    return false if admin?
     
     log(:trusted)
     
@@ -87,7 +87,7 @@ module UserConcerns::Moderatable
   
   
   def block_user(user, options = {})
-    return false unless staff_member?
+    return false unless admin?
     
     log(:block_user, 
       link: Rails.application.routes.url_helpers.admin_users_dashboard_index_path( user.username_lower ))
@@ -99,7 +99,7 @@ module UserConcerns::Moderatable
   
   
   def block(options = {})
-    return false if staff_member?
+    return false if admin?
     
     log_options = { data: {} }
     
@@ -125,7 +125,7 @@ module UserConcerns::Moderatable
   end
   
   def unblock_user(user)
-    return false unless staff_member?
+    return false unless admin?
     #add a log here to know whom cleared the user
     
     log(:unblock_user, 
@@ -137,7 +137,7 @@ module UserConcerns::Moderatable
   
   
   def unblock
-    return false if staff_member?
+    return false if admin?
     
     log(:unblocked)
     
