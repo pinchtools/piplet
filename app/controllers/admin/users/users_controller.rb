@@ -60,15 +60,52 @@ class Admin::Users::UsersController < Admin::AdminController
   end
   
   def block
+    options = {} 
+    
+    options[:blocked_note] = params['user']['blocked_note'] if params['user'].present?
+    
+    if @current_user.block_user(@user, options)
+      flash[:success] = t 'user.notice.success.block'
+    else
+      flash[:danger] = t 'user.notice.danger.block'
+    end
+    
+    redirect_to edit_admin_users_user_path
   end
   
   def revert_block
+    if @current_user.unblock_user(@user)
+      flash[:success] = t 'user.notice.success.revert-block'
+    else
+      flash[:danger] = t 'user.notice.danger.revert-block'
+    end
+    
+    redirect_to edit_admin_users_user_path
   end
   
   def suspect
+    options = {}
+    
+    options[:suspected_note] = params['user']['suspected_note'] if params['user'].present?
+    
+    
+    if @current_user.suspect_user(@user, options)
+      flash[:success] = t 'user.notice.success.suspect'
+    else
+      flash[:danger] = t 'user.notice.danger.suspect'
+    end
+    
+    redirect_to edit_admin_users_user_path
   end
   
   def revert_suspect
+    if @current_user.trust_user(@user)
+      flash[:success] = t 'user.notice.success.revert-suspect'
+    else
+      flash[:danger] = t 'user.notice.danger.revert-suspect'
+    end
+    
+    redirect_to edit_admin_users_user_path
   end
   
   def revert_removal

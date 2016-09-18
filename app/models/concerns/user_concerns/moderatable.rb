@@ -19,7 +19,7 @@ module UserConcerns::Moderatable
     return false unless staff_member?
     
     log(:suspect_user, 
-      link: Rails.application.routes.url_helpers.users_show_path( user.username_lower ))
+      link: Rails.application.routes.url_helpers.admin_users_dashboard_index_path( user.username_lower ))
     
     options[:suspected_by_id] = id
 
@@ -31,57 +31,82 @@ module UserConcerns::Moderatable
     # TODO some user shouldn't be suspected base on
     # trust level like leaders or regular
     return false if staff_member?
+    
+    #unblock user if needed
+    unblock if blocked?
+    
     columns = {
       suspected: true,
       suspected_at: DateTime.now
     }
     
-    columns[:suspected_note] = options[:note] if options[:note].present?
+    log_options = { data: {} }
+    
+    log_options[:data][:note] = options[:suspected_note] if options[:suspected_note].present?
+    
+    log(:suspected)
+    
+    columns[:suspected_note] = options[:suspected_note] if options[:suspected_note].present?
     columns[:suspected_by_id] = options[:suspected_by_id] if options[:suspected_by_id].present?
 
-    
-    update_columns(columns)
+    begin
+      return update_columns(columns)
+    rescue
+      return false
+    end
   end
   
-  
-  def clear_suspect(user)
+  #cancel a user suspection
+  def trust_user(user)
     return false unless staff_member?
     
-    #add a log here to know whom cleared the user
+    log(:trust_user, 
+      link: Rails.application.routes.url_helpers.admin_users_dashboard_index_path( user.username_lower ))
     
-    user.clear_as_suspect
+    
+    user.trust
   end
   
-  
-  def clear_as_suspect
+  #cancel suspection
+  def trust
     return false if staff_member?
     
-    update_columns(
-     suspected: false,
-     suspected_at: nil,
-     suspected_note: nil,
-     suspected_by_id: nil
-    )
+    log(:trusted)
+    
+    begin
+      return update_columns(
+       suspected: false,
+       suspected_at: nil,
+       suspected_note: nil,
+       suspected_by_id: nil
+      )
+    rescue
+      return false
+    end
   end
   
   
-  def block_user(user)
+  def block_user(user, options = {})
     return false unless staff_member?
     
     log(:block_user, 
-      link: Rails.application.routes.url_helpers.users_show_path( user.username_lower ))
+      link: Rails.application.routes.url_helpers.admin_users_dashboard_index_path( user.username_lower ))
     
-    user.block({ blocked_by_id: id })
+    options[:blocked_by_id] = id
+    
+    user.block(options)
   end
   
   
   def block(options = {})
     return false if staff_member?
     
-    log_options = {}
+    log_options = { data: {} }
     
     log_options[:action_user_id] =  options[:blocked_by_id] if options[:blocked_by_id].present?
       
+    log_options[:data][:note] = options[:blocked_note] if options[:blocked_note].present?
+    
     log(:blocked, log_options)
     
     columns = {
@@ -90,14 +115,23 @@ module UserConcerns::Moderatable
     }
     
     columns[:blocked_by_id] = options[:blocked_by_id] if options[:blocked_by_id].present?
+    columns[:blocked_note] = options[:blocked_note] if options[:blocked_note].present?
     
-    update_columns(columns)
+    begin
+      update_columns(columns)
+    rescue
+      return false
+    end
   end
   
   def unblock_user(user)
     return false unless staff_member?
     #add a log here to know whom cleared the user
-     
+    
+    log(:unblock_user, 
+          link: Rails.application.routes.url_helpers.admin_users_dashboard_index_path( user.username_lower ))
+         
+    
     user.unblock
   end
   
@@ -105,11 +139,18 @@ module UserConcerns::Moderatable
   def unblock
     return false if staff_member?
     
-    update_columns(
-     blocked: false,
-     blocked_at: nil,
-     blocked_by_id: nil
-    )
+    log(:unblocked)
+    
+    begin
+      update_columns(
+       blocked: false,
+       blocked_at: nil,
+       blocked_note: nil,
+       blocked_by_id: nil
+      )
+    rescue
+      return false
+    end
   end
 
 end

@@ -3,9 +3,26 @@
 
   <div class="col-md-10 col-md-offset-1">
     <div class="row row-section">
-      <%= content_tag(:div, t('admin.users.dashboard.notice.warning.blocked'), class: "alert alert-warning") if @user.blocked? %>
-      <%= content_tag(:div, t('admin.users.dashboard.notice.warning.suspected'), class: "alert alert-warning") if @user.suspected? && !@user.blocked? %>
-    
+      <% if @user.blocked? %>
+        <div class="alert alert-warning">
+          <p class="alert-heading"><%= t('admin.users.dashboard.notice.warning.blocked') %></p>
+          <% if @user.blocked_note.present? %>
+            <p><%= t('admin.users.dashboard.notice.warning.blocked-note') %></p>
+            <p><%= @user.blocked_note %></p>
+          <% end %>
+        </div>
+      <% end %>
+      
+      <% if @user.suspected? && !@user.blocked? %>
+        <div class="alert alert-warning">
+          <p class="alert-heading"><%= t('admin.users.dashboard.notice.warning.suspected') %></p>
+          <% if @user.suspected_note.present? %>
+            <p><%= t('admin.users.dashboard.notice.warning.suspected-note') %></p>
+            <p><%= @user.suspected_note %></p>
+          <% end %>
+        </div>
+      <% end %>
+      
       <%= link_to t('users.links.users.show'), admin_users_user_path(@user.username_lower) %>
     </div>
     

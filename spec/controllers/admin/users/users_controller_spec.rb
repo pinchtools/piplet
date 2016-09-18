@@ -66,6 +66,148 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
     
   end
   
+  
+  describe "POST #block" do
+    let!(:admin) { create(:admin) }
+    let!(:user) { create(:user) }
+    
+    it_behaves_like 'a restricted access to admin only' do 
+      let(:request) { post :block, username: admin.username_lower }
+    end
+    
+    it "should display a success message" do
+      log_in_as(admin)
+      
+      post :block, username: user.username_lower
+      
+      
+      expect(response).to redirect_to(:edit_admin_users_user)
+      expect(flash[:success]).to be_present
+    end
+    
+    it "should accept a note about this action" do
+      log_in_as(admin)
+      
+      expect(user.blocked_note).to be_nil
+      
+      note = 'test note'
+      
+      post :block, username: user.username_lower, user: { blocked_note: note }
+      
+      expect(User.find(user.id).blocked_note).to eq(note)
+    end
+    
+    it "shoud not be able to block another admin" do
+      another_admin = create(:admin)
+      
+      log_in_as(admin)
+      
+      post :block, username: another_admin.username_lower
+      
+      expect(response).to redirect_to(:edit_admin_users_user)
+      expect(flash[:danger]).to be_present
+    end
+  end
+  
+  describe "POST #revert_block" do
+    let!(:admin) { create(:admin) }
+    let!(:user) { create(:user) }
+    
+    it_behaves_like 'a restricted access to admin only' do 
+      let(:request) { post :revert_block, username: admin.username_lower }
+    end
+    
+    it "should display a success message" do
+      log_in_as(admin)
+      
+      post :revert_block, username: user.username_lower
+      
+      expect(response).to redirect_to(:edit_admin_users_user)
+      expect(flash[:success]).to be_present
+    end
+    
+    it "shoud not be able to block another admin" do
+      another_admin = create(:admin)
+      
+      log_in_as(admin)
+      
+      post :block, username: another_admin.username_lower
+      
+      expect(response).to redirect_to(:edit_admin_users_user)
+      expect(flash[:danger]).to be_present
+    end
+  end
+  
+  describe "POST #suspect" do
+    let!(:admin) { create(:admin) }
+    let!(:user) { create(:user) }
+    
+    it_behaves_like 'a restricted access to admin only' do 
+      let(:request) { post :suspect, username: admin.username_lower }
+    end
+    
+    it "should display a success message" do
+      log_in_as(admin)
+      
+      post :suspect, username: user.username_lower
+      
+      expect(response).to redirect_to(:edit_admin_users_user)
+      expect(flash[:success]).to be_present
+    end
+    
+    it "should accept a note about this action" do
+      log_in_as(admin)
+      
+      expect(user.suspected_note).to be_nil
+      
+      note = 'test note'
+      
+      post :suspect, username: user.username_lower, user: { suspected_note: note }
+      
+      expect(User.find(user.id).suspected_note).to eq(note)
+    end
+    
+    it "shoud not be able to suspect another admin" do
+      another_admin = create(:admin)
+      
+      log_in_as(admin)
+      
+      post :suspect, username: another_admin.username_lower
+      
+      expect(response).to redirect_to(:edit_admin_users_user)
+      expect(flash[:danger]).to be_present
+    end
+  end
+  
+  describe "POST #revert_suspect" do
+    let!(:admin) { create(:admin) }
+    let!(:user) { create(:user) }
+    
+    it_behaves_like 'a restricted access to admin only' do 
+      let(:request) { post :revert_suspect, username: admin.username_lower }
+    end
+    
+    it "should display a success message" do
+      log_in_as(admin)
+      
+      post :revert_suspect, username: user.username_lower
+      
+      expect(response).to redirect_to(:edit_admin_users_user)
+      expect(flash[:success]).to be_present
+    end
+    
+    it "shoud not be able to block another admin" do
+      another_admin = create(:admin)
+      
+      log_in_as(admin)
+      
+      post :revert_suspect, username: another_admin.username_lower
+      
+      expect(response).to redirect_to(:edit_admin_users_user)
+      expect(flash[:danger]).to be_present
+    end
+  end
+  
   describe "POST #revert_removal" do
     let!(:admin) { FactoryGirl.create(:admin) }
     let!(:user) { create(:user_deactivated) }
@@ -106,7 +248,6 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
         expect(flash[:success]).to be_present
       end
     end
-    
     
     context "to_be_deleted" do
       let!(:user) { create(:user_to_be_deleted) }

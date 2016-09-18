@@ -161,6 +161,18 @@
       </div>
     <% end %>
 
+    <% if user.blocked? %>
+      <div class="row row-section">
+        <div class="col-md-8">
+            <%= button_tag t('admin.users.users.edit.unblock-suspect'), 
+              class: "btn btn-block btn-sm btn-primary-outline",
+              type: "button",
+              data: {toggle: "modal",target: "#suspectModal"}
+            %>
+        </div>
+      </div>
+    <% end %>
+
     <% if !user.deactivated? || user.removable? %>
       <div class="row row-section">
         <div class="col-md-8">

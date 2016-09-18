@@ -84,6 +84,7 @@ en:
           revert-block: 'Unblock account'
           suspect: 'Mark as suspect'
           revert-suspect: 'Trust account'
+          unblock-suspect: 'Unblock and suspect user'
         removal:
           title: 'Remove user'
           method-notices:
@@ -124,7 +125,8 @@ en:
           title: 'Mark as suspect'
           close: 'Close'
           notice: |
-            User will appear in the suspected list but wil still have a normal access to the service
+            User will appear in the suspected list but will still have a normal access to the service.
+          notice-unblock: "This account is currently blocked, it'll be unblocked if you confirm this action."
           submit: 'Submit'
         revert-suspect-modal:
           title: 'Trust user'
@@ -136,7 +138,9 @@ en:
         notice:
           warning:
             blocked: 'This account has been blocked'
+            blocked-note: 'A note has been writen about that:'
             suspected: 'This account has been marked as suspect'
+            suspected-note: 'A note has been writen about that:'
   users:
     links:
       users:
@@ -174,6 +178,10 @@ en:
         destroyed: 'User deleted'
         account-activated: 'Account activated!'
         removal-reverted: "User's removal has been cancelled"
+        block: 'Account has been blocked'
+        revert-block: 'Blocked status has been canceled'
+        suspect: 'Account has been marked as suspect'
+        revert-suspect: 'Account has been removed from the suspected list'
       warning:
         password-weakness-entropy: 'Your password may include at least one upper case letter, one lower case letter and one number.'
         account-not-activated: |
@@ -194,6 +202,10 @@ en:
         invalid-login: 'Invalid email/password combination'
         invalid-activation-link: 'Invalid activation link'
         only-admin-removal: "You can't remove the only admin"
+        block: "Account can't be blocked"
+        revert-block: "Blocked status can't be canceled"
+        suspect: "Account can't be mark  as suspect"
+        revert-suspect: "Account can't removed from the suspected list"
       info:
         account-need-activation: 'Please check your email to activate your account.'
       loading:

@@ -28,13 +28,20 @@ RSpec.shared_examples "user moderatable" do
       expect(@user.suspected?).to be false
       expect(@user.suspected_at).to be nil
       expect(@user.suspected_by_id).to be nil
+      
+      expect(@admin).to receive(:log)
+      expect(@user).to receive(:log)
+      
       expect(@admin.suspect_user(@user)).to be true
       
       expect(@user.suspected?).to be true
       expect(@user.suspected_at).not_to be nil
       expect(@user.suspected_by_id).not_to be nil
       
-      expect(@admin.clear_suspect(@user)).to be true
+      expect(@admin).to receive(:log)
+      expect(@user).to receive(:log)
+      
+      expect(@admin.trust_user(@user)).to be true
 
       expect(@user.suspected?).to be false
       expect(@user.suspected_at).to be nil
@@ -51,11 +58,17 @@ RSpec.shared_examples "user moderatable" do
         expect(@user.blocked_at).to be nil
         expect(@user.blocked_by_id).to be nil
         
+        expect(@admin).to receive(:log)
+        expect(@user).to receive(:log)
+        
         expect(@admin.block_user(@user)).to be true
         
         expect(@user.blocked?).to be true
         expect(@user.blocked_at).not_to be nil
         expect(@user.blocked_by_id).not_to be nil
+        
+        expect(@admin).to receive(:log)
+        expect(@user).to receive(:log)
         
         expect(@admin.unblock_user(@user)).to be true
   
@@ -105,6 +118,17 @@ RSpec.shared_examples "user moderatable" do
       expect(@user.suspect).to be true
     end
     
+    it 'unblock user when suspected' do
+      @user.block
+      
+      expect(@user).to be_blocked
+      
+      @user.suspect
+      
+      expect(@user).to_not be_blocked
+      
+    end
+    
     it 'can\'t block anyone' do
       expect(@user.block_user(@admin)).to be false
       expect(@user.block_user(@another_user)).to be false
@@ -114,6 +138,51 @@ RSpec.shared_examples "user moderatable" do
       expect(@admin.block_user(@user)).to be true
       expect(@user.block).to be true
     end
+    
+    it 'can add a note when blocked' do
+      expect(@user.blocked_note).to be_nil
+      
+      note = 'test'
+      
+      @user.block(blocked_note: note)
+      
+      expect(@user.blocked_note).to eq(note)
+    end
+  
+    it 'remove note when unblocked' do
+      note = 'test'
+
+      @user.block(blocked_note: note)
+
+      expect(@user.blocked_note).to eq(note)
+      
+      @user.unblock
+      
+      expect(@user.blocked_note).to be_nil
+    end
+    
+    it 'can add a note when suspected' do
+      expect(@user.suspected_note).to be_nil
+      
+      note = 'test'
+      
+      @user.suspect(suspected_note: note)
+      
+      expect(@user.suspected_note).to eq(note)
+    end
+    
+    it 'remove note when trusted' do
+      note = 'test'
+
+      @user.suspect(suspect_note: note)
+
+      expect(@user.suspected_note).to eq(note)
+      
+      @user.trust
+      
+      expect(@user.suspected_note).to be_nil
+    end
+    
     
   end
   
