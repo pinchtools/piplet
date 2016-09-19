@@ -104,6 +104,22 @@ RSpec.describe UserFilter, type: :model do
             
         expect(subject.users.find_by_id(user.id)).to be_nil
       end
+      
+      it 'should call block method on concerned users', :focus do
+        user = build(:user)
+        user.email = "default@" + subject.email_provider
+        
+        expect(user.save).to be true
+        expect(user).not_to be_blocked
+                
+        
+        expect(subject).to receive(:delay).and_return(subject)
+
+        expect(subject.save).to be true
+        
+        expect(user).to be_blocked
+      end
+      
     end
     
     context 'trusting filter' do
