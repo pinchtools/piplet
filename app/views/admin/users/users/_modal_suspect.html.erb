@@ -10,8 +10,10 @@
           <h4 class="modal-title" id="suspectModalLabel"><%= t('admin.users.users.suspect-modal.title') %></h4>
         </div>
         <div class="modal-body">
-            <%= content_tag(:div, t("admin.users.users.suspect-modal.notice-unblock"), class: "alert alert-warning") %>
-        
+            <% if @user.blocked? %>
+              <%= content_tag(:div, t("admin.users.users.suspect-modal.notice-unblock"), class: "alert alert-warning") %>
+            <%  end %>
+            
             <%= simple_format t("admin.users.users.suspect-modal.notice") %>
 
             
