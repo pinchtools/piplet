@@ -31,7 +31,6 @@ class UserFilter < ActiveRecord::Base
     uniqueness: true,
     allow_blank: true
   validate :validate_email_xor_ip
-  validate :validate_blocked_xor_trusted
   validate :validate_cidr_address
   
   validates :ip_address,
@@ -68,13 +67,7 @@ class UserFilter < ActiveRecord::Base
       self.errors.add(:base, I18n.t(:'user-filter.errors.base.email-xor-ip'))
     end
   end
-  
-  def validate_blocked_xor_trusted
-    unless !!self.trusted ^ !!self.blocked
-      self.errors.add(:base, I18n.t(:'user-filter.errors.base.trusted-xor-blocked'))
-    end
-  end
-  
+
   def validate_cidr_address
     if self.ip_address.present? && self.cidr_address.blank?
       self.errors.add(:ip_address, I18n.t(:'user-filter.errors.ip_address.invalid'))
