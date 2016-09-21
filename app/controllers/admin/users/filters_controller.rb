@@ -7,10 +7,9 @@ class Admin::Users::FiltersController < Admin::AdminController
   end
   
   def create
-    params[:user_filter][:blocked] = (params[:list_kind] == "1")
-    params[:user_filter][:trusted] = (params[:list_kind] == "2")
-    
     @filter = UserFilter.new(filter_params)
+    
+    @filter.blocked = true
     
     @filter.save
     
@@ -27,7 +26,6 @@ class Admin::Users::FiltersController < Admin::AdminController
   
   def load_filters
     @all_blocked = UserFilter.all_blocked
-    @all_trusted = UserFilter.all_trusted
   end
   
   def set_filter
@@ -36,8 +34,6 @@ class Admin::Users::FiltersController < Admin::AdminController
   
   def filter_params
     params.require(:user_filter).permit( :ip_address, 
-      :email_provider,
-      :blocked, 
-      :trusted )
+      :email_provider )
   end
 end

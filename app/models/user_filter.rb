@@ -6,7 +6,6 @@
 #  email_provider :string
 #  ip_address     :string
 #  blocked        :boolean          default(FALSE)
-#  trusted        :boolean          default(FALSE)
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  cidr_address   :inet

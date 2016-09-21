@@ -14,18 +14,12 @@
         <li class="nav-item">
           <a class="nav-link active" data-toggle="tab" href="#blacklist" role="tab">Blacklist</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" href="#whitelist" role="tab">Whitelist</a>
-        </li>
       </ul>
                 
       <!-- Tab panes -->
       <div class="tab-content">
         <div class="tab-pane active" id="blacklist" role="tabpanel">
           <%= render partial: 'list', locals: {list: @all_blocked }%>
-        </div>
-        <div class="tab-pane" id="whitelist" role="tabpanel">
-          <%= render partial: 'list', locals: {list: @all_trusted }%>
         </div>
       </div>
   

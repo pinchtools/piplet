@@ -13,9 +13,6 @@
             <%= f.label :rule_kind %>
             <%= select_tag :rule_kind, options_for_select([ ['Email provider', 1], ['Ip address', 2] ]), {class: 'form-control'} %>
           
-          <%= f.label :list_kind %>
-          <%= select_tag :list_kind, options_for_select([ ['Blacklist', 1], ['Whitelist', 2] ]), {class: 'form-control'} %>
-          
           <div class="rule_kind_section rule_kind_1">
             <%= f.label :email_provider %>
             <small class="text-muted"><%= t 'user-filter.form.email-provider-helper' %></small>

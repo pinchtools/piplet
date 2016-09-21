@@ -33,24 +33,6 @@ RSpec.describe UserFilter, type: :model do
     expect(subject).to be_valid
   end
   
-  it 'should be a trusting filter or blocking filter not both' do
-    expect(subject.blocked).to be true
-    
-    subject.trusted = true
- 
-    expect(subject).not_to be_valid
-    
-    subject.blocked = false
-    subject.trusted = false
-        
-    expect(subject).not_to be_valid
-    
-    subject.blocked = true
-    subject.trusted = false
-    
-    expect(subject).to be_valid
-  end
-
   it 'should have a valid email provider' do
     subject.ip_address = nil
     subject.email_provider = 'com'
@@ -94,17 +76,6 @@ RSpec.describe UserFilter, type: :model do
     context 'blocking filter' do
       subject {build(:user_filter_blocked_email) }
       
-      it 'should not block a trusted user' do
-        user = create(:user_trusted_by_filter)
-        
-        # apply blocking filter, which should concerned our user
-        expect(subject).to receive(:delay).and_return(subject)
-        
-        expect(subject.save).to be true
-            
-        expect(subject.users.find_by_id(user.id)).to be_nil
-      end
-      
       it 'should call block method on concerned users', :focus do
         user = build(:user)
         user.email = "default@" + subject.email_provider
@@ -121,36 +92,7 @@ RSpec.describe UserFilter, type: :model do
       end
       
     end
-    
-    context 'trusting filter' do
-      subject {build(:user_filter_trusted_email) }
-      
-      it 'should not trust a user already blocked by a filter' do
-        user = create(:user_blocked_by_filter)
         
-        # apply blocking filter, which should concerned our user
-        expect(subject).to receive(:delay).and_return(subject)
-        
-        expect(subject.save).to be true
-            
-        expect(subject.users.find_by_id(user.id)).to be_nil
-      end
-      
-      it 'should not trust a user directly blocked' do
-        user = create(:user_blocked)
-        
-        # apply blocking filter, which should concerned our user
-        expect(subject).to receive(:delay).and_return(subject)
-        
-        expect(subject.save).to be true
-            
-        expect(subject.users.find_by_id(user.id)).to be_nil
-      end
-      
-    end
-
-    
-
     
     it 'should remove relation with users when destroyed' do
       subject.save
