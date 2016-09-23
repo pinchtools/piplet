@@ -76,7 +76,7 @@ RSpec.describe UserFilter, type: :model do
     context 'blocking filter' do
       subject {build(:user_filter_blocked_email) }
       
-      it 'should call block method on concerned users', :focus do
+      it 'should call block method on concerned users' do
         user = build(:user)
         user.email = "default@" + subject.email_provider
         
