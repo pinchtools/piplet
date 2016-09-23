@@ -4,6 +4,23 @@
   <div class="col-md-10 col-md-offset-1">
     <div class="row row-section">
 
+
+<%= will_paginate logs , :previous_label => '', :next_label => '' %>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= t 'admin.logs.logs.index.action' %></th>
+      <th><%= t 'admin.logs.logs.index.message' %></th>
+      <th><%= t 'admin.logs.logs.index.date' %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render logs %>
+  </tbody>
+</table>
+
+<%= will_paginate logs, :previous_label => '', :next_label => '' %>
     
     
     </div>

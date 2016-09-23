@@ -4,5 +4,8 @@ class Admin::Users::LogsController < Admin::AdminController
   before_action :identify_user
   
   def index
+    logs = LogsDecorator.new( @user.logs.paginate(page: params[:page]) )
+
+    render :locals => { :logs => logs }
   end
 end
