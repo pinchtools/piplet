@@ -32,5 +32,5 @@ sidekiq:
   links:
     - postgres
     - redis
-  command: sidekiq
+  command: sidekiq -L log/sidekiq.log
   env_file: config/app.env
