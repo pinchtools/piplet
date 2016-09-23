@@ -71,8 +71,9 @@ RSpec.shared_examples "loggable" do
   
   
   def should_save_log
-    expect(subject.logs).to receive(:delay).at_least(:once).and_return(subject.logs)
+    expect(Log).to receive(:delay).at_least(:once).and_return(Log)
 
+    expect(yield).to be_a(Log)
     expect(yield).to be_valid
   end
   
