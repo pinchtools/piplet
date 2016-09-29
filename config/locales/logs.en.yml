@@ -11,7 +11,7 @@ en:
       email_similar: 'Email %{email} is similar to the blocked email %{blocked_email}'
       block_user: 'User blocked another user'
       blocked: 'User has been blocked'
-      unblock_user: 'User unblok an account'
+      unblock_user: 'User unblock an account'
       unblocked: 'Account has been unblocked'
       suspect_user: 'User has suspected an account'
       suspected: 'Account has been mark as suspect'
