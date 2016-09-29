@@ -8,7 +8,10 @@ module Concerns::Loggable
   def log( action, options  = {} )
     return if Log.actions[action].nil?
     
-    attributes = self.logs.new.attributes
+    empty_log = self.logs.new
+    attributes = empty_log.attributes
+    
+     self.logs.delete(empty_log)
     
     attributes[:action] = Log.actions[action]
     attributes[:message] = options[:message] || "logs.messages.#{action}"
