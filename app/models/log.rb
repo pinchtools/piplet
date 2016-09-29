@@ -40,6 +40,7 @@ class Log < ActiveRecord::Base
   belongs_to :loggable, polymorphic: true
   belongs_to :action_user, :class_name => 'User'
   
+  serialize :message_vars
   
   def self.normal_actions
     @info_actions ||= Enum.new(

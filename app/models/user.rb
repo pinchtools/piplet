@@ -241,14 +241,14 @@ class User < ActiveRecord::Base
         
         log(:suspected,
           message: 'log.messages.username_similar',
-          message_vars: { username: username, username_found: username_found }.to_json )
+          message_vars: { username: username, username_found: username_found } )
         return
       elsif email_found = find_email_similar_on_scope(:all_blocked)
         suspect(note: 'user.errors.email.similar-to-blocked-one')
         
         log(:suspected,
           message: 'log.messages.email_similar',
-          message_vars: { email: email, email_found: email_found }.to_json )
+          message_vars: { email: email, email_found: email_found } )
         return
       end
       
@@ -261,14 +261,14 @@ class User < ActiveRecord::Base
         
         log(:suspected,
           message: 'log.messages.username_similar',
-          message_vars: { username: username, username_found: username_found }.to_json )
+          message_vars: { username: username, username_found: username_found } )
         return
       elsif email_found = find_email_similar_on_scope(:suspects)
         suspect(note: 'user.errors.email.similar-to-suspected-one')
         
         log(:suspected,
           message: 'log.messages.email_similar',
-          message_vars: { email: email, email_found: email_found }.to_json )
+          message_vars: { email: email, email_found: email_found } )
         return
       end
       
