@@ -1,5 +1,5 @@
-<tr>
-  <td><%= log.action %></td>
+<tr class="table-<%= log.level %>">
   <td><%= log.message %></td>
-  <td><%= l log.created_at %></td>
+  <td><%= l log.created_at, format: :short %></td>
+  <td class="text-xs-center"><%= link_to( raw('<i class="fa fa-link"></i>'), log.link) if log.link.present? %></td>
 </tr>
