@@ -11,13 +11,9 @@ class LogDecorator < Draper::Decorator
   end
 
   def level
-    if Log.important_actions.has_value?(object.action)
-      "warning"
-    elsif Log.sensitive_actions.has_value?(object.action)
-      "danger"
-    elsif Log.normal_actions.has_value?(object.action)
-      "normal"
-    end
+    levels = ["normal", "warning", "danger"]
+    
+    levels[ object.level - 1 ]
   end
   
 end
