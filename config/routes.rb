@@ -55,7 +55,7 @@ Rails.application.routes.draw do
         
         resources :permissions, only: [:index]
         
-        resources :logs, only: [:index]
+        resources :logs, only: [:index, :show]
       end
     end
   end

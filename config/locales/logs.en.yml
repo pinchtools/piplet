@@ -23,3 +23,4 @@ en:
       deactivated: 'User has been deactivated'
       revert_deactivation: 'User has been re-activated'
       revert_deletion: 'Removal of user as been canceled'
+      login: 'Login'

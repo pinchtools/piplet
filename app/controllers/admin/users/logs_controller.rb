@@ -6,6 +6,12 @@ class Admin::Users::LogsController < Admin::AdminController
   def index
     logs = LogsDecorator.new( @user.logs.paginate(page: params[:page]) )
 
-    render :locals => { :logs => logs }
+    render :locals => { :user => @user, :logs => logs }
+  end
+  
+  def show
+    log = Log.find_by_id(params[:id])
+    
+    render :locals => {  :log => log }
   end
 end

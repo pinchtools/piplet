@@ -1,5 +1,5 @@
 <div class="container">
-  <%= render 'layouts/admin/users/nav_bar' , locals: { username: @user.username_lower } %>
+  <%= render 'layouts/admin/users/nav_bar' , locals: { username: user.username_lower } %>
 
   <div class="col-md-10 col-md-offset-1">
     <div class="row row-section">
@@ -11,11 +11,10 @@
           <tr>
             <th><%= t 'admin.logs.logs.index.message' %></th>
             <th><%= t 'admin.logs.logs.index.date' %></th>
-            <th class="text-xs-center"><%= t 'admin.logs.logs.index.link' %></th>
-            </tr>
+          </tr>
         </thead>
         <tbody>
-          <%= render logs %>
+          <%= render partial: "log", collection: logs,  locals: { user: user } %>
         </tbody>
       </table>
       
@@ -25,3 +24,5 @@
   </div>
 
 </div>
+
+<%= render 'modal_log' %>

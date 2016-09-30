@@ -11,7 +11,7 @@ class LogDecorator < Draper::Decorator
   end
 
   def level
-    levels = ["normal", "warning", "danger"]
+    levels = [ "normal", "warning", "danger" ]
     
     levels[ object.level - 1 ]
   end

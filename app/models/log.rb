@@ -47,7 +47,8 @@ class Log < ActiveRecord::Base
       generic: 1,
       request_password_reset: 2,
       password_reset: 3,
-      notified: 4
+      notified: 4,
+      login: 5
     )
   end
   
@@ -56,11 +57,10 @@ class Log < ActiveRecord::Base
     @important_actions ||= Enum.new(
       created: 1000,
       activated: 1001,
-      login: 1002,
-      delayed_destroy: 1003,
-      deactivated: 1004,
-      revert_deactivation: 1005,
-      revert_deletion: 1006
+      delayed_destroy: 1002,
+      deactivated: 1003,
+      revert_deactivation: 1004,
+      revert_deletion: 1005
     )
   end
   

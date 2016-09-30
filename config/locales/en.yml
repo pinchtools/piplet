@@ -295,6 +295,12 @@ en:
       list_kind: "List"
       email_provider: "Email provider"
       ip_address: "Ip Address"
+    log:
+      action: "Action"
+      message: "Message"
+      link: "Link"
+      ip_address: "Ip address"
+      data: "Data"
       
   helpers:
     label:
