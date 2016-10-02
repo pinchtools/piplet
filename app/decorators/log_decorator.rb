@@ -16,4 +16,14 @@ class LogDecorator < Draper::Decorator
     levels[ object.level - 1 ]
   end
   
+  def data
+    "<samp>" + JSON.pretty_generate(object.data).gsub("\n","<br/>") + "</samp>" if object.data.present?
+  end
+  
+  def action_user
+    user = User.select(:username).find_by_id(object.action_user_id)
+    
+    user.username if user.present?
+  end
+  
 end

@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="logModal" tabindex="-1" role="dialog" aria-labelledby="logModalLabel" aria-hidden="true">
+<div class="modal fade" id="log-modal" tabindex="-1" role="dialog" aria-labelledby="logModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
@@ -11,17 +11,23 @@
         <div class="modal-body">
         
             <%= label_tag t('attributes.log.message') %>
-            <p id='log_message'></p>
+            <p id='log-message' class='text'></p>
+            
+            <%= label_tag t('attributes.log.created_at') %>
+            <p id='log-date' class='text'></p>
             
             <%= label_tag t('attributes.log.data') %>
-            <p id='log_data'></p>
+            <p id='log-data' class='text'></p>
             
             <%= label_tag t('attributes.log.ip_address') %>
-            <p id='log_ip_address'></p>
+            <p id='log-ip-address' class='text'></p>
             
             <%= label_tag t('attributes.log.link') %>
-            <p id='log_link'></p>
+            <p id='log-link' class='text'></p>
 
+            <%= label_tag t('attributes.log.action_user') %>
+            <p id='log-action-user' class='text'></p>
+            
         </div>
         <div class="modal-footer">
           <%= button_tag t('admin.users.logs.show.close'), class: 'btn btn-default', 'type': 'button', 'data-dismiss': "modal" %>

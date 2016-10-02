@@ -1,1 +1,14 @@
-$('#logModal').modal();
+$('#log-modal').one('show.bs.modal', function (e) {
+  $('#log-message').html('<%= log.message %>');
+  $('#log-date').html('<%= l log.created_at, format: :short %>');
+  
+  $('#log-data').html(function() {
+    return $("<div/>").html('<%= log.data || '-' %>').text();
+  });
+  
+  $('#log-ip-address').html('<%= log.ip_address || '-' %>');
+  $('#log-link').html('<%= (log.link) ? link_to(log.link, log.link) : '-' %>');
+  $('#log-action-user').html('<%= log.action_user || '-' %>');
+}).one('hidden.bs.modal', function (e) {
+  $('#log-modal .text').html('-');
+}).modal();

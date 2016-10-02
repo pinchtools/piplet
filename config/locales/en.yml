@@ -141,6 +141,9 @@ en:
             blocked-note: 'A note has been writen about that:'
             suspected: 'This account has been marked as suspect'
             suspected-note: 'A note has been writen about that:'
+      logs:
+        show:
+          title: 'Log'
   users:
     links:
       users:
@@ -297,10 +300,12 @@ en:
       ip_address: "Ip Address"
     log:
       action: "Action"
+      created_at: "Date"
       message: "Message"
       link: "Link"
       ip_address: "Ip address"
       data: "Data"
+      action_user: "Acted by"
       
   helpers:
     label:

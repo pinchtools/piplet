@@ -12,6 +12,6 @@ class Admin::Users::LogsController < Admin::AdminController
   def show
     log = Log.find_by_id(params[:id])
     
-    render :locals => {  :log => log }
+    render :locals => {  :log => LogDecorator.new(log) }
   end
 end

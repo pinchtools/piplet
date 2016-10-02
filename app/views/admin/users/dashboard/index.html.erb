@@ -1,3 +1,7 @@
+<% content_for :header do %>
+<%= stylesheet_link_tag 'admin/users/logs' %>
+<% end %>
+
 <div class="container">
   <%= render 'layouts/admin/users/nav_bar' , locals: { username: @user.username_lower } %>
 
