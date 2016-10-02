@@ -6,7 +6,7 @@
 #  action         :integer
 #  level          :integer
 #  message        :text
-#  data           :text
+#  data           :jsonb
 #  ip_address     :inet
 #  link           :string
 #  message_vars   :string

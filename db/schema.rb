@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160921062955) do
+ActiveRecord::Schema.define(version: 20161002094709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 20160921062955) do
     t.integer  "action"
     t.integer  "level"
     t.text     "message"
-    t.text     "data"
+    t.jsonb    "data"
     t.inet     "ip_address"
     t.string   "link"
     t.string   "message_vars"
