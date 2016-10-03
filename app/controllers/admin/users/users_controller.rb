@@ -34,7 +34,7 @@ class Admin::Users::UsersController < Admin::AdminController
       @users = User.search( params[:search] ).paginate(page: params[:page])
     end
 
-    render :index, locals: { users: UserDecorator.new(@users), list: nil, search: params[:search] }
+    render :index, locals: { users: UsersDecorator.new(@users), list: nil, search: params[:search] }
   end
   
   
