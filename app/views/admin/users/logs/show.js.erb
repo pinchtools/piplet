@@ -8,7 +8,7 @@ $('#log-modal').one('show.bs.modal', function (e) {
   
   $('#log-ip-address').html('<%= log.ip_address || '-' %>');
   $('#log-link').html('<%= (log.link) ? link_to(log.link, log.link) : '-' %>');
-  $('#log-action-user').html('<%= log.action_user || '-' %>');
+  $('#log-action-user').html('<%= (log.action_user) ? link_to(log.action_user, admin_users_user_path( log.action_user.downcase )) : '-' %>');
 }).one('hidden.bs.modal', function (e) {
   $('#log-modal .text').html('-');
 }).modal();
