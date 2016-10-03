@@ -42,6 +42,8 @@ class Log < ActiveRecord::Base
   
   serialize :message_vars
   
+  scope :recent, -> { order(created_at: :DESC) }
+  
   def self.normal_actions
     @info_actions ||= Enum.new(
       generic: 1,
