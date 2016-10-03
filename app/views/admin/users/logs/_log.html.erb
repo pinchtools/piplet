@@ -1,5 +1,4 @@
 <tr class="table-<%= log.level %>">
   <td><%= link_to log.message, admin_users_log_path(user.username_lower, log), remote: true %></td>
   <td><%= l log.created_at, format: :short %></td>
-  <td class="text-xs-center"><%= link_to( raw('<i class="fa fa-link"></i>'), log.link) if log.link.present? %></td>
 </tr>
