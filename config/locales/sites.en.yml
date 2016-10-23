@@ -1,0 +1,7 @@
+en:
+  admin:
+    sites:
+      sites:
+        index:
+          tab:
+            settings: 'settings'

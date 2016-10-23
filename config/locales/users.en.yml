@@ -1,0 +1,212 @@
+en:
+  users:
+    links:
+      users:
+        show: 'Profile'
+        edit: 'Account'
+      dashboard:
+        index: 'Dashboard'
+      preferences:
+        index: 'Preferences'
+      notifications:
+        index: 'Notifications'
+      permissions:
+        index: 'Permissions'
+      logs:
+        index: 'Logs'
+    notifications:
+      index:
+        mark-all-as-read-btn: 'mark all as read'
+  user:
+    form:
+      new:
+        title: 'Sign up'
+        submit: 'Create my account'
+      edit:
+        title: 'Account'
+        submit: 'Save changes'
+        destroy: 'Remove account'
+      help-text:
+        description: '200 characters max.'
+    notice:
+      success:
+        username-valid: 'Your username is valid'
+        created: 'Profile created!'
+        updated: 'Profile updated!'
+        destroyed: 'User deleted'
+        account-activated: 'Account activated!'
+        removal-reverted: "User's removal has been cancelled"
+        block: 'Account has been blocked'
+        revert-block: 'Blocked status has been canceled'
+        suspect: 'Account has been marked as suspect'
+        revert-suspect: 'Account has been removed from the suspected list'
+      warning:
+        password-weakness-entropy: 'Your password may include at least one upper case letter, one lower case letter and one number.'
+        account-not-activated: |
+          Account not activated.
+          Check your email for the activation link.
+      removal-revert-failed: "Unable to revert user's removal"
+      danger:
+        username-too-short: 'Your username is too short'
+        username-too-long: 'Your username is too long'
+        username-invalid-characters: 'Your username must only include numbers, letters and underscores'
+        username-invalid-first-character: 'Your username must begin with a letter, a number or an underscore'
+        username-invalid-last-character: 'Your username must end by a letter, a number or an underscore'
+        email-invalid: 'Your email is invalid'
+        email-too-long: 'Your email is too long'
+        password-too-short: 'Your password is too short'
+        password-too-long: 'Your password is too long'
+        not-logged: 'Please log in.'
+        invalid-login: 'Invalid email/password combination'
+        invalid-activation-link: 'Invalid activation link'
+        only-admin-removal: "You can't remove the only admin"
+        block: "Account can't be blocked"
+        revert-block: "Blocked status can't be canceled"
+        suspect: "Account can't be mark  as suspect"
+        revert-suspect: "Account can't removed from the suspected list"
+      info:
+        account-need-activation: 'Please check your email to activate your account.'
+      loading:
+        username-check-in-progress: 'Checking is in progress'
+    removal:
+      title: 'Remove account'
+      notice: |
+        You're about to remove your account.
+        All your comments will be removed and you'll not be able to login anymore.
+      close: 'Close'
+      remove: 'Remove'
+    mailer:
+      account-activation: 'Account activation'
+      password-reset: 'Password reset'
+    moderation:
+      suspect:
+        email_similar: 'Email is similar to a blocked one : %{email} - %{email_found}'
+        username_similar: 'Email is similar to a blocked one : %{username} - %{username_found}'
+    errors:
+      username:
+        must-be-within-characters: "must be within %{min} to %{max} characters"
+        characters: "must only include numbers, letters and underscores"
+        must-begin-with-alphanumeric: "must begin with a letter or number or an underscore"
+        must-end-with-alphanumeric: "must end with a letter or number or an underscore"
+        must-not-contain-two-special-chars-in-seq: "must not contain a sequence of 2 or more special chars (.-_)"
+        must-not-contain-confusing-suffix: "must not contain a confusing suffix like .json or .png etc."
+        reserved: "That username is not allowed."
+        max-renewal: "has been renewed %{max} times already, you can't renew it another time"
+        similar-to-blocked-one: "Username is similar to a blocked one, please see logs for further details"
+        similar-to-suspected-one: "Username is similar to a suspected one, please see logs for further details"
+      password:
+        must-be-within-characters: "must be within %{min} to %{max} characters"
+        common: "is one of the 10000 most common passwords. Please use a more secure password."
+        same-as-username: "is the same as your username. Please use a more secure password."
+        same-as-email: "is the same as your email. Please use a more secure password."
+      email:
+        provider-banned: "Invalid email"
+        similar-to-blocked-one: "Email is similar to a blocked one, please see logs for further details"
+        similar-to-suspected-one: "Email is similar to a suspected one, please see logs for further details"
+  admin:
+    users:
+      users:
+        index:
+          username: 'Username'
+          email: 'Email'
+          last-seen: 'Last connection'
+          created-at: 'Signup'
+          blocked-at: 'Blocked at'
+          suspected-at: 'Suspected at'
+          deactivated-at: 'Deactivation date'
+          to-be-deleted-at: 'Remaining time'
+          tab:
+            active: 'Active'
+            active-filter: 'All'
+            new-filter: 'New'
+            staff-filter: 'Staff'
+            suspected: 'Suspected'
+            blocked: 'Blocked'
+            deactivated: 'Deactivated'
+            to-be-deleted: 'To be deleted'
+          search_placeholder: 'username, email, ip address'
+        search:
+          notice:
+            length-must-be-in-interval: 'Search length should be between %{min} and %{max}'
+        edit:
+          destroy: 'Remove user'
+          destroy-now: 'Remove user immediately'
+          destroy-data: 'Remove user for good'
+          revert-removal: 'Revert removal'
+          block: 'Block account'
+          revert-block: 'Unblock account'
+          suspect: 'Mark as suspect'
+          revert-suspect: 'Trust account'
+          unblock-suspect: 'Unblock and suspect user'
+        removal:
+          title: 'Remove user'
+          method-notices:
+            delay: |
+              Please note that the removal will be effective in %{days} days from now.
+              Starting now, user will not be able to login and all his/her comments will be removed.
+              You still have the choice to revert this process until the deadline come.
+            perform: |
+              You're about to remove this user.
+              All data generated by this user will be delete.
+            deactivate: |
+              Starting now, user will not be able to login and all his/her comments will be invisible to others.
+              Still, his/her data are not removed and you will be able to revert this action or definitely erase this account.
+          yourself-notice: 'This is your own account'
+          admin-notice: 'This is an admin account'
+          close: 'Close'
+          remove: 'Remove'
+        revert-modal:
+          title: 'Revert removal'
+          close: 'Close'
+          notice: |
+            User will again be able to login and all his data will be restored.
+          revert: 'Revert'
+        block-modal:
+          title: 'Block account'
+          close: 'Close'
+          notice: |
+            User will not be able to login and all his comments will be unpublished.
+          submit: 'Submit'
+        revert-block-modal:
+          title: 'Unblocked Account'
+          close: 'Close'
+          notice: |
+            User will be able to login and all his comments will be restored.
+          submit: 'Unblock'
+          submit-suspect: 'Unblock & mark as suspect'
+        suspect-modal:
+          title: 'Mark as suspect'
+          close: 'Close'
+          notice: |
+            User will appear in the suspected list but will still have a normal access to the service.
+          notice-unblock: "This account is currently blocked, it'll be unblocked if you confirm this action."
+          submit: 'Submit'
+        revert-suspect-modal:
+          title: 'Trust user'
+          close: 'Close'
+          notice: |
+            User will be removed from the suspected list.
+          submit: 'Submit'
+      dashboard:
+        notice:
+          warning:
+            blocked: 'This account has been blocked'
+            blocked-note: 'A note has been writen about that:'
+            suspected: 'This account has been marked as suspect'
+            suspected-note: 'A note has been writen about that:'
+      logs:
+        show:
+          title: 'Log'
+  user-filter:
+    form:
+      title: 'New filter'
+      submit: 'Create'
+      close: 'Close'
+      email-provider-helper: 'eg: fakemail.com or spamhost.net'
+      ip-address-helper: 'eg: 192.1.1.1, 192.98.1.*, 2001:4f8:3:ba::/64 ...'
+    errors:
+      base:
+        email-xor-ip: 'Email provider or Ip address needed, but not both'
+        trusted-xor-blocked: 'Must be a trusting filter or a blocking one, but not both'
+      ip_address:
+        invalid: 'Invalid ip address or wildcard'

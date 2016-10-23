@@ -1,6 +1,6 @@
 class Admin::AdminController < ApplicationController
   before_action :logged_in_admin
-  
+
   private
   
   def logged_in_admin

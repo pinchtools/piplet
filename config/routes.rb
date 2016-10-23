@@ -58,6 +58,16 @@ Rails.application.routes.draw do
         resources :logs, only: [:index, :show]
       end
     end
+
+    scope module: 'sites' do
+
+      resources :sites, param: :site do
+
+      end
+
+    end
+
+
   end
   
   namespace :users do

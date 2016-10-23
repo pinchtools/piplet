@@ -1,0 +1,24 @@
+<% content_for :header do %>
+<%= stylesheet_link_tag 'admin/sites/sites' %>
+<% end %>
+
+<div class="container">
+
+  <%= render 'admin/sites/shared/primary_sidebar' %>
+
+  <div class="col-md-10">
+  
+    <div class="row">
+
+      <div class="col-md-12">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item">
+            <%= link_to t('admin.sites.sites.index.tab.settings'), admin_site_path(@site), class: "nav-link" %>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+  </div>
+</div>

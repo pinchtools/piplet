@@ -33,3 +33,11 @@ unless User.exists?
 else
   p "Users table already populated"
 end
+
+unless Site.exists?
+  Site.create!( name: "Default" )
+
+  p "Default site created"
+else
+  p "Default site already exists"
+end
