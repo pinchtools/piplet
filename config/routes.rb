@@ -65,6 +65,11 @@ Rails.application.routes.draw do
 
       end
 
+      scope('sites/:site') do
+        get 'settings', to: 'settings#edit', as: :site_settings_edit
+        put 'settings', to: 'settings#update', as: :site_settings_update
+      end
+
     end
 
 

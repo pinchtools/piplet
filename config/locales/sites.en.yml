@@ -4,4 +4,8 @@ en:
       sites:
         index:
           tab:
+            stats: 'stats'
+            threads: 'threads'
+            comments: 'comments'
+            categories: 'categories'
             settings: 'settings'

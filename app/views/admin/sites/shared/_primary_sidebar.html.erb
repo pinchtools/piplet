@@ -1,9 +1,7 @@
-<div id="primary-sidebar" class="col-md-2">
+<ul id="primary-sidebar" class="nav nav-pills nav-stacked">
+  <%= render partial: 'admin/sites/shared/menu_entry_site', collection: sites, as: :site %>
 
-  <ul class="nav nav-pills nav-stacked">
-    <li class="nav-item">
-      <%= active_link_to t('admin.links.sites.new'), new_admin_site_path, :class => 'nav-link' %>
-    </li>
-  </ul>
-
-</div>
+  <li class="nav-item">
+    <%= active_link_to fa_icon('plus') + t('admin.links.sites.new'), new_admin_site_path, :class => 'nav-link' %>
+  </li>
+</ul>
