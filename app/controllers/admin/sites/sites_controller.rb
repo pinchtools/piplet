@@ -5,6 +5,8 @@ class Admin::Sites::SitesController < Admin::AdminController
   before_action :identify_site, except: [ :index ]
   before_action :include_sites, only: [ :show ]
 
+  layout 'admin/sites'
+
   def index
     redirect_to admin_site_path(Site.first.uid)
   end
