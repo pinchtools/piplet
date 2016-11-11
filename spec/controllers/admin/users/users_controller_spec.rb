@@ -16,24 +16,28 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
   end
 
   describe "GET #search" do
-    
-    it_behaves_like 'a restricted access to admin only' do 
+    before {
+      User.admins.delete_all
+    }
+    let!(:admin) { FactoryGirl.create(:admin) }
+
+    it_behaves_like 'a restricted access to admin only' do
       let(:request) { get :search, :search => '' }
     end
-    
-    context "logged" do
-      before {
-        user = create(:admin)
-        log_in_as(user)
-      }
-      
+
+    context "logged", :focus  do
+
       it "warn when input is too short" do
+        log_in_as(admin)
+
         get :search, :search => 'a'
         
         expect(flash.now[:warning]).to be_present
       end
       
       it 'warn when input is too long' do
+        log_in_as(admin)
+        
         get :search, :search => Faker::Lorem.characters(51) 
   
         expect(flash.now[:warning]).to be_present
@@ -45,7 +49,7 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
   
   describe "DELETE #destroy" do
     before {
-      User.admins.destroy_all
+      User.admins.delete_all
     }
     let!(:admin) { FactoryGirl.create(:admin) }
     
