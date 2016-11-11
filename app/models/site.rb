@@ -11,7 +11,7 @@
 
 class Site < ActiveRecord::Base
 
-  validates :name, presence: true, uniqueness: { case_sensitive: false }
+  validates :name, presence: true, uniqueness: { case_sensitive: false }, length: { minimum: 3 }
   validates :uid, presence: true, uniqueness: { case_sensitive: false }
 
   before_validation :generate_uid, if: :new_record?

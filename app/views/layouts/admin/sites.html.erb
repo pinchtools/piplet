@@ -15,10 +15,13 @@
         <%= render 'admin/sites/shared/nav_bar' %>
       </div>
 
-      <%= yield %>
-
+      <div class="row tab-content">
+        <%= yield %>
+      </div>
     </div>
   </div>
 </div>
+
+<%= render 'admin/sites/sites/modal_new_site' %>
 <% end %>
 <%= render template: "layouts/admin/admin" %>

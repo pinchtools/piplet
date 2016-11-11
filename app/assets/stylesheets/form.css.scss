@@ -46,6 +46,10 @@ form {
   .col-notice {
     padding: 0.375rem 0.75rem;
   }
+
+  label::first-letter {
+    text-transform: capitalize;
+  }
 }
 
 .page-hd {

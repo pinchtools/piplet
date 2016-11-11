@@ -2,6 +2,10 @@
   <%= render partial: 'admin/sites/shared/menu_entry_site', collection: sites, as: :site %>
 
   <li class="nav-item">
-    <%= active_link_to fa_icon('plus') + t('admin.links.sites.new'), new_admin_site_path, :class => 'nav-link' %>
+    <%= button_tag fa_icon('plus') + t('admin.links.sites.new'),
+                   class: 'btn nav-link',
+                   data: { toggle: 'modal', target: '#newSiteModal' },
+                   type: 'button'
+    %>
   </li>
 </ul>

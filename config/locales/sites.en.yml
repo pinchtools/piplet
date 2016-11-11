@@ -1,4 +1,10 @@
 en:
+
+  attributes: &attributes
+    site:
+      name: 'name'
+      uid: 'identifier'
+
   admin:
     sites:
       sites:
@@ -9,3 +15,21 @@ en:
             comments: 'comments'
             categories: 'categories'
             settings: 'settings'
+        new:
+          title: 'New site'
+          close: 'Close'
+          submit: 'Submit'
+      settings:
+        edit:
+          submit: 'Save changes'
+        notice:
+          success:
+            updated: 'Successful update'
+
+  helpers:
+    label:
+      <<: *attributes
+
+  activerecord:
+    attributes:
+      <<: *attributes

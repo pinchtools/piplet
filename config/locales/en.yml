@@ -77,20 +77,6 @@ en:
         email-not-found: 'Email address not found'
         password-expired: 'Password reset has expired.'
   attributes:  &attributes
-    user:
-      avatar: "Avatar"
-      username: "Username"
-      email: "Email"
-      password: "Password"
-      password_confirmation: "Password confirmation"
-      description: "Introduce yourself"
-      blocked_note: "Notes"
-      suspected_note: "Notes"
-    user_filter:
-      rule_kind: "Type"
-      list_kind: "List"
-      email_provider: "Email provider"
-      ip_address: "Ip Address"
     log:
       action: "Action"
       created_at: "Date"

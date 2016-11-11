@@ -37,7 +37,7 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
       
       it 'warn when input is too long' do
         log_in_as(admin)
-        
+
         get :search, :search => Faker::Lorem.characters(51) 
   
         expect(flash.now[:warning]).to be_present

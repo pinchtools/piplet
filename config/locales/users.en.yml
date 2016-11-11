@@ -1,4 +1,21 @@
 en:
+
+  attributes: &attributes
+    user:
+      avatar: "Avatar"
+      username: "Username"
+      email: "Email"
+      password: "Password"
+      password_confirmation: "Password confirmation"
+      description: "Introduce yourself"
+      blocked_note: "Notes"
+      suspected_note: "Notes"
+    user_filter:
+      rule_kind: "Type"
+      list_kind: "List"
+      email_provider: "Email provider"
+      ip_address: "Ip Address"
+
   users:
     links:
       users:
@@ -210,3 +227,11 @@ en:
         trusted-xor-blocked: 'Must be a trusting filter or a blocking one, but not both'
       ip_address:
         invalid: 'Invalid ip address or wildcard'
+
+  helpers:
+    label:
+      <<: *attributes
+
+  activerecord:
+    attributes:
+      <<: *attributes
