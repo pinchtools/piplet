@@ -61,17 +61,13 @@ Rails.application.routes.draw do
 
     scope module: 'sites' do
 
-      resources :sites, param: :site_uid do
-
-      end
+      resources :sites, param: :site_uid
 
       scope('sites/:site_uid') do
-        get 'settings', to: 'settings#edit', as: :site_settings_edit
-        patch 'settings', to: 'settings#update', as: :site_settings_update
+        patch 'edit', to: 'sites#update', as: :site_update
       end
 
     end
-
 
   end
   

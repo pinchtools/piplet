@@ -12,6 +12,6 @@
     <%= active_link_to t('admin.sites.sites.index.tab.categories'), '#', class: 'nav-link' %>
   </li>
   <li class="nav-item">
-    <%= active_link_to t('admin.sites.sites.index.tab.settings'), admin_site_settings_edit_path(@site.uid), class: 'nav-link' %>
+    <%= active_link_to t('admin.sites.sites.index.tab.settings'), edit_admin_site_path(@site.uid), class: 'nav-link' %>
   </li>
 </ul>

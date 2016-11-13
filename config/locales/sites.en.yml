@@ -19,12 +19,12 @@ en:
           title: 'New site'
           close: 'Close'
           submit: 'Submit'
-      settings:
         edit:
           submit: 'Save changes'
         notice:
           success:
             updated: 'Successful update'
+            created: 'New site created'
 
   helpers:
     label:
