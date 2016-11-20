@@ -1,6 +1,6 @@
 #primary-sidebar {
-  
-  .nav {
+
+  &.nav {
     border-radius: 0; 
     background-color: #EFEFEF;
   }
@@ -11,6 +11,11 @@
   
   li a::first-letter {
     text-transform: capitalize;
+  }
+
+
+  i.fa-plus::after {
+    content: "\00a0";
   }
   
   

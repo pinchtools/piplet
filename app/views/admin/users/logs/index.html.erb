@@ -1,25 +1,31 @@
 <div class="container">
-  <%= render 'layouts/admin/users/nav_bar' , locals: { username: user.username_lower } %>
+  <div class="row">
+    <div class="col-md-12">
+      <%= render 'admin/users/shared/nav_bar' , locals: { username: @user.username_lower } %>
+    </div>
+  </div>
 
-  <div class="col-md-10 col-md-offset-1">
-    <div class="row row-section">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <div class="row row-section">
 
-      <%= will_paginate logs , :previous_label => '', :next_label => '' %>
-      
-      <table class="table table-striped">
-        <thead>
+        <%= will_paginate logs , :previous_label => '', :next_label => '' %>
+
+        <table class="table table-striped">
+          <thead>
           <tr>
             <th><%= t 'admin.logs.logs.index.message' %></th>
             <th><%= t 'admin.logs.logs.index.date' %></th>
           </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
           <%= render partial: "log", collection: logs,  locals: { user: user } %>
-        </tbody>
-      </table>
-      
-      <%= will_paginate logs, :previous_label => '', :next_label => '' %>
-    
+          </tbody>
+        </table>
+
+        <%= will_paginate logs, :previous_label => '', :next_label => '' %>
+
+      </div>
     </div>
   </div>
 

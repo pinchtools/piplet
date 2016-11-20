@@ -1,0 +1,35 @@
+en:
+
+  attributes: &attributes
+    site:
+      name: 'name'
+      uid: 'identifier'
+
+  admin:
+    sites:
+      sites:
+        index:
+          tab:
+            stats: 'stats'
+            threads: 'threads'
+            comments: 'comments'
+            categories: 'categories'
+            settings: 'settings'
+        new:
+          title: 'New site'
+          close: 'Close'
+          submit: 'Submit'
+        edit:
+          submit: 'Save changes'
+        notice:
+          success:
+            updated: 'Successful update'
+            created: 'New site created'
+
+  helpers:
+    label:
+      <<: *attributes
+
+  activerecord:
+    attributes:
+      <<: *attributes

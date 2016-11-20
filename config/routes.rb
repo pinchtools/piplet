@@ -58,6 +58,17 @@ Rails.application.routes.draw do
         resources :logs, only: [:index, :show]
       end
     end
+
+    scope module: 'sites' do
+
+      resources :sites, param: :site_uid
+
+      scope('sites/:site_uid') do
+        patch 'edit', to: 'sites#update', as: :site_update
+      end
+
+    end
+
   end
   
   namespace :users do

@@ -1,0 +1,27 @@
+<% content_for :header do %>
+    <%= stylesheet_link_tag 'admin/sites/sites' %>
+<% end %>
+
+<% content_for :content do %>
+<div class="container">
+
+  <div class="row">
+    <div class="col-md-2">
+      <%= render partial: 'admin/sites/shared/primary_sidebar', locals: { sites: sites } %>
+    </div>
+
+    <div class="col-md-10">
+      <div class="row">
+        <%= render 'admin/sites/shared/nav_bar' %>
+      </div>
+
+      <div class="row tab-content">
+        <%= yield %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= render 'admin/sites/sites/modal_new_site' %>
+<% end %>
+<%= render template: "layouts/admin/admin" %>

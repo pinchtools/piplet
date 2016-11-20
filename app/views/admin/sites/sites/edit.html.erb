@@ -1,0 +1,47 @@
+
+<div class="container">
+
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+
+      <%= form_for [:sites, site], url: admin_site_update_path do |f| %>
+          <%= render 'shared/error_messages', object: f.object %>
+
+
+          <div class="row">
+            <div class="col-md-12">
+              <%= f.label :name %>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <%= f.text_field :name, class: 'form-control' %>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col-md-12">
+              <%= f.label :uid %>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <%= f.text_field :uid, class: 'form-control', readonly: ''%>
+            </div>
+          </div>
+
+          <div class="row row-section">
+            <div class="col-md-12">
+              <%= f.submit  t('admin.sites.sites.edit.submit'), class: "btn btn-primary" %>
+            </div>
+          </div>
+
+      <% end %>
+
+    </div>
+  </div>
+
+</div>

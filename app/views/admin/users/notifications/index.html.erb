@@ -1,22 +1,26 @@
 <div class="container">
-  <%= render 'layouts/admin/users/nav_bar' , locals: { username: @user.username_lower } %>
-
-  <div class="col-md-12">
-  
-    <div class="row row-section">
-    
-      <%= will_paginate notifications , :previous_label => '', :next_label => '' %>
-    
-      <table class="table table-striped">
-        <tbody>
-          <%= render notifications %>
-        </tbody>
-      </table>
-    
-      <%= will_paginate notifications, :previous_label => '', :next_label => '' %>
-    
+  <div class="row">
+    <div class="col-md-12">
+      <%= render 'admin/users/shared/nav_bar' , locals: { username: @user.username_lower } %>
     </div>
-    
   </div>
+  <div class="row">
+    <div class="col-md-12">
 
+      <div class="row row-section">
+
+        <%= will_paginate notifications , :previous_label => '', :next_label => '' %>
+
+        <table class="table table-striped">
+          <tbody>
+            <%= render notifications %>
+          </tbody>
+        </table>
+
+        <%= will_paginate notifications, :previous_label => '', :next_label => '' %>
+
+      </div>
+
+    </div>
+  </div>
 </div>
