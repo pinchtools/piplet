@@ -8,6 +8,6 @@ module Admin::Sites::SitesHelper
 
 
   def include_sites
-    @sites = Site.all
+    @sites = Site.oldest_first
   end
 end

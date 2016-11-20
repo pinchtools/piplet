@@ -16,6 +16,8 @@ class Site < ActiveRecord::Base
 
   before_validation :generate_uid, if: :new_record?
 
+  scope :oldest_first, -> { order( created_at: :desc ) }
+
   private
 
   def generate_uid
