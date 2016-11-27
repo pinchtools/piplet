@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.5'
+gem 'rails', '5.0.0'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.15'
 # Use SCSS for stylesheets
@@ -19,10 +19,8 @@ gem 'jquery-ui-rails'
 gem 'detect_timezone_rails'
 gem 'http_accept_language'
 
-gem 'bootstrap', '~> 4.0.0.alpha3'
+gem 'bootstrap', '~> 4.0.0.alpha5'
 gem 'font-awesome-rails'
-
-gem 'draper' #decorators view
 
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
@@ -58,7 +56,7 @@ gem 'puma'
 
 #gem 'mail'
 
-gem "rails-settings-cached"
+gem "rails-settings-cached", '~> 0.5.0'
 
 gem 'active_link_to'
 
@@ -107,5 +105,4 @@ end
 group :test do
   gem 'rspec-sidekiq'
   gem 'capybara'
-  gem 'test_after_commit'
 end

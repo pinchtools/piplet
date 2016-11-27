@@ -9,7 +9,7 @@ class Users::UsersController < Users::BaseController
     @user = User.new
     @user.build_avatar
     
-    render locals: { user: UserDecorator.new(@user) }
+    render locals: { user: @user }
   end
   
   def create
@@ -25,7 +25,7 @@ class Users::UsersController < Users::BaseController
       flash[:info] = t 'user.notice.info.account-need-activation'
       redirect_to root_url
     else
-      render :new, locals: { user: UserDecorator.new(@user) }
+      render :new, locals: { user: @user }
     end
   end
   
@@ -35,13 +35,13 @@ class Users::UsersController < Users::BaseController
       redirect_to root_url and return
     end
     
-    render locals: { user: UserDecorator.new(@user) }
+    render locals: { user: @user }
   end
   
   def edit
     @user.build_avatar if @user.avatar.nil?
     
-    render :edit, locals: { user: UserDecorator.new(@user) }
+    render :edit, locals: { user: @user }
   end
   
   def update
@@ -49,7 +49,7 @@ class Users::UsersController < Users::BaseController
       flash[:success] = t 'user.notice.success.updated'
       redirect_to users_edit_path
     else
-      render :edit, locals: { user: UserDecorator.new(@user) }
+      render :edit, locals: { user: @user }
     end
   end
   

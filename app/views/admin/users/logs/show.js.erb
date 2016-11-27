@@ -1,3 +1,4 @@
+<% present(log) do |log| %>
 $('#log-modal').one('show.bs.modal', function (e) {
   $('#log-message').html('<%= log.message %>');
   $('#log-date').html('<%= l log.created_at, format: :short %>');
@@ -12,3 +13,4 @@ $('#log-modal').one('show.bs.modal', function (e) {
 }).one('hidden.bs.modal', function (e) {
   $('#log-modal .text').html('-');
 }).modal();
+<% end %>
