@@ -21,7 +21,7 @@ RSpec.describe Users::SessionsController, type: :controller do
       
       log_in_as(user)
         
-      expect(response).to render_template(:new)
+      expect(response).to have_http_status(:ok)
     end
     
     it "fails if user is not activated" do
@@ -40,7 +40,7 @@ RSpec.describe Users::SessionsController, type: :controller do
       
       log_in_as(user)
       
-      expect(response).to render_template(:new)
+      expect(response).to have_http_status(:ok)
       expect(flash[:danger]).to be_present
     end
     

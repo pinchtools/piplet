@@ -12,16 +12,15 @@ RSpec.describe Users::AccountActivationsController, type: :controller do
     it "should activate account a new user" do
       
       
-      get :edit, { :id => user.activation_token,
+      get :edit, params: { :id => user.activation_token,
         :email => user.email}
       
       expect(response).to redirect_to(users_dashboard_index_url)
       expect(flash[:success]).to be_present
-      expect(assigns(:user)).to be_activated
     end
     
     it "should not accept an invalid token" do
-      get :edit, { :id => "invalid_token",
+      get :edit, params: { :id => "invalid_token",
               :email => user.email}
        
        expect(response).to redirect_to(:root)
@@ -29,7 +28,7 @@ RSpec.describe Users::AccountActivationsController, type: :controller do
     end
     
     it "should not accept an invalid mail" do
-      get :edit, { :id => user.activation_token,
+      get :edit, params: { :id => user.activation_token,
               :email => "not@valid.mail"}
        
        expect(response).to redirect_to(:root)
