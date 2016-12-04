@@ -70,7 +70,7 @@ class Users::UsersController < Users::BaseController
       return render json: {message: user.errors[:username].first}, :status => :bad_request
     end
     
-    render nothing: true
+    head :ok
   end
   
   private
