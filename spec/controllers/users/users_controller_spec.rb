@@ -203,17 +203,17 @@ RSpec.describe Users::UsersController, type: :controller do
       
       count = User.actives.count
 
-      expect(cookies).to have_key(:remember_token)
-      expect(cookies).to have_key(:user_id)
-      
+      expect(response.cookies['remember_token']).not_to be_nil
+      expect(response.cookies['user_id']).not_to be_nil
+
       delete :destroy
-      
+
       expect(:response).to redirect_to(:root)
 
       expect(User.actives.count).to eq(count - 1)
 
-      expect(cookies).to_not have_key(:remember_token)
-      expect(cookies).to_not have_key(:user_id)
+      expect(response.cookies['remember_token']).to be_nil
+      expect(response.cookies['user_id']).to be_nil
     end
       
   end

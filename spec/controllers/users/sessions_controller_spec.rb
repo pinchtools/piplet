@@ -65,27 +65,27 @@ RSpec.describe Users::SessionsController, type: :controller do
     it 'generate cookies if remember me is checked' do
       expect(cookies).to_not have_key(:remember_token)
       expect(cookies).to_not have_key(:user_id)
-      
+
       user = create(:user)
-    
+
       log_in_as(user, { remember_me: '1' })
-      
+
       expect(cookies).to have_key(:remember_token)
       expect(cookies).to have_key(:user_id)
   end
     
     it 'destroy existing cookies if remember me is unchecked' do
       user = create(:user)
-    
+
       log_in_as(user, { remember_me: '1' })
-      
-      expect(cookies).to have_key(:remember_token)
-      expect(cookies).to have_key(:user_id)
-      
+
+      expect(response.cookies['remember_token']).not_to be_nil
+      expect(response.cookies['user_id']).not_to be_nil
+
       log_in_as(user)
-      
-      expect(cookies).to_not have_key(:remember_token)
-      expect(cookies).to_not have_key(:user_id)
+
+      expect(response.cookies['remember_token']).to be_nil
+      expect(response.cookies['user_id']).to be_nil
     end
     
   end
@@ -94,16 +94,16 @@ RSpec.describe Users::SessionsController, type: :controller do
     
     it 'destroy cookies' do
       user = create(:user)
-    
+
       log_in_as(user, { remember_me: '1' })
-      
-      expect(cookies).to have_key(:remember_token)
-      expect(cookies).to have_key(:user_id)
+
+      expect(response.cookies['remember_token']).not_to be_nil
+      expect(response.cookies['user_id']).not_to be_nil
       
       delete :destroy
-      
-      expect(cookies).to_not have_key(:remember_token)
-      expect(cookies).to_not have_key(:user_id)
+
+      expect(response.cookies['remember_token']).to be_nil
+      expect(response.cookies['user_id']).to be_nil
     end
   end
   
