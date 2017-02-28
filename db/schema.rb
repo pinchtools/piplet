@@ -10,10 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170101111947) do
+ActiveRecord::Schema.define(version: 20170226160603) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "api_keys", force: :cascade do |t|
+    t.string   "label"
+    t.string   "public_key"
+    t.string   "secret_key"
+    t.boolean  "default",    default: false
+    t.integer  "site_id"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.index ["public_key"], name: "index_api_keys_on_public_key", using: :btree
+    t.index ["site_id"], name: "index_api_keys_on_site_id", using: :btree
+  end
 
   create_table "logs", force: :cascade do |t|
     t.integer  "action"
@@ -58,23 +70,11 @@ ActiveRecord::Schema.define(version: 20170101111947) do
     t.index ["thing_type", "thing_id", "var"], name: "index_settings_on_thing_type_and_thing_id_and_var", unique: true, using: :btree
   end
 
-  create_table "site_signatures", force: :cascade do |t|
-    t.text     "public_key"
-    t.text     "private_key"
-    t.integer  "site_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.index ["site_id"], name: "index_site_signatures_on_site_id", using: :btree
-  end
-
   create_table "sites", force: :cascade do |t|
     t.string   "name"
     t.string   "uid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string   "api_uid"
-    t.string   "api_key"
-    t.index ["api_uid"], name: "index_sites_on_api_uid", using: :btree
   end
 
   create_table "user_avatars", force: :cascade do |t|
@@ -154,5 +154,4 @@ ActiveRecord::Schema.define(version: 20170101111947) do
     t.integer "user_filter_id"
   end
 
-  add_foreign_key "site_signatures", "sites"
 end
