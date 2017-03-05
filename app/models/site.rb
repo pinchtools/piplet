@@ -15,6 +15,9 @@ class Site < ActiveRecord::Base
   validates :uid, presence: true, uniqueness: { case_sensitive: false }
 
   before_validation :generate_uid, if: :new_record?
+  after_create :create_default_api_key
+
+  has_many :api_keys, dependent: :destroy
 
   scope :oldest_first, -> { order( created_at: :desc ) }
 
@@ -24,4 +27,7 @@ class Site < ActiveRecord::Base
     self.uid = name.parameterize if name.present?
   end
 
+  def create_default_api_key
+    api_keys.create(label: 'default')
+  end
 end

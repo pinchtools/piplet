@@ -9,8 +9,6 @@
     </div>
     <div class="col-md-10">
       <div class="row">
-
-
         <div class="col-md-4 float-md-right">
           <%= render partial: 'search_form' %>
         </div>
@@ -45,15 +43,16 @@
           </ul>
         </div>
       </div>
+      <div class="row tab-content">
+        <% case list
+             when "suspected", "blocked", "deactivated", "to_be_deleted"
+        %>
+            <%= render partial: "#{list}_list", locals: { users: users, list: list } %>
+        <% else %>
+            <%= render partial: "default_list", locals: { users: users, list: list } %>
+        <% end %>
 
-      <% case list
-           when "suspected", "blocked", "deactivated", "to_be_deleted"
-      %>
-          <%= render partial: "#{list}_list", locals: { users: users, list: list } %>
-      <% else %>
-          <%= render partial: "default_list", locals: { users: users, list: list } %>
-      <% end %>
-
+      </div>
     </div>
   </div>
 </div>

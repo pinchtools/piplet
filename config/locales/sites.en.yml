@@ -4,7 +4,8 @@ en:
     site:
       name: 'name'
       uid: 'identifier'
-
+    api_key:
+      lable: 'label'
   admin:
     sites:
       sites:
@@ -20,12 +21,21 @@ en:
           close: 'Close'
           submit: 'Submit'
         edit:
+          tab:
+            general: 'General'
+            api_keys: 'Api Keys'
           submit: 'Save changes'
         notice:
           success:
             updated: 'Successful update'
             created: 'New site created'
-
+      api_keys:
+        index:
+          new_api_key: 'Create a new api key'
+        form:
+          title: 'New Api key'
+          close: 'Close'
+          submit: 'Generate Api Key'
   helpers:
     label:
       <<: *attributes

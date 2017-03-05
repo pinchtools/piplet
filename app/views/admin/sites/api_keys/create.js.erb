@@ -1,0 +1,11 @@
+<% if @api_key.errors.any? %>
+$('#newApiKeyModal #error_explanation').remove();
+$('#newApiKeyModal .modal-body').prepend("<%= j  render 'shared/error_messages', object: @api_key %>");
+<% else %>
+$("#newApiKeyModal").modal('hide');
+
+$("#api-keys tbody").prepend("<%= j render partial: 'api_key', locals: { site: @site, api_key: @api_key } %>")
+$("#api-keys tbody tr:first").effect( "highlight","slow" );
+
+$('#newApiKeyModal form')[0].reset();
+<% end %>

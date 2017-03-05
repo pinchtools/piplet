@@ -208,12 +208,17 @@ en:
         notice:
           warning:
             blocked: 'This account has been blocked'
-            blocked-note: 'A note has been writen about that:'
+            blocked-note: 'A note has been written about that:'
             suspected: 'This account has been marked as suspect'
-            suspected-note: 'A note has been writen about that:'
+            suspected-note: 'A note has been written about that:'
       logs:
         show:
           title: 'Log'
+    filters:
+      index:
+        add-filter: 'Add a new rule'
+        blacklist: 'Blacklist'
+
   user-filter:
     form:
       title: 'New filter'

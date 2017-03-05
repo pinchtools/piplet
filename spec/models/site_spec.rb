@@ -10,6 +10,17 @@ RSpec.describe Site, type: :model do
 
   it { should validate_length_of(:name).is_at_least(3) }
 
+  it { should have_many(:api_keys).dependent(:destroy) }
+
+  describe '.create' do
+    subject{ create(:site) }
+
+    it 'create an api key' do
+      api_key = subject.api_keys.first
+      expect(api_key).not_to be(nil)
+    end
+  end
+
   describe '#uid' do
     subject{ build(:site) }
 
@@ -27,7 +38,6 @@ RSpec.describe Site, type: :model do
       expect{ subject.save }.not_to change{ subject.uid }
       expect(subject.errors).to be_empty
     end
-
 
   end
 

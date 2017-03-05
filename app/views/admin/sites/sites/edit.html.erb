@@ -2,9 +2,14 @@
 <div class="container">
 
   <div class="row">
-    <div class="col-md-6 offset-md-3">
+    <div class="col-md-12">
+      <%= render 'admin/sites/shared/settings_nav', site: site %>
+    </div>
+  </div>
 
-      <%= form_for [:sites, site], url: admin_site_update_path do |f| %>
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+        <%= form_for [:sites, site], url: admin_site_update_path do |f| %>
           <%= render 'shared/error_messages', object: f.object %>
 
 

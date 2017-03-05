@@ -6,7 +6,6 @@
 #  label      :string
 #  public_key :string
 #  secret_key :string
-#  default    :boolean          default(FALSE)
 #  site_id    :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -24,8 +23,6 @@ class ApiKey < ApplicationRecord
 
   before_validation :generate_public_key, if: :new_record?
   before_validation :generate_secret_key, if: :new_record?
-
-
   def generate_public_key
     uuid = nil
 
@@ -39,4 +36,5 @@ class ApiKey < ApplicationRecord
   def generate_secret_key
     self.secret_key = SecureRandom.base64
   end
+
 end

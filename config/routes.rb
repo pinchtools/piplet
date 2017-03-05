@@ -65,6 +65,8 @@ Rails.application.routes.draw do
 
       scope('sites/:site_uid') do
         patch 'edit', to: 'sites#update', as: :site_update
+
+        resources :api_keys
       end
 
     end
