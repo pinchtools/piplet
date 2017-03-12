@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '5.0.0'
+gem 'rails', '~> 5.0.0'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.15'
 # Use SCSS for stylesheets
@@ -39,7 +39,8 @@ gem 'sidekiq-statistic'
 
 gem 'responders', '~> 2.0'
 
-gem 'active_model_serializers'
+gem 'active_model_serializers', '~> 0.10.0'
+gem 'jwt'
 
 # Pagination
 gem 'will_paginate'
@@ -99,6 +100,7 @@ group :development do
   # Add a comment summarizing the current schema on models & specs
   gem 'annotate'
 
+  gem 'guard-rspec', require: false
 end
 
 
