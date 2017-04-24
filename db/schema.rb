@@ -35,8 +35,8 @@ ActiveRecord::Schema.define(version: 20170305125324) do
     t.string   "link"
     t.string   "message_vars"
     t.integer  "action_user_id"
-    t.integer  "loggable_id"
     t.string   "loggable_type"
+    t.integer  "loggable_id"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
     t.index ["action"], name: "index_logs_on_action", using: :btree

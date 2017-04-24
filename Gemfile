@@ -26,8 +26,7 @@ gem 'font-awesome-rails'
 gem 'bcrypt', '~> 3.1.7'
 
 # security
-# gem 'rack-attack'
-# gem 'rack-security'
+gem 'rack-attack'
 
 gem 'redis'
 gem 'redis-rails'

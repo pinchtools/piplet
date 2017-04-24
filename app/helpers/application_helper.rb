@@ -16,4 +16,9 @@ module ApplicationHelper
     yield(presenter) if block_given?
   end
 
+  def detect_language
+    http_accept_language.preferred_language_from(I18n.available_locales) ||
+        http_accept_language.compatible_language_from(I18n.available_locales)
+  end
+
 end

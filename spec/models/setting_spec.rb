@@ -12,9 +12,6 @@
 #
 
 require 'rails_helper'
-require "shared/contexts/email_validation"
-require "shared/contexts/username_validation"
-require "shared/contexts/password_validation"
 
 RSpec.describe User, type: :model do
   

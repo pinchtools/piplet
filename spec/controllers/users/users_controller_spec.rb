@@ -41,17 +41,10 @@ RSpec.describe Users::UsersController, type: :controller do
       }
       
       it "create a valid user" do
-        ActionMailer::Base.deliveries.clear
-        
-        count = User.count
-        
-        expect(Sidekiq::Extensions::DelayedMailer.jobs.size).to eq(0)
-  
-        post :create, params: { :user => user_params }
-        
-        expect(Sidekiq::Extensions::DelayedMailer.jobs.size).to eq(1)
-        
-        expect(User.count).to eq(count + 1) # add a new User
+        expect {
+          post :create, params: { :user => user_params }
+        }.to change{User.count}. by(1)
+
         expect(response).to redirect_to(:root)
         expect(flash[:info]).to be_present
       end

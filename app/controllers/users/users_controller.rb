@@ -1,4 +1,6 @@
 class Users::UsersController < Users::BaseController
+  include ApplicationHelper
+
   before_action :logged_in_user, only: [ :edit, :update, :destroy]
   before_action :use_current_user, only: [:edit, :update, :destroy]
   before_action :existing_username, only: :show
@@ -17,11 +19,9 @@ class Users::UsersController < Users::BaseController
     
     @user.creation_ip_address = request.remote_ip
     
-    @user.locale = http_accept_language.preferred_language_from(I18n.available_locales) ||
-      http_accept_language.compatible_language_from(I18n.available_locales)
+    @user.locale = detect_language
     
     if @user.save
-      @user.send_activation_email
       flash[:info] = t 'user.notice.info.account-need-activation'
       redirect_to root_url
     else
