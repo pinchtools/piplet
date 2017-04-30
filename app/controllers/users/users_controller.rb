@@ -20,8 +20,10 @@ class Users::UsersController < Users::BaseController
     @user.creation_ip_address = request.remote_ip
     
     @user.locale = detect_language
-    
-    if @user.save
+
+    concerned_by_filters = Users::ConcernedByFiltersService.new(@user).call
+
+    if !concerned_by_filters && @user.save
       flash[:info] = t 'user.notice.info.account-need-activation'
       redirect_to root_url
     else
@@ -30,7 +32,6 @@ class Users::UsersController < Users::BaseController
   end
   
   def show
-
     unless @user.activated?
       redirect_to root_url and return
     end
@@ -45,7 +46,9 @@ class Users::UsersController < Users::BaseController
   end
   
   def update
-    if @user.update_attributes(user_update_params)
+    concerned_by_filters = Users::ConcernedByFiltersService.new(@user).call
+
+    if !concerned_by_filters && @user.update_attributes(user_update_params)
       flash[:success] = t 'user.notice.success.updated'
       redirect_to users_edit_path
     else
@@ -63,7 +66,6 @@ class Users::UsersController < Users::BaseController
   end
   
   def check_username
-    
     user = User.new(username: params[:username])
       
     if !user.valid? && user.errors.key?(:username)

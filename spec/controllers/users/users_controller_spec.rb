@@ -12,26 +12,36 @@ RSpec.describe Users::UsersController, type: :controller do
       expect(response).to have_http_status(:success)
     end
   end
+
   
   describe "POST #create" do
-    it "fails when invalid information are send " do
-      user_params = { :name => "", 
-        :email => "",
-        :password => "", 
-        :password_confirmation => ""
-      }
-      
-      count = User.count
-      
-      post(:create, params: { user: user_params })
-      
-      expect(User.count).to eq(count)
-      expect(response).to have_http_status(:ok)
+    shared_examples 'user validation failed' do
+      it 'does not add an user on db' do
+        expect {
+          post(:create, params: { user: user_params })
+        }.not_to change {User.count}
+      end
 
+      it 'renders new template' do
+        post(:create, params: { user: user_params })
+        expect(response).to render_template(:new)
+      end
     end
-    
+
+    context 'form is empty' do
+      let(:user_params) { { :name => '', :email => '', :password => '', :password_confirmation => '' } }
+      include_examples 'user validation failed'
+    end
+
+    context 'concerned by filter' do
+      let(:user_params) { { email: 'foobar@foobar.com'} }
+      let(:email_provider) { user_params[:email].partition('@').last }
+      let!(:filter) {create(:user_filter_blocked_email, email_provider: email_provider)}
+
+      include_examples 'user validation failed'
+    end
+
     context "valid user" do
-      
       let(:user_params) {
          build(:user).attributes.merge({
                   :password => 'foobarfoobar',
@@ -48,9 +58,7 @@ RSpec.describe Users::UsersController, type: :controller do
         expect(response).to redirect_to(:root)
         expect(flash[:info]).to be_present
       end
-      
     end
-    
   end # END POST #create
   
   describe "GET #show" do
@@ -96,8 +104,7 @@ RSpec.describe Users::UsersController, type: :controller do
       expect(response).to redirect_to (users_edit_path)
       expect(session[:forwarding_url]).to be_nil
     end
-    
-    
+
     context 'user is logged' do
       let (:user) { log_in_as( create(:user) ) }
 
@@ -114,8 +121,7 @@ RSpec.describe Users::UsersController, type: :controller do
     
       should_redirect_to_login
     end
-    
-        
+
     context 'when user is logged' do
       let(:user) { log_in_as( create(:user) ) }
         
@@ -124,9 +130,8 @@ RSpec.describe Users::UsersController, type: :controller do
         
         patch :update, params: { :user => user.attributes, :id => user.id }
         
-        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:edit)
       end
-      
       
       it 'update valid form' do
         new_password = 'foobarfoobar2'
@@ -143,7 +148,6 @@ RSpec.describe Users::UsersController, type: :controller do
         expect(response).to redirect_to( users_edit_path )
       end
       
-      
       it 'accepts empty password' do
         user.password = nil
         user.password_confirmation = nil
@@ -154,9 +158,7 @@ RSpec.describe Users::UsersController, type: :controller do
         expect(response).to redirect_to( users_edit_path )
       end
       
-      
       it 'should not be able to set a user as admin' do
-        
         expect(user.admin?).to be false
         
         patch :update,
@@ -168,9 +170,18 @@ RSpec.describe Users::UsersController, type: :controller do
               }
         
         expect(User.find(user.id)).not_to be_admin
-        
       end
-      
+
+      context 'concerned by filter' do
+        let(:email_provider) { user.email.partition('@').last }
+        let!(:filter) {create(:user_filter_blocked_email, email_provider: email_provider)}
+
+        it 'renders edit template' do
+          patch :update, params: { :user => user.attributes, :id => user.id }
+
+          expect(response).to render_template(:edit)
+        end
+      end
     end
   end
   

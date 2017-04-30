@@ -51,7 +51,9 @@ class Admin::Users::UsersController < Admin::AdminController
   
   
   def update
-    if @user.update_attributes(user_update_params)
+    concerned_by_filters = Users::ConcernedByFiltersService.new(@user).call
+
+    if !concerned_by_filters && @user.update_attributes(user_update_params)
       flash[:success] = t 'user.notice.success.updated'
       redirect_to edit_admin_users_user_path
     else

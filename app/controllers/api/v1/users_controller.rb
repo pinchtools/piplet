@@ -8,7 +8,9 @@ class Api::V1::UsersController < ApiController
 
     @user.locale = detect_language
 
-    if @user.save
+    concerned_by_filters = Users::ConcernedByFiltersService.new(@user).call
+
+    if !concerned_by_filters && @user.save
       render json: @user, status: :created
     else
       render_error(@user, :unprocessable_entity)

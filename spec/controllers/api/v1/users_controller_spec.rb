@@ -6,7 +6,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     let(:required_params) { { username: 'totolitoto', email: 'foobar@foobar.com', password: 'foobarfoobar', password_confirmation: 'foobarfoobar' } }
     let(:params) { required_params }
 
-    it 'returns a success code ' do
+    it 'returns a success code' do
       post :create, params: params
 
       expect(response).to have_http_status(:created)
@@ -59,24 +59,31 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       end
     end
 
-    context 'username exists' do
-      let!(:user) { create(:user, username: params[:username]) }
-
-      it 'returns an error' do
+    shared_examples 'returns an error' do
+      it 'contains an error key' do
         post :create, params: params
         json = JSON.parse response.body
         expect(json).to have_key('errors')
       end
     end
 
+    context 'username exists' do
+      let!(:user) { create(:user, username: params[:username]) }
+
+      include_examples 'returns an error'
+    end
+
     context 'email exists' do
       let!(:user) { create(:user, email: params[:email]) }
 
-      it 'returns an error' do
-        post :create, params: params
-        json = JSON.parse response.body
-        expect(json).to have_key('errors')
-      end
+      include_examples 'returns an error'
+    end
+
+    context 'concerned by filter' do
+      let(:email_provider) { params[:email].partition('@').last }
+      let!(:filter) {create(:user_filter_blocked_email, email_provider: email_provider)}
+
+      include_examples 'returns an error'
     end
   end
 end

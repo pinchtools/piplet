@@ -105,5 +105,6 @@ end
 
 group :test do
   gem 'rspec-sidekiq'
+  gem 'rails-controller-testing'
   gem 'capybara'
 end

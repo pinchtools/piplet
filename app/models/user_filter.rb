@@ -23,8 +23,10 @@ class UserFilter < ActiveRecord::Base
   before_save :set_ip_address_to_nil_if_empty
   before_save :set_email_provider_to_nil_if_empty
   
-  after_create -> { delay.apply_to_existing_users }
-  
+  after_create :apply_to_existing_users
+  after_update :apply_to_existing_users, :if => :blocked_changed? && :blocked?
+
+
   validates :email_provider,
     length: { in: 4..100 },
     format: { with: /[a-zA-Z]+\.[a-zA-Z]+\z/ },
@@ -41,21 +43,9 @@ class UserFilter < ActiveRecord::Base
   scope :all_blocked, -> { where(blocked: true).order(created_at: :desc) }
   
   def apply_to_existing_users
-
-    log(:apply_filter)
-    
-    if email_provider.present?
-      concerned_users = User.where(blocked: false).where("email LIKE ?", "%" + email_provider).to_a
-    elsif ip_address.present?
-      concerned_users = User.where(blocked: false).where("creation_ip_address <<= ?", self.cidr_address.to_cidr_s).to_a
-    end
-
-    concerned_users.each(&:block)
-    
-    self.users << concerned_users
+    UserFilter::ApplyWorker.perform_async(self.id)
   end
-  
-  
+
   private
   
   def blocked_users
@@ -64,13 +54,13 @@ class UserFilter < ActiveRecord::Base
   
   def validate_email_xor_ip
     unless self.email_provider.present? ^ self.ip_address.present?
-      self.errors.add(:base, I18n.t(:'user-filter.errors.base.email-xor-ip'))
+      self.errors.add(:base, I18n.t('user-filter.errors.base.email-xor-ip'))
     end
   end
 
   def validate_cidr_address
     if self.ip_address.present? && self.cidr_address.blank?
-      self.errors.add(:ip_address, I18n.t(:'user-filter.errors.ip_address.invalid'))
+      self.errors.add(:ip_address, I18n.t('user-filter.errors.ip_address.invalid'))
     end
   end
   
