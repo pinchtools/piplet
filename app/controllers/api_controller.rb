@@ -1,5 +1,5 @@
 class ApiController < ActionController::API
-  
+
   #around_action :set_time_zone, if: :current_user
 
   private

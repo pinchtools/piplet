@@ -17,6 +17,10 @@ class Api::V1::UsersController < ApiController
     end
   end
 
+  def update
+
+  end
+
   private
 
   def user_create_params
@@ -28,5 +32,4 @@ class Api::V1::UsersController < ApiController
         :time_zone
     )
   end
-
 end
