@@ -25,7 +25,7 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
       let(:request) { get :search, params: { :search => '' } }
     end
 
-    context "logged", :focus  do
+    context "logged"  do
 
       it "warn when input is too short" do
         log_in_as(admin)
