@@ -1,9 +1,9 @@
 class Api::V1::TokensController < ApiController
 
   def create
-    user = User.find_by(email: params[:email].downcase) if params[:email]
+    user = User.all_valid.find_by(email: params[:email].downcase) if params[:email]
 
-    if user && !user.blocked? && user.authenticate(params[:password])
+    if user && user.authenticate(params[:password])
       user.errors.add(:base, I18n.t('user.notice.warning.account-not-activated')) unless user.activated?
     else
       user ||= User.new

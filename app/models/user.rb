@@ -109,7 +109,8 @@ class User < ActiveRecord::Base
   validates :activation_ip_address, presence: true, if: :activated?
   validates :activated_at, presence: true, if: :activated?
 
-  scope :actives, -> { where( blocked: false, suspected: false, deactivated: false ).order( last_seen_at: :desc ) }
+  scope :all_valid, -> { where( blocked: false, deactivated: false ) }
+  scope :actives, -> { all_valid.where( activated: true ).order( last_seen_at: :desc ) }
   scope :all_deactivated, -> { where( deactivated: true, to_be_deleted:false).order( deactivated_at: :desc ) }
   scope :all_to_be_deleted, -> { where( to_be_deleted: true ).order( to_be_deleted_at: :asc ) }
   scope :deletion_ready, -> { where( to_be_deleted: true ).where('to_be_deleted_at <= ?', Time.zone.now) }

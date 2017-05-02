@@ -156,7 +156,7 @@ class Admin::Users::UsersController < Admin::AdminController
       when 'suspected' then User.suspects
       when 'deactivated' then User.all_deactivated
       when 'to_be_deleted' then User.all_to_be_deleted
-      else User.actives
+      else User.all_valid.where(suspected: false)
     end
   end
   

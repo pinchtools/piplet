@@ -1,7 +1,7 @@
 class Users::AccountActivationsController < ApplicationController
 
   def edit
-    @user = User.find_by(email: params[:email])
+    @user = User.all_valid.find_by(email: params[:email])
       
     if @user &&
       !@user.activated? &&
