@@ -8,13 +8,12 @@ RSpec.describe Users::PasswordResetsController, type: :controller do
     let(:user) { create(:user) }
     
     it 'should send an email to a valid user' do
+      allow(user).to receive(:send_activation_email)
 
-      expect(Sidekiq::Extensions::DelayedMailer.jobs.size).to eq(0)
-      
-      post :create, params: { password_reset: { :email => user.email } }
-      
-      expect(Sidekiq::Extensions::DelayedMailer.jobs.size).to eq(1)
-      
+      expect {
+        post :create, params: { password_reset: { :email => user.email } }
+      }.to change{ Sidekiq::Extensions::DelayedMailer.jobs.size }.by(1)
+
       expect(response).to redirect_to(:root)
       expect(flash[:info]).to be_present
     end
