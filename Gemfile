@@ -19,7 +19,7 @@ gem 'jquery-ui-rails'
 gem 'detect_timezone_rails'
 gem 'http_accept_language'
 
-gem 'bootstrap', '~> 4.0.0.alpha5'
+gem 'bootstrap', '4.0.0.alpha5'
 gem 'font-awesome-rails'
 
 # Use ActiveModel has_secure_password
