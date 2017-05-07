@@ -156,6 +156,9 @@ GEM
       skinny (>= 0.1.2)
       sqlite3-ruby
       thin
+    marginalia (1.4.0)
+      actionpack (>= 2.3)
+      activerecord (>= 2.3)
     metaclass (0.0.4)
     method_source (0.8.2)
     mime-types (3.1)
@@ -385,6 +388,7 @@ DEPENDENCIES
   jwt
   letter_avatar
   mailcatcher
+  marginalia
   mini_magick
   mocha
   mock_redis

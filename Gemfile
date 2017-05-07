@@ -100,6 +100,8 @@ group :development do
   gem 'annotate'
 
   gem 'guard-rspec', require: false
+
+  gem 'marginalia' #attach comments to AR queries
 end
 
 
