@@ -780,6 +780,4 @@ RSpec.describe User, type: :model do
 
     it {expect(subject.api_refresh_token).to eq(fakejwt)}
   end
-
-
 end

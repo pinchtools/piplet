@@ -3,10 +3,7 @@ require_dependency "common_passwords"
 class PasswordValidator < ActiveModel::EachValidator
 
   attr_accessor :record, :attribute, :value
-  
 
-  
-  
   def validate_each(record, attribute, value)
     return if value.blank?
     
@@ -23,7 +20,6 @@ class PasswordValidator < ActiveModel::EachValidator
     end
     
     length_valid?
-    
   end
   
   private

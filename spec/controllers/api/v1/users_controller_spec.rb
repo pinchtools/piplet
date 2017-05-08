@@ -86,4 +86,25 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       include_examples 'returns an error'
     end
   end
+
+  describe '#update' do
+    include_context 'having a valid token'
+
+    it 'returns an ok status code' do
+      put :update
+      expect(response).to have_http_status(:ok)
+    end
+
+    it 'updates avatar' do
+
+    end
+
+    it 'does not return access_token' do
+
+    end
+
+    it 'does not return refresh_token' do
+
+    end
+  end
 end

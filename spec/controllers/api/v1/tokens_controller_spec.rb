@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe Api::V1::TokensController, type: :controller do
 
   describe '#create' do
-
     shared_examples 'creation failed' do
       it 'returns a 422 error' do
         expect(response).to have_http_status(:unprocessable_entity)

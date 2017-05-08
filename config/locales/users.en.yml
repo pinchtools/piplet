@@ -122,6 +122,8 @@ en:
         similar-to-suspected-one: "Email is similar to a suspected one, please see logs for further details"
       base:
         unexpected-error: "Unexpected Error"
+        invalid-token: "Invalid token"
+        expired-token: "Token has expired"
   admin:
     users:
       users:

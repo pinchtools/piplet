@@ -63,6 +63,9 @@ class User < ActiveRecord::Base
 
   @@SETTINGS = {}
 
+  ACCESS_TOKEN_DURATION = 1.freeze #days
+  REFRESH_TOKEN_DURATION = 15.freeze #days
+
   has_and_belongs_to_many :filters, :class_name => 'UserFilter', :join_table => :users_user_filters
 
   has_many :notifications, dependent: :destroy
@@ -153,7 +156,6 @@ class User < ActiveRecord::Base
 
     super
   end
-
 
   # Returns the hash digest of the given string.
   def self.digest(string)
@@ -339,7 +341,7 @@ class User < ActiveRecord::Base
   def api_access_token
     JsonWebToken.encode({
                             iat: Time.current.to_i,
-                            exp: 1.day.ago,
+                            exp: refresh_token_duration,
                             user: id
                         })
   end
@@ -347,7 +349,7 @@ class User < ActiveRecord::Base
   def api_refresh_token
     JsonWebToken.encode({
                             iat: Time.current.to_i,
-                            exp: Setting['user.refresh_token_duration'],
+                            exp: refresh_token_duration,
                             user: id
                         })
   end
@@ -406,6 +408,14 @@ class User < ActiveRecord::Base
 
   def log_activated
     log( :activated, ip_address: activation_ip_address )
+  end
+
+  def refresh_token_duration
+    (Setting['user.refresh_token_duration'] || REFRESH_TOKEN_DURATION).days.after.to_i
+  end
+
+  def access_token_duration
+    ACCESS_TOKEN_DURATION.days.after.to_i
   end
 
 end

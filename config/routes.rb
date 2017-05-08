@@ -78,8 +78,7 @@ Rails.application.routes.draw do
     get 'sessions/new'
     
     get 'user/edit' => 'users#edit', as: :edit
-    
-    
+
     patch 'user' => 'users#update', as: :update
   
     delete 'user' => 'users#destroy', as: :destroy
@@ -114,7 +113,11 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :users, except: [:index, :new]
+      resources :users, only: [:create] do
+        collection do
+          put :update
+        end
+      end
       resources :tokens, only: [:create]
     end #v1
   end # namespace api

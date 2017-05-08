@@ -1,6 +1,14 @@
-class ApiController < ActionController::API
+require 'json_web_token'
 
-  #around_action :set_time_zone, if: :current_user
+class ApiController < ActionController::API
+  include ApiHelper
+
+  before_action :authorize_request
+
+  TOKEN_REQUIRED_ATTRS = %w(user exp iat).freeze
+
+  rescue_from JWT::ExpiredSignature, with: :unauthorized_response
+  rescue_from Exception, with: :unprocessable_entity_response
 
   private
 
@@ -9,8 +17,30 @@ class ApiController < ActionController::API
            serializer: ActiveModel::Serializer::ErrorSerializer
   end
 
-  # def set_time_zone(&block)
-  #   Time.use_zone(current_user.time_zone, &block)
-  # end
-  
+  def authorize_request
+    token_payload = JsonWebToken.decode(http_auth_header)
+
+    raise InvalidToken, I18n.t('user.errors.base.invalid-token') if TOKEN_REQUIRED_ATTRS.any? {|a| token_payload.fetch(a, nil).blank? }
+
+    @current_user = User.find( token_payload['user'] )
+  end
+
+  # check for token in `Authorization` header
+  def http_auth_header
+    if request.headers['Authorization'].present?
+      request.headers['Authorization'].split(' ').last
+    else
+      raise InvalidToken, I18n.t('user.errors.base.invalid-token')
+    end
+  end
+
+  def unauthorized_response
+    user = User.new.tap{|u| u.errors.add(:base, I18n.t('user.errors.base.expired-token'))}
+    render_error(user, :unauthorized)
+  end
+
+  def unprocessable_entity_response exception
+    user = User.new.tap{|u| u.errors.add(:base, exception.message)}
+    render_error(user, :unprocessable_entity)
+  end
 end

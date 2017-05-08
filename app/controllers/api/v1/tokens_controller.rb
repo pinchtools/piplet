@@ -1,4 +1,5 @@
 class Api::V1::TokensController < ApiController
+  skip_before_action :authorize_request, only: :create
 
   def create
     user = User.all_valid.find_by(email: params[:email].downcase) if params[:email]

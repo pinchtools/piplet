@@ -1,5 +1,6 @@
 class Api::V1::UsersController < ApiController
   include ApplicationHelper
+  skip_before_action :authorize_request, only: :create
 
   def create
     @user = User.create( user_create_params )
@@ -18,7 +19,13 @@ class Api::V1::UsersController < ApiController
   end
 
   def update
+    concerned_by_filters = Users::ConcernedByFiltersService.new(@current_user).call
 
+    if !concerned_by_filters && @current_user.update_attributes(user_update_params)
+      render json: @current_user
+    else
+      render_error(@current_user, :unprocessable_entity)
+    end
   end
 
   private
@@ -30,6 +37,19 @@ class Api::V1::UsersController < ApiController
         :password,
         :password_confirmation,
         :time_zone
+    )
+  end
+
+  def user_update_params
+    params.permit(
+      :username,
+      :email,
+      :password,
+      :password_confirmation,
+      :time_zone,
+      :locale,
+      :description,
+      avatar_attributes: [:kind, :uri, :uri_cache]
     )
   end
 end
