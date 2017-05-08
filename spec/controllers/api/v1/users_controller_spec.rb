@@ -95,16 +95,22 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       expect(response).to have_http_status(:ok)
     end
 
-    it 'updates avatar' do
-
-    end
-
     it 'does not return access_token' do
-
+      post :update
+      json = JSON.parse response.body
+      expect(json['data']['attributes']).not_to have_key('api-access-token')
     end
 
     it 'does not return refresh_token' do
+      post :update
+      json = JSON.parse response.body
+      expect(json['data']['attributes']).not_to have_key('api-access-token')
+    end
 
+    it 'updates the user' do
+      description = 'update_test'
+      post :update, params: {description: description}
+      expect(user.reload.description).to eq(description)
     end
   end
 end

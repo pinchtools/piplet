@@ -22,7 +22,7 @@ class Api::V1::UsersController < ApiController
     concerned_by_filters = Users::ConcernedByFiltersService.new(@current_user).call
 
     if !concerned_by_filters && @current_user.update_attributes(user_update_params)
-      render json: @current_user
+      render json: @current_user, hide_tokens: true
     else
       render_error(@current_user, :unprocessable_entity)
     end
@@ -48,8 +48,7 @@ class Api::V1::UsersController < ApiController
       :password_confirmation,
       :time_zone,
       :locale,
-      :description,
-      avatar_attributes: [:kind, :uri, :uri_cache]
+      :description
     )
   end
 end
