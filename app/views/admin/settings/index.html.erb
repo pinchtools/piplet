@@ -1,0 +1,100 @@
+<div class="container">
+
+  <div class="row">
+    <div class="col-md-12">
+      <ul id="secondary-nav" class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" href="#auth" role="tab"><%= t 'settings.index.tabs.authentication' %></a>
+        </li>
+      </ul>
+
+      <%= form_with url: admin_update_settings_path do |form| %>
+        <div class="tab-content">
+          <div class="tab-pane active" id="auth" role="tabpanel">
+            <div class="container">
+              <h6>Facebook</h6>
+              <hr/>
+              <div class="container">
+                <div class="form-group">
+                  <label class="col-form-label-sm col-md-2">Facebook key</label>
+                  <div class="col-md-10">
+                    <%= form.text_field 'settings[global.auth][facebook][facebook_key]',
+                                        class: 'form-control form-control-sm',
+                                        placeholder: 'Facebook key',
+                                        value: setting('global.auth', 'facebook', 'facebook_key')
+                    %>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label-sm col-md-2">Facebook secret</label>
+                  <div class="col-md-10">
+                    <%= form.text_field 'settings[global.auth][facebook][facebook_secret]',
+                                        class: 'form-control form-control-sm',
+                                        placeholder: 'Facebook secret',
+                                        value: setting('global.auth', 'facebook', 'facebook_secret')
+                    %>
+                  </div>
+                </div>
+              </div>
+              <h6>Google</h6>
+              <hr/>
+              <div class="container">
+                <div class="form-group">
+                  <label class="col-form-label-sm col-md-2">Client id</label>
+                  <div class="col-md-10">
+                    <%= form.text_field 'settings[global.auth][google][client_id]',
+                                        class: 'form-control form-control-sm',
+                                        placeholder: 'Client id',
+                                        value: setting('global.auth', 'google', 'client_id')
+                    %>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label-sm col-md-2">Client secret</label>
+                  <div class="col-md-10">
+                    <%= form.text_field 'settings[global.auth][google][client_secret]',
+                                        class: 'form-control form-control-sm',
+                                        placeholder: 'Client secret',
+                                        value: setting('global.auth', 'google', 'client_secret')
+                    %>
+                  </div>
+                </div>
+              </div>
+              <h6>Twitter</h6>
+              <hr/>
+              <div class="container">
+                <div class="form-group">
+                  <label class="col-form-label-sm col-md-2">Api key</label>
+                  <div class="col-md-10">
+                    <%= form.text_field 'settings[global.auth][twitter][api_key]',
+                                        class: 'form-control form-control-sm',
+                                        placeholder: 'Api key',
+                                        value: setting('global.auth', 'twitter', 'api_key')
+                    %>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label-sm col-md-2">Api secret</label>
+                  <div class="col-md-10">
+                    <%= form.text_field 'settings[global.auth][twitter][api_secret]',
+                                        class: 'form-control form-control-sm',
+                                        placeholder: 'Api secret',
+                                        value: setting('global.auth', 'twitter', 'api_secret')
+                    %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row row-section">
+          <div class="col-md-6 offset-md-3">
+            <%= form.submit t('user.form.edit.submit'), class: "btn btn-primary" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+</div>

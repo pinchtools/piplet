@@ -71,6 +71,10 @@ Rails.application.routes.draw do
 
     end
 
+    # resources :settings, only: [:index]
+    get 'settings/index', as: :settings
+    post 'settings/update', as: :update_settings
+
   end
   
   namespace :users do
@@ -110,6 +114,9 @@ Rails.application.routes.draw do
     end
   end # namespace users
 
+  #omniauth
+  match '/auth/:provider/callback', to: 'users/omniauth#complete', via: :all
+  match '/auth/failure', to: 'users/omniauth#failure', via: :all
 
   namespace :api do
     namespace :v1 do

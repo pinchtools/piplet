@@ -54,6 +54,8 @@ en:
         new: 'new'
       dashboard:
         index: 'admin'
+      settings:
+        index: 'global settings'
   session:
     sign-up-btn: 'Sign up now!'
     remember-me: 'Remember me'
@@ -76,6 +78,11 @@ en:
       danger:
         email-not-found: 'Email address not found'
         password-expired: 'Password reset has expired.'
+  settings:
+    index:
+      tabs:
+        authentication: 'Authentication'
+
   attributes:  &attributes
     log:
       action: "Action"

@@ -56,13 +56,19 @@ gem 'puma'
 
 #gem 'mail'
 
-gem "rails-settings-cached", '~> 0.5.0'
+gem 'rails-settings-cached', '~> 0.5.0'
 
 gem 'active_link_to'
 
 gem 'netaddr', '~> 1.5', '>= 1.5.1'
 
 gem 'pry'
+
+#oauth
+gem 'omniauth'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-facebook'
+gem 'omniauth-twitter'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -9,27 +9,43 @@
   <%= form_for [:users, user], options do |f| %>
     <%= render 'shared/error_messages', object: f.object %>
 
+    <% if user.new_record? %>
+      <div class="col-md-8">
+        <br/>
+        <hr/>
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <button type="button" class="btn btn-secondary"><i class="fa fa-facebook" aria-hidden="true"></i> Facebook</button>
+            <button type="button" class="btn btn-secondary"><i class="fa fa-google" aria-hidden="true"></i> Google</button>
+            <button type="button" class="btn btn-secondary"><i class="fa fa-twitter" aria-hidden="true"></i> Twitter</button>
+          </div>
+        </div>
+        <hr/>
+        <br/>
+      </div>
+    <% end %>
+
     <% if !user.new_record? %>
-    <%= f.label :avatar %>
-    <div class="row">
-      <div class="col-md-2">
-        <div id="avatar-thumbnail">
-          <%= user.avatar_thumbnail_tag %>
+      <%= f.label :avatar %>
+      <div class="row">
+        <div class="col-md-2">
+          <div id="avatar-thumbnail">
+            <%= user.avatar_thumbnail_tag %>
+          </div>
+        </div>
+        <div class="col-md-6">
+
+          <%= f.fields_for :avatar do |a| %>
+          <%= a.select :kind, UserAvatar.kinds.keys.map {|kind| [kind.titleize,kind]}, {}, { class: 'form-control' } %>
+
+            <%= a.file_field :uri, class: 'form-control', style: (user.avatar.upload?) ? '' : 'display:none' %>
+
+            <%= a.hidden_field :uri_cache %>
+          <% end %>
+
         </div>
       </div>
-      <div class="col-md-6">
-
-        <%= f.fields_for :avatar do |a| %>
-        <%= a.select :kind, UserAvatar.kinds.keys.map {|kind| [kind.titleize,kind]}, {}, { class: 'form-control' } %>
-
-          <%= a.file_field :uri, class: 'form-control', style: (user.avatar.upload?) ? '' : 'display:none' %>
-
-          <%= a.hidden_field :uri_cache %>
-        <% end %>
-
-      </div>
-    </div>
-  <% end %>
+    <% end %>
 
     <div class="row">
       <div class="col-md-8">
@@ -119,12 +135,13 @@
     <%= f.hidden_field :time_zone %>
 
 
-      <div class="row row-section">
-        <div class="col-md-8">
-          <%= f.submit yield(:button_text), class: "btn btn-primary" %>
-        </div>
+    <div class="row row-section">
+      <div class="col-md-8">
+        <%= f.submit yield(:button_text), class: "btn btn-primary" %>
       </div>
+    </div>
 
+    <% if !user.new_record? %>
       <div class="row row-section">
         <div class="col-md-8">
           <%= button_tag t('user.form.edit.destroy'),
@@ -134,6 +151,7 @@
           %>
         </div>
       </div>
+    <% end %>
 
   <% end %>
 
