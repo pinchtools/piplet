@@ -115,8 +115,10 @@ Rails.application.routes.draw do
   end # namespace users
 
   #omniauth
-  match '/auth/:provider/callback', to: 'users/omniauth#complete', via: :all
+  match '/auth/:provider/callback', to: 'users/omniauth#callback', via: :all
   match '/auth/failure', to: 'users/omniauth#failure', via: :all
+  match '/auth/:token', to: 'users/omniauth#complete_profile', via: :get, as: :auth_complete_profile
+  match '/auth/:token', to: 'users/omniauth#finalize', via: :put, as: :auth_finalize
 
   namespace :api do
     namespace :v1 do

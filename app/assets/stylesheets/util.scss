@@ -37,14 +37,14 @@
 .btn-secondary.focus
   {
   border-color: $tertiary-color;
-  color: $tertiary-color;
+  color: $tertiary-color !important;
   background-color: $primary-color;
     
   &:active,
   &.active,
   &:hover {
     border-color: $tertiary-color;
-    color: $primary-color;
+    color: $primary-color !important;
     background-color: $tertiary-color;
     border-radius: 4px;
   }

@@ -24,3 +24,4 @@ en:
       revert_deactivation: 'User has been re-activated'
       revert_deletion: 'Removal of user as been canceled'
       login: 'Login'
+      auth_login_fail_not_active: 'User try to login on his not active account'

@@ -62,7 +62,8 @@ class Log < ActiveRecord::Base
       delayed_destroy: 1002,
       deactivated: 1003,
       revert_deactivation: 1004,
-      revert_deletion: 1005
+      revert_deletion: 1005,
+      auth_login_fail_not_active: 1006
     )
   end
   

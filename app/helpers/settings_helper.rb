@@ -1,4 +1,4 @@
-module Admin::SettingsHelper
+module SettingsHelper
 
   def setting(*path)
     value = Setting[path.shift]

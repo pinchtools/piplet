@@ -71,6 +71,7 @@ class User < ActiveRecord::Base
   has_many :notifications, dependent: :destroy
 
   has_one :avatar, class_name: 'UserAvatar', dependent: :destroy
+  has_one :auth_account, dependent: :destroy
 
   accepts_nested_attributes_for :avatar
 
@@ -352,6 +353,10 @@ class User < ActiveRecord::Base
                             exp: refresh_token_duration,
                             user: id
                         })
+  end
+
+  def active?
+    activated? && !deactivated? && !blocked? && !filters.all_blocked.exists?
   end
 
   ########

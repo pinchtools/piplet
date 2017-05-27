@@ -1,4 +1,5 @@
 class Admin::SettingsController < Admin::AdminController
+  include SettingsHelper
 
   def index
     @settings = Setting.get

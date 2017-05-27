@@ -39,6 +39,25 @@
               <h6>Google</h6>
               <hr/>
               <div class="container">
+                <div class="form-group clearfix">
+                  <label class="col-form-label-sm col-md-2">Activate</label>
+                  <div class="col-md-10">
+                    <div class="btn-group" data-toggle="buttons">
+                      <label class="btn btn-primary btn-sm <%= 'active' if setting('global.auth', 'google', 'enable') == '1' %>">
+                        <%= form.radio_button 'settings[global.auth][google][enable]',
+                                              '1',
+                                              :checked => setting('global.auth', 'google', 'enable') == '1',
+                                              autocomplete: 'off' %>Yes
+                      </label>
+                      <label class="btn btn-primary btn-sm <%= 'active' if setting('global.auth', 'google', 'enable') != '1' %>">
+                        <%= form.radio_button 'settings[global.auth][google][enable]',
+                                              '0',
+                                              :checked => setting('global.auth', 'google', 'enable') != '1',
+                                              autocomplete: 'off' %>No
+                      </label>
+                    </div>
+                  </div>
+                </div>
                 <div class="form-group">
                   <label class="col-form-label-sm col-md-2">Client id</label>
                   <div class="col-md-10">

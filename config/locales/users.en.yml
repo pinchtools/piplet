@@ -62,7 +62,12 @@ en:
         account-not-activated: |
           Account not activated.
           Check your email for the activation link.
-      removal-revert-failed: "Unable to revert user's removal"
+        account-not-active: 'This account is no longer available'
+        removal-revert-failed: "Unable to revert user's removal"
+        auth-account-already-used: 'This account has already been used for sign-up.'
+        auth-completion-fail-no-token: |
+          Sorry, a problem occurs during completion.
+          Please retry later or contact an admin if problem persists.
       danger:
         username-too-short: 'Your username is too short'
         username-too-long: 'Your username is too long'

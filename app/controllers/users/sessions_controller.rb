@@ -4,7 +4,7 @@ class Users::SessionsController < ApplicationController
   
   def create
     user = User.all_valid.find_by(email: params[:session][:email].downcase)
-      
+
     if user && user.authenticate(params[:session][:password])
       if user.activated?
         log_in user
@@ -23,7 +23,6 @@ class Users::SessionsController < ApplicationController
       flash.now[:danger] = t('user.notice.danger.invalid-login')
       render 'new'
     end
-    
   end
   
   def destroy
