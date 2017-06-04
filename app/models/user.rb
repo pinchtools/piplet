@@ -96,13 +96,9 @@ class User < ActiveRecord::Base
 
   validates :username, username: true
 
-  validates :email,
-    presence: true,
-    uniqueness: { case_sensitive: false },
-    length: { maximum: 255 },
-    format: { with:  /\A[^@\s]+@[^\@\s\.]+\.[^\@\s]+[^\@\.\s]+\z/ }
-
+  validates :email, uniqueness: { case_sensitive: false, allow_nil: true }
   validates :email, email: true
+  validate :email_presence
 
   validates :password, password: true
   validates :password_confirmation, presence: true, :if => :password_digest_changed?
@@ -211,6 +207,7 @@ class User < ActiveRecord::Base
 
   # Sends activation email.
   def send_activation_email
+    return unless self.auth_account.nil?
     UserMailer.delay.account_activation(self, self.activation_token)
   end
 
@@ -365,6 +362,13 @@ class User < ActiveRecord::Base
   #
   ########
   private
+
+  def email_presence
+    unless self.auth_account || !self.email.blank?
+      # 'activerecord.errors.messages.blank'
+      self.errors.add :email, :blank
+    end
+  end
 
   def self.settings
     @@SETTINGS

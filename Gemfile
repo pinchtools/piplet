@@ -30,6 +30,7 @@ gem 'rack-attack'
 
 gem 'redis'
 gem 'redis-rails'
+gem 'redis-namespace'
 
 # background processing
 gem 'sidekiq'

@@ -37,7 +37,6 @@ RSpec.describe User, type: :model do
   it { should have_and_belong_to_many(:filters).class_name('UserFilter') }
     
   it { should validate_presence_of(:username) }
-  it { should validate_presence_of(:email) }
   it { should validate_presence_of(:creation_ip_address) }
     
   it { should have_secure_password }
@@ -46,8 +45,26 @@ RSpec.describe User, type: :model do
   it { should validate_uniqueness_of(:email).case_insensitive }
     
   it { should validate_length_of(:email).is_at_most(255) }
-  
-    
+
+  context 'has an auth_account' do
+    subject { build(:user, email: nil) }
+    let(:auth_account) { create(:auth_account) }
+
+    it 'accepts to not having an email' do
+      subject.auth_account = auth_account
+      expect(subject).to be_valid
+    end
+  end
+
+  context 'does not have an email or auth_account' do
+    subject { build(:user, email: nil) }
+
+    it 'rejects validation' do
+      expect(subject).to be_invalid
+      expect(subject.errors[:email].size).to eq(1)
+    end
+  end
+
   it 'shoud be valid' do
     expect(subject.valid?).to be true
   end

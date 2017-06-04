@@ -12,7 +12,6 @@ class Admin::SettingsController < Admin::AdminController
     redirect_to admin_settings_url
   end
 
-
   private
 
   def permitted_settings

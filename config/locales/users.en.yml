@@ -57,6 +57,7 @@ en:
         revert-block: 'Blocked status has been canceled'
         suspect: 'Account has been marked as suspect'
         revert-suspect: 'Account has been removed from the suspected list'
+        first-login: 'Hi %{username}!'
       warning:
         password-weakness-entropy: 'Your password may include at least one upper case letter, one lower case letter and one number.'
         account-not-activated: |
@@ -66,6 +67,9 @@ en:
         removal-revert-failed: "Unable to revert user's removal"
         auth-account-already-used: 'This account has already been used for sign-up.'
         auth-completion-fail-no-token: |
+          Sorry, a problem occurs during completion.
+          Please retry later or contact an admin if problem persists.
+        auth-cache-not-found: |
           Sorry, a problem occurs during completion.
           Please retry later or contact an admin if problem persists.
       danger:
@@ -86,6 +90,7 @@ en:
         revert-block: "Blocked status can't be canceled"
         suspect: "Account can't be mark  as suspect"
         revert-suspect: "Account can't removed from the suspected list"
+        auth-failure: 'Something went wrong processing your log in, please try again.'
       info:
         account-need-activation: 'Please check your email to activate your account.'
       loading:

@@ -29,4 +29,6 @@ class AuthAccount < ApplicationRecord
   validates :uid, presence: true
   validates :provider, presence: true
   validates :uid, uniqueness: {scope: :provider}
+
+  scope :without_user, -> { where( user_id: nil ) }
 end

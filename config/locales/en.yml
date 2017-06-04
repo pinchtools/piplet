@@ -82,7 +82,13 @@ en:
     index:
       tabs:
         authentication: 'Authentication'
-
+  omniauth:
+    complete_profile:
+      title: 'Complete your profile'
+      auth_email: 'Can we use your email?'
+      auth_img: 'Can we use your avatar?'
+      username: 'Username'
+      submit: 'Submit'
   attributes:  &attributes
     log:
       action: "Action"

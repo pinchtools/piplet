@@ -15,23 +15,42 @@
               <h6>Facebook</h6>
               <hr/>
               <div class="container">
-                <div class="form-group">
-                  <label class="col-form-label-sm col-md-2">Facebook key</label>
+                <div class="form-group clearfix">
+                  <label class="col-form-label-sm col-md-2">Activate</label>
                   <div class="col-md-10">
-                    <%= form.text_field 'settings[global.auth][facebook][facebook_key]',
+                    <div class="btn-group" data-toggle="buttons">
+                      <label class="btn btn-primary btn-sm <%= 'active' if setting('global.auth', 'facebook', 'enable') == '1' %>">
+                        <%= form.radio_button 'settings[global.auth][facebook][enable]',
+                                              '1',
+                                              :checked => setting('global.auth', 'facebook', 'enable') == '1',
+                                              autocomplete: 'off' %>Yes
+                      </label>
+                      <label class="btn btn-primary btn-sm <%= 'active' if setting('global.auth', 'facebook', 'enable') != '1' %>">
+                        <%= form.radio_button 'settings[global.auth][facebook][enable]',
+                                              '0',
+                                              :checked => setting('global.auth', 'facebook', 'enable') != '1',
+                                              autocomplete: 'off' %>No
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label-sm col-md-2">App Id</label>
+                  <div class="col-md-10">
+                    <%= form.text_field 'settings[global.auth][facebook][app_id]',
                                         class: 'form-control form-control-sm',
-                                        placeholder: 'Facebook key',
-                                        value: setting('global.auth', 'facebook', 'facebook_key')
+                                        placeholder: 'App id',
+                                        value: setting('global.auth', 'facebook', 'app_id')
                     %>
                   </div>
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label-sm col-md-2">Facebook secret</label>
+                  <label class="col-form-label-sm col-md-2">Secret key</label>
                   <div class="col-md-10">
-                    <%= form.text_field 'settings[global.auth][facebook][facebook_secret]',
+                    <%= form.text_field 'settings[global.auth][facebook][secret_key]',
                                         class: 'form-control form-control-sm',
-                                        placeholder: 'Facebook secret',
-                                        value: setting('global.auth', 'facebook', 'facebook_secret')
+                                        placeholder: 'Secret key',
+                                        value: setting('global.auth', 'facebook', 'secret_key')
                     %>
                   </div>
                 </div>

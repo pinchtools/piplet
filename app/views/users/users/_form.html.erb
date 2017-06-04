@@ -15,7 +15,9 @@
         <hr/>
         <div class="row">
           <div class="col-md-12 text-center">
-            <a href="/auth/developer" role="button" class="btn btn-secondary"><i class="fa fa-facebook" aria-hidden="true"></i> Facebook</a>
+            <% if setting('global.auth', 'facebook', 'enable') == '1' %>
+              <a href="/auth/facebook" role="button" class="btn btn-secondary"><i class="fa fa-facebook" aria-hidden="true"></i> Facebook</a>
+            <% end %>
             <% if setting('global.auth', 'google', 'enable') == '1' %>
               <a href="/auth/google" role="button" class="btn btn-secondary"><i class="fa fa-google" aria-hidden="true"></i> Google</a>
             <% end %>

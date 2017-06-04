@@ -40,4 +40,12 @@ RSpec.shared_examples "email validation" do |attribute|
       assert_valid(email)
     end
   end
+
+  it 'limits to 255 characters' do
+    email = 'Faker::Internet.safe_email'
+
+    255.times { email+= 'a' }
+
+    assert_invalid(email.chomp)
+  end
 end
