@@ -15,7 +15,7 @@ module Helpers
       
       session[:remember_me] = options[:remember_me] if options[:remember_me].present?
       
-      post :create, session: session
+      post :create, params: { session: session }
       
       @controller = old_controller
       

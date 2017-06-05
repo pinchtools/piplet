@@ -1,0 +1,11 @@
+<ul id="primary-sidebar" class="nav nav-pills nav-stacked">
+  <%= render partial: 'admin/sites/shared/menu_entry_site', collection: sites, as: :site %>
+
+  <li class="nav-item">
+    <%= button_tag fa_icon('plus') + t('admin.links.sites.new'),
+                   class: 'btn nav-link',
+                   data: { toggle: 'modal', target: '#newSiteModal' },
+                   type: 'button'
+    %>
+  </li>
+</ul>

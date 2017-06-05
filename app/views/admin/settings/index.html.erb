@@ -1,0 +1,157 @@
+<div class="container">
+
+  <div class="row">
+    <div class="col-md-12">
+      <ul id="secondary-nav" class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" href="#auth" role="tab"><%= t 'settings.index.tabs.authentication' %></a>
+        </li>
+      </ul>
+
+      <%= form_with url: admin_update_settings_path do |form| %>
+        <div class="tab-content">
+          <div class="tab-pane active" id="auth" role="tabpanel">
+            <div class="container">
+              <h6>Facebook</h6>
+              <hr/>
+              <div class="container">
+                <div class="form-group clearfix">
+                  <label class="col-form-label-sm col-md-2">Activate</label>
+                  <div class="col-md-10">
+                    <div class="btn-group" data-toggle="buttons">
+                      <label class="btn btn-primary btn-sm <%= 'active' if setting('global.auth', 'facebook', 'enable') == '1' %>">
+                        <%= form.radio_button 'settings[global.auth][facebook][enable]',
+                                              '1',
+                                              :checked => setting('global.auth', 'facebook', 'enable') == '1',
+                                              autocomplete: 'off' %>Yes
+                      </label>
+                      <label class="btn btn-primary btn-sm <%= 'active' if setting('global.auth', 'facebook', 'enable') != '1' %>">
+                        <%= form.radio_button 'settings[global.auth][facebook][enable]',
+                                              '0',
+                                              :checked => setting('global.auth', 'facebook', 'enable') != '1',
+                                              autocomplete: 'off' %>No
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label-sm col-md-2">App Id</label>
+                  <div class="col-md-10">
+                    <%= form.text_field 'settings[global.auth][facebook][app_id]',
+                                        class: 'form-control form-control-sm',
+                                        placeholder: 'App id',
+                                        value: setting('global.auth', 'facebook', 'app_id')
+                    %>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label-sm col-md-2">Secret key</label>
+                  <div class="col-md-10">
+                    <%= form.text_field 'settings[global.auth][facebook][secret_key]',
+                                        class: 'form-control form-control-sm',
+                                        placeholder: 'Secret key',
+                                        value: setting('global.auth', 'facebook', 'secret_key')
+                    %>
+                  </div>
+                </div>
+              </div>
+              <h6>Google</h6>
+              <hr/>
+              <div class="container">
+                <div class="form-group clearfix">
+                  <label class="col-form-label-sm col-md-2">Activate</label>
+                  <div class="col-md-10">
+                    <div class="btn-group" data-toggle="buttons">
+                      <label class="btn btn-primary btn-sm <%= 'active' if setting('global.auth', 'google', 'enable') == '1' %>">
+                        <%= form.radio_button 'settings[global.auth][google][enable]',
+                                              '1',
+                                              :checked => setting('global.auth', 'google', 'enable') == '1',
+                                              autocomplete: 'off' %>Yes
+                      </label>
+                      <label class="btn btn-primary btn-sm <%= 'active' if setting('global.auth', 'google', 'enable') != '1' %>">
+                        <%= form.radio_button 'settings[global.auth][google][enable]',
+                                              '0',
+                                              :checked => setting('global.auth', 'google', 'enable') != '1',
+                                              autocomplete: 'off' %>No
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label-sm col-md-2">Client id</label>
+                  <div class="col-md-10">
+                    <%= form.text_field 'settings[global.auth][google][client_id]',
+                                        class: 'form-control form-control-sm',
+                                        placeholder: 'Client id',
+                                        value: setting('global.auth', 'google', 'client_id')
+                    %>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label-sm col-md-2">Client secret</label>
+                  <div class="col-md-10">
+                    <%= form.text_field 'settings[global.auth][google][client_secret]',
+                                        class: 'form-control form-control-sm',
+                                        placeholder: 'Client secret',
+                                        value: setting('global.auth', 'google', 'client_secret')
+                    %>
+                  </div>
+                </div>
+              </div>
+              <h6>Twitter</h6>
+              <hr/>
+              <div class="container">
+                <div class="form-group clearfix">
+                  <label class="col-form-label-sm col-md-2">Activate</label>
+                  <div class="col-md-10">
+                    <div class="btn-group" data-toggle="buttons">
+                      <label class="btn btn-primary btn-sm <%= 'active' if setting('global.auth', 'twitter', 'enable') == '1' %>">
+                        <%= form.radio_button 'settings[global.auth][twitter][enable]',
+                                              '1',
+                                              :checked => setting('global.auth', 'twitter', 'enable') == '1',
+                                              autocomplete: 'off' %>Yes
+                      </label>
+                      <label class="btn btn-primary btn-sm <%= 'active' if setting('global.auth', 'twitter', 'enable') != '1' %>">
+                        <%= form.radio_button 'settings[global.auth][twitter][enable]',
+                                              '0',
+                                              :checked => setting('global.auth', 'twitter', 'enable') != '1',
+                                              autocomplete: 'off' %>No
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label-sm col-md-2">Api key</label>
+                  <div class="col-md-10">
+                    <%= form.text_field 'settings[global.auth][twitter][consumer_key]',
+                                        class: 'form-control form-control-sm',
+                                        placeholder: 'Consumer key',
+                                        value: setting('global.auth', 'twitter', 'consumer_key')
+                    %>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label-sm col-md-2">Api secret</label>
+                  <div class="col-md-10">
+                    <%= form.text_field 'settings[global.auth][twitter][consumer_secret]',
+                                        class: 'form-control form-control-sm',
+                                        placeholder: 'Consumer secret',
+                                        value: setting('global.auth', 'twitter', 'consumer_secret')
+                    %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row row-section">
+          <div class="col-md-6 offset-md-3">
+            <%= form.submit t('user.form.edit.submit'), class: "btn btn-primary" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+</div>

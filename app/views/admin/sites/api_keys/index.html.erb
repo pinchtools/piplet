@@ -1,0 +1,33 @@
+
+<div class="container">
+
+  <div class="row">
+    <div class="col-md-12">
+      <%= render 'admin/sites/shared/settings_nav', site: site %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+
+      <p class="text-xs-right">
+        <button class="btn btn-default"  data-toggle="modal" data-target="#newApiKeyModal"><%= t 'admin.sites.api_keys.index.new_api_key' %></button>
+      </p>
+
+      <table id="api-keys" class="table table-striped">
+        <thead>
+          <tr>
+            <th>Label</th>
+            <th>Public key</th>
+            <th>Secret key</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= render partial: 'api_key', collection: site.api_keys, locals: {site: site} %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<%= render 'modal_new' %>

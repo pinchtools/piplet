@@ -1,0 +1,19 @@
+ <div class="col-md-12">
+  <ul id="secondary-nav" class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+      <%= active_link_to t('admin.sites.sites.index.tab.stats'), '#', class: 'nav-link' %>
+    </li>
+    <li class="nav-item">
+      <%= active_link_to t('admin.sites.sites.index.tab.threads'), '#', class: 'nav-link' %>
+    </li>
+    <li class="nav-item">
+      <%= active_link_to t('admin.sites.sites.index.tab.comments'), '#', class: 'nav-link' %>
+    </li>
+    <li class="nav-item">
+      <%= active_link_to t('admin.sites.sites.index.tab.categories'), '#', class: 'nav-link' %>
+    </li>
+    <li class="nav-item">
+      <%= active_link_to t('admin.sites.sites.index.tab.settings'), edit_admin_site_path(@site.uid), class: 'nav-link', active: /edit|api_keys\z/ %>
+    </li>
+  </ul>
+</div>

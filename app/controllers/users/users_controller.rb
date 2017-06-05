@@ -1,4 +1,7 @@
 class Users::UsersController < Users::BaseController
+  include ApplicationHelper
+  include SettingsHelper
+
   before_action :logged_in_user, only: [ :edit, :update, :destroy]
   before_action :use_current_user, only: [:edit, :update, :destroy]
   before_action :existing_username, only: :show
@@ -9,47 +12,49 @@ class Users::UsersController < Users::BaseController
     @user = User.new
     @user.build_avatar
     
-    render locals: { user: UserDecorator.new(@user) }
+    render locals: { user: @user }
   end
   
   def create
     @user = User.new(user_create_params)
     
     @user.creation_ip_address = request.remote_ip
-    
-    @user.locale = http_accept_language.preferred_language_from(I18n.available_locales) ||
-      http_accept_language.compatible_language_from(I18n.available_locales)
-    
-    if @user.save
-      @user.send_activation_email
+    @user.creation_domain = request.host + request.port_string
+
+    @user.locale = detect_language
+
+    concerned_by_filters = Users::ConcernedByFiltersService.new(@user).call
+
+    if !concerned_by_filters && @user.save
       flash[:info] = t 'user.notice.info.account-need-activation'
       redirect_to root_url
     else
-      render :new, locals: { user: UserDecorator.new(@user) }
+      render :new, locals: { user: @user }
     end
   end
   
   def show
-
     unless @user.activated?
       redirect_to root_url and return
     end
     
-    render locals: { user: UserDecorator.new(@user) }
+    render locals: { user: @user }
   end
   
   def edit
     @user.build_avatar if @user.avatar.nil?
     
-    render :edit, locals: { user: UserDecorator.new(@user) }
+    render :edit, locals: { user: @user }
   end
   
   def update
-    if @user.update_attributes(user_update_params)
+    concerned_by_filters = Users::ConcernedByFiltersService.new(@user).call
+
+    if !concerned_by_filters && @user.update_attributes(user_update_params)
       flash[:success] = t 'user.notice.success.updated'
       redirect_to users_edit_path
     else
-      render :edit, locals: { user: UserDecorator.new(@user) }
+      render :edit, locals: { user: @user }
     end
   end
   
@@ -63,14 +68,13 @@ class Users::UsersController < Users::BaseController
   end
   
   def check_username
-    
     user = User.new(username: params[:username])
       
     if !user.valid? && user.errors.key?(:username)
       return render json: {message: user.errors[:username].first}, :status => :bad_request
     end
     
-    render nothing: true
+    head :ok
   end
   
   private

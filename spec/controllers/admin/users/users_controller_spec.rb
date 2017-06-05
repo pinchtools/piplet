@@ -16,25 +16,29 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
   end
 
   describe "GET #search" do
-    
-    it_behaves_like 'a restricted access to admin only' do 
-      let(:request) { get :search, :search => '' }
+    before {
+      User.admins.delete_all
+    }
+    let!(:admin) { FactoryGirl.create(:admin) }
+
+    it_behaves_like 'a restricted access to admin only' do
+      let(:request) { get :search, params: { :search => '' } }
     end
-    
-    context "logged" do
-      before {
-        user = create(:admin)
-        log_in_as(user)
-      }
-      
+
+    context "logged"  do
+
       it "warn when input is too short" do
-        get :search, :search => 'a'
+        log_in_as(admin)
+
+        get :search, params: { :search => 'a' }
         
         expect(flash.now[:warning]).to be_present
       end
       
       it 'warn when input is too long' do
-        get :search, :search => Faker::Lorem.characters(51) 
+        log_in_as(admin)
+
+        get :search, params: { :search => Faker::Lorem.characters(51) }
   
         expect(flash.now[:warning]).to be_present
       end
@@ -45,12 +49,12 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
   
   describe "DELETE #destroy" do
     before {
-      User.admins.destroy_all
+      User.admins.delete_all
     }
     let!(:admin) { FactoryGirl.create(:admin) }
     
     it_behaves_like 'a restricted access to admin only' do 
-      let(:request) { delete :destroy, username: admin.username_lower }
+      let(:request) { delete :destroy, params: { username: admin.username_lower } }
     end
     
     it "should redirect when there is only one admin" do
@@ -58,7 +62,7 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
       
       log_in_as(admin)
       
-      delete :destroy, username: admin.username_lower
+      delete :destroy, params: { username: admin.username_lower }
       
       expect(:response).to redirect_to(:admin_users_users)
       expect(flash[:danger]).to be_present
@@ -72,13 +76,13 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
     let!(:user) { create(:user) }
     
     it_behaves_like 'a restricted access to admin only' do 
-      let(:request) { post :block, username: admin.username_lower }
+      let(:request) { post :block, params: { username: admin.username_lower } }
     end
     
     it "should display a success message" do
       log_in_as(admin)
       
-      post :block, username: user.username_lower
+      post :block, params: { username: user.username_lower }
       
       
       expect(response).to redirect_to(:edit_admin_users_user)
@@ -92,7 +96,7 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
       
       note = 'test note'
       
-      post :block, username: user.username_lower, user: { blocked_note: note }
+      post :block, params: { username: user.username_lower, user: { blocked_note: note } }
       
       expect(User.find(user.id).blocked_note).to eq(note)
     end
@@ -102,7 +106,7 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
       
       log_in_as(admin)
       
-      post :block, username: another_admin.username_lower
+      post :block, params: { username: another_admin.username_lower }
       
       expect(response).to redirect_to(:edit_admin_users_user)
       expect(flash[:danger]).to be_present
@@ -114,13 +118,13 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
     let!(:user) { create(:user) }
     
     it_behaves_like 'a restricted access to admin only' do 
-      let(:request) { post :revert_block, username: admin.username_lower }
+      let(:request) { post :revert_block, params: { username: admin.username_lower } }
     end
     
     it "should display a success message" do
       log_in_as(admin)
       
-      post :revert_block, username: user.username_lower
+      post :revert_block, params: { username: user.username_lower }
       
       expect(response).to redirect_to(:edit_admin_users_user)
       expect(flash[:success]).to be_present
@@ -131,7 +135,7 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
       
       log_in_as(admin)
       
-      post :block, username: another_admin.username_lower
+      post :block, params: { username: another_admin.username_lower }
       
       expect(response).to redirect_to(:edit_admin_users_user)
       expect(flash[:danger]).to be_present
@@ -143,13 +147,13 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
     let!(:user) { create(:user) }
     
     it_behaves_like 'a restricted access to admin only' do 
-      let(:request) { post :suspect, username: admin.username_lower }
+      let(:request) { post :suspect, params: { username: admin.username_lower } }
     end
     
     it "should display a success message" do
       log_in_as(admin)
       
-      post :suspect, username: user.username_lower
+      post :suspect, params: { username: user.username_lower }
       
       expect(response).to redirect_to(:edit_admin_users_user)
       expect(flash[:success]).to be_present
@@ -162,7 +166,7 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
       
       note = 'test note'
       
-      post :suspect, username: user.username_lower, user: { suspected_note: note }
+      post :suspect, params: { username: user.username_lower, user: { suspected_note: note } }
       
       expect(User.find(user.id).suspected_note).to eq(note)
     end
@@ -172,7 +176,7 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
       
       log_in_as(admin)
       
-      post :suspect, username: another_admin.username_lower
+      post :suspect, params: { username: another_admin.username_lower }
       
       expect(response).to redirect_to(:edit_admin_users_user)
       expect(flash[:danger]).to be_present
@@ -184,13 +188,13 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
     let!(:user) { create(:user) }
     
     it_behaves_like 'a restricted access to admin only' do 
-      let(:request) { post :revert_suspect, username: admin.username_lower }
+      let(:request) { post :revert_suspect, params: { username: admin.username_lower } }
     end
     
     it "should display a success message" do
       log_in_as(admin)
       
-      post :revert_suspect, username: user.username_lower
+      post :revert_suspect, params: { username: user.username_lower }
       
       expect(response).to redirect_to(:edit_admin_users_user)
       expect(flash[:success]).to be_present
@@ -201,7 +205,7 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
       
       log_in_as(admin)
       
-      post :revert_suspect, username: another_admin.username_lower
+      post :revert_suspect, params: { username: another_admin.username_lower }
       
       expect(response).to redirect_to(:edit_admin_users_user)
       expect(flash[:danger]).to be_present
@@ -213,7 +217,7 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
     let!(:user) { create(:user_deactivated) }
       
     it_behaves_like 'a restricted access to admin only' do 
-      let(:request) { post :revert_removal, username: admin.username_lower }
+      let(:request) { post :revert_removal, params: { username: admin.username_lower } }
     end
     
     it 'should redirect and warn user not deactivated' do
@@ -221,7 +225,7 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
       
       expect(admin).not_to be_deactivated
       
-      post :revert_removal, username: admin.username_lower
+      post :revert_removal, params: { username: admin.username_lower }
       
       expect(:response).to redirect_to(:edit_admin_users_user)
       expect(flash[:warning]).to be_present
@@ -236,13 +240,13 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
         
         expect_any_instance_of(User).to receive(:revert_removal)
     
-        post :revert_removal, username: user.username_lower
+        post :revert_removal, params: { username: user.username_lower }
       end
       
       it 'should succeed' do
         log_in_as(admin)
             
-        post :revert_removal, username: user.username_lower
+        post :revert_removal, params: { username: user.username_lower }
         
         expect(:response).to redirect_to(:edit_admin_users_user)
         expect(flash[:success]).to be_present
@@ -257,13 +261,13 @@ RSpec.describe Admin::Users::UsersController, type: :controller do
         
         expect_any_instance_of(User).to receive(:revert_removal)
     
-        post :revert_removal, username: user.username_lower
+        post :revert_removal, params: { username: user.username_lower }
       end
       
       it 'should succeed' do
         log_in_as(admin)
             
-        post :revert_removal, username: user.username_lower
+        post :revert_removal, params: { username: user.username_lower }
         
         expect(:response).to redirect_to(:edit_admin_users_user)
         expect(flash[:success]).to be_present

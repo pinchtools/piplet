@@ -3,56 +3,56 @@
 <% end %>
 
 <div class="container">
-
-  <%= render 'admin/users/shared/primary_sidebar' %>
-
-  <div class="col-md-10">
-  
-    <div class="row">
-
-    
-    <div class="col-md-4 pull-md-right">
-      <%= render partial: 'search_form' %>
+  <div class="row">
+    <div  class="col-md-2">
+      <%= render 'admin/users/shared/primary_sidebar' %>
     </div>
+    <div class="col-md-10">
+      <div class="row">
+        <div class="col-md-4 float-md-right">
+          <%= render partial: 'search_form' %>
+        </div>
 
-      <div class="col-md-12">
-        <!-- Nav tabs -->
-        <ul class="nav nav-tabs" role="tablist">
-          <li class="nav-item">
-            <% active = (["active", "new", "staff"].include?(list)) ? "active" : "" %>
-            <%= link_to t('admin.users.users.index.tab.active'), list_admin_users_users_path(:list => 'active'), class: "nav-link #{active}" %>
-          </li>
-          <li class="nav-item">
-            <% active = (list == "suspected") ? "active" : "" %>
-            <%= link_to t('admin.users.users.index.tab.suspected'), list_admin_users_users_path(:list => 'suspected'),  class: "nav-link #{active}" %>
-          </li>
-          <li class="nav-item">
-            <% active = (list == "blocked") ? "active" : "" %>
-            <%= link_to t('admin.users.users.index.tab.blocked'), list_admin_users_users_path(:list => 'blocked'), class: "nav-link #{active}" %>
-          </li>
-          <% if User.all_deactivated.any? %>
-          <li class="nav-item">
-            <% active = (list == "deactivated") ? "active" : "" %>
-            <%= link_to t('admin.users.users.index.tab.deactivated'), list_admin_users_users_path(:list => 'deactivated'), class: "nav-link #{active}" %>
-          </li>
-          <% end %>
-          <% if User.all_to_be_deleted.any? %>
-          <li class="nav-item">
-            <% active = (list == "to_be_deleted") ? "active" : "" %>
-            <%= link_to t('admin.users.users.index.tab.to-be-deleted'), list_admin_users_users_path(:list => 'to_be_deleted'), class: "nav-link #{active}" %>
-          </li>
-          <% end %>
-        </ul>
+        <div class="col-md-12">
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+              <% active = (["active", "new", "staff"].include?(list)) ? "active" : "" %>
+              <%= link_to t('admin.users.users.index.tab.active'), list_admin_users_users_path(:list => 'active'), class: "nav-link #{active}" %>
+            </li>
+            <li class="nav-item">
+              <% active = (list == "suspected") ? "active" : "" %>
+              <%= link_to t('admin.users.users.index.tab.suspected'), list_admin_users_users_path(:list => 'suspected'),  class: "nav-link #{active}" %>
+            </li>
+            <li class="nav-item">
+              <% active = (list == "blocked") ? "active" : "" %>
+              <%= link_to t('admin.users.users.index.tab.blocked'), list_admin_users_users_path(:list => 'blocked'), class: "nav-link #{active}" %>
+            </li>
+            <% if User.all_deactivated.any? %>
+                <li class="nav-item">
+                  <% active = (list == "deactivated") ? "active" : "" %>
+                  <%= link_to t('admin.users.users.index.tab.deactivated'), list_admin_users_users_path(:list => 'deactivated'), class: "nav-link #{active}" %>
+                </li>
+            <% end %>
+            <% if User.all_to_be_deleted.any? %>
+                <li class="nav-item">
+                  <% active = (list == "to_be_deleted") ? "active" : "" %>
+                  <%= link_to t('admin.users.users.index.tab.to-be-deleted'), list_admin_users_users_path(:list => 'to_be_deleted'), class: "nav-link #{active}" %>
+                </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+      <div class="row tab-content">
+        <% case list
+             when "suspected", "blocked", "deactivated", "to_be_deleted"
+        %>
+            <%= render partial: "#{list}_list", locals: { users: users, list: list } %>
+        <% else %>
+            <%= render partial: "default_list", locals: { users: users, list: list } %>
+        <% end %>
+
       </div>
     </div>
-    
-    <% case list 
-      when "suspected", "blocked", "deactivated", "to_be_deleted"
-    %>
-      <%= render partial: "#{list}_list", locals: { users: users, list: list } %>
-    <% else %>
-      <%= render partial: "default_list", locals: { users: users, list: list } %>
-    <% end %>
-    
   </div>
 </div>

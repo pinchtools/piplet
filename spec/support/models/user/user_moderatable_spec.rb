@@ -13,7 +13,7 @@ RSpec.shared_examples "user moderatable" do
       @user.email = "regular-user1@example.com"
       @another_admin.email = "admin-user1@example.com"
       
-      User.destroy_all(email: [@admin.email, @user.email, @another_admin.email ] )
+      User.where(email: [@admin.email, @user.email, @another_admin.email ] ).destroy_all
       
       @admin.save
       @user.save
@@ -21,7 +21,7 @@ RSpec.shared_examples "user moderatable" do
     end
     
     after(:all) do
-      User.destroy_all(email: [@admin.email, @user.email, @another_admin.email ] )
+      User.where(email: [@admin.email, @user.email, @another_admin.email ] ).destroy_all
     end
     
     it 'should be able to mark/unmark user as suspect' do
@@ -95,7 +95,7 @@ RSpec.shared_examples "user moderatable" do
       @admin.email = "admin-user3@example.com"
       @another_user.email = "regular-user3@example.com"
       
-      User.destroy_all(email: [@user.email, @admin.email, @another_user.email ] )
+      User.where(email: [@user.email, @admin.email, @another_user.email ] ).destroy_all
             
         
       @user.save
@@ -104,7 +104,7 @@ RSpec.shared_examples "user moderatable" do
     end
     
     after(:all) do
-      User.destroy_all(email: [@user.email, @admin.email, @another_user.email ] )
+      User.where(email: [@user.email, @admin.email, @another_user.email ] ).destroy_all
     end
     
     

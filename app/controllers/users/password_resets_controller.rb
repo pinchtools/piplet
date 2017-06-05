@@ -7,7 +7,7 @@ class Users::PasswordResetsController < ApplicationController
   end
 
   def create
-    @user = User.find_by(email: params[:password_reset][:email].downcase)
+    @user = User.actives.find_by(email: params[:password_reset][:email].downcase)
 
       if @user
         @user.create_reset_digest
@@ -52,12 +52,12 @@ class Users::PasswordResetsController < ApplicationController
   end
   
     def get_user
-      @user = User.find_by(email: params[:email])
+      @user = User.actives.find_by(email: params[:email])
     end
     
     # Confirms a valid user.
     def valid_user
-      unless (@user && @user.activated? &&
+      unless (@user &&
         @user.authenticated?(:reset, params[:id]))
           redirect_to root_url
        end

@@ -14,7 +14,7 @@ class Admin::Users::UsersController < Admin::AdminController
 
     @users = users_selection(params[:list]).paginate(page: params[:page])
 
-    render locals: { users: UsersDecorator.new(@users), list: params[:list] }
+    render locals: { users: @users, list: params[:list] }
   end
   
   
@@ -34,7 +34,7 @@ class Admin::Users::UsersController < Admin::AdminController
       @users = User.search( params[:search] ).paginate(page: params[:page])
     end
 
-    render :index, locals: { users: UsersDecorator.new(@users), list: nil, search: params[:search] }
+    render :index, locals: { users: @users, list: nil, search: params[:search] }
   end
   
   
@@ -46,16 +46,18 @@ class Admin::Users::UsersController < Admin::AdminController
   def edit
     @user.build_avatar if @user.avatar.nil?
     
-    render :edit, locals: { user: UserDecorator.new(@user) }
+    render :edit, locals: { user: @user }
   end
   
   
   def update
-    if @user.update_attributes(user_update_params)
+    concerned_by_filters = Users::ConcernedByFiltersService.new(@user).call
+
+    if !concerned_by_filters && @user.update_attributes(user_update_params)
       flash[:success] = t 'user.notice.success.updated'
       redirect_to edit_admin_users_user_path
     else
-      render :edit, locals: { user: UserDecorator.new(@user) }
+      render :edit, locals: { user: @user }
     end
   end
   
@@ -154,7 +156,7 @@ class Admin::Users::UsersController < Admin::AdminController
       when 'suspected' then User.suspects
       when 'deactivated' then User.all_deactivated
       when 'to_be_deleted' then User.all_to_be_deleted
-      else User.actives
+      else User.all_valid.where(suspected: false)
     end
   end
   

@@ -1,0 +1,6 @@
+<tr id="api-key-<%= api_key.id %>">
+  <td><%= api_key.label %></td>
+  <td><var><small><%= api_key.public_key %></small></var></td>
+  <td><var><small><%= api_key.secret_key %></small></var></td>
+  <td align="right"><%= link_to t('global.destroy-btn'),  admin_api_key_path(site.uid, api_key.id), method: :delete, remote: true, data: { confirm: t('global.destroy-confirm') } %></td>
+</tr>

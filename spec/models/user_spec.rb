@@ -19,9 +19,9 @@
 #
 
 require 'rails_helper'
-require "shared/contexts/email_validation"
-require "shared/contexts/username_validation"
-require "shared/contexts/password_validation"
+require "shared/examples/email_validation"
+require "shared/examples/username_validation"
+require "shared/examples/password_validation"
 
 RSpec.describe User, type: :model do
   
@@ -37,7 +37,6 @@ RSpec.describe User, type: :model do
   it { should have_and_belong_to_many(:filters).class_name('UserFilter') }
     
   it { should validate_presence_of(:username) }
-  it { should validate_presence_of(:email) }
   it { should validate_presence_of(:creation_ip_address) }
     
   it { should have_secure_password }
@@ -46,8 +45,26 @@ RSpec.describe User, type: :model do
   it { should validate_uniqueness_of(:email).case_insensitive }
     
   it { should validate_length_of(:email).is_at_most(255) }
-  
-    
+
+  context 'has an auth_account' do
+    subject { build(:user, email: nil) }
+    let(:auth_account) { create(:auth_account) }
+
+    it 'accepts to not having an email' do
+      subject.auth_account = auth_account
+      expect(subject).to be_valid
+    end
+  end
+
+  context 'does not have an email or auth_account' do
+    subject { build(:user, email: nil) }
+
+    it 'rejects validation' do
+      expect(subject).to be_invalid
+      expect(subject.errors[:email].size).to eq(1)
+    end
+  end
+
   it 'shoud be valid' do
     expect(subject.valid?).to be true
   end
@@ -57,32 +74,40 @@ RSpec.describe User, type: :model do
     expect(subject).to receive(:log)
     subject.save
   end
-  
-  context "email validation" do
-    include_context "email validation", :email
+
+  it_behaves_like "email validation", :email
+  it_behaves_like "username validation", :username
+  it_behaves_like "password validation", :password
+
+  it 'validates presence of  password_confirmation when password_digest changed' do
+    allow(subject).to receive(:password_confirmation).and_return(nil)
+    expect(subject).to be_invalid
+    expect(subject.errors[:password_confirmation].size).to eq(1)
   end
-  
-  
-  context "username validation" do
-    include_context "username validation", :username
-  end
-  
-  
-  context "password validation" do
-    include_context "password validation", :password
-  end
-  
-  
+
   describe 'activation' do
     subject{ create(:user) }
-    
-    it 'should validate presence of activated_at' do
-      
+    let(:ip){ '126.98.8.123' }
+
+    it 'generate a log' do
       expect(subject).to receive(:log)
-      expect( subject ).to validate_presence_of(:activated_at)
-      expect( subject ).to validate_presence_of(:activation_ip_address)
-      
-      subject.activate('126.98.8.123')
+      subject.activate(ip)
+    end
+
+    it 'does not valid if activated_at not set' do
+      allow(subject).to receive(:activated_at).and_return(nil)
+      expect(subject).to be_invalid
+      expect(subject.errors[:activated_at].size).to eq(1)
+
+      subject.activate(ip)
+    end
+
+    it 'does not valid if activation_ip_address not set' do
+      allow(subject).to receive(:activation_ip_address).and_return(nil)
+      expect(subject).to be_invalid
+      expect(subject.errors[:activation_ip_address].size).to eq(1)
+
+      subject.activate(ip)
     end
   end
   
@@ -95,21 +120,18 @@ RSpec.describe User, type: :model do
   
   
   it 'should populate username_lower before validation' do
-    subject.username = "fOoBar"
-    expect(subject.username_lower).to be_nil
-    
-    subject.valid?
-    
-    expect(subject.username_lower).to eq(subject.username.downcase)
+    username = "fOoBar"
+    subject.username = username
+
+    expect{ subject.valid? }.to change(subject, :username_lower).to(username.downcase)
   end
   
   
   it 'should saved email in lower-case' do
     email = "UsEr.tEST@EXAmple.com"
     subject.email = email
-    subject.save
-    
-    expect(subject.email).to eq(email.downcase)
+
+    expect{ subject.save }.to change(subject, :email ).to(email.downcase)
   end
   
   
@@ -221,12 +243,22 @@ RSpec.describe User, type: :model do
   end
   
   it 'should check a newly created account' do
-    expect(subject).to receive(:delay).and_return(subject)
     expect(subject).to receive(:check_new_account)
     
     subject.save
   end
-  
+
+  it 'sends an email to the newly created account' do
+    ActionMailer::Base.deliveries.clear
+
+    expect(Sidekiq::Extensions::DelayedMailer.jobs.size).to eq(0)
+
+    subject.save
+
+    expect(Sidekiq::Extensions::DelayedMailer.jobs.size).to eq(1)
+  end
+
+
   it 'should have a last_seen_at after a creation' do
     expect(subject.last_seen_at).to be_nil
     
@@ -751,5 +783,18 @@ RSpec.describe User, type: :model do
     end
     
   end
-  
+
+  describe '#api_access_token' do
+    let(:fakejwt) { 'fakejwt' }
+    before { allow(JWT).to receive(:encode).and_return(fakejwt) }
+
+    it {expect(subject.api_access_token).to eq(fakejwt)}
+  end
+
+  describe '#api_refresh_token' do
+    let(:fakejwt) { 'fakejwt' }
+    before { allow(JWT).to receive(:encode).and_return(fakejwt) }
+
+    it {expect(subject.api_refresh_token).to eq(fakejwt)}
+  end
 end

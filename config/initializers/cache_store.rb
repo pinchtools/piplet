@@ -1,0 +1,1 @@
+Rails.application.config.cache_store = :redis_store, ENV['CACHE_SERVER_URL'], { namespace: 'cache' }

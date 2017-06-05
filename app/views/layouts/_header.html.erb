@@ -18,57 +18,59 @@
 
           <!-- navbar start -->
           <!-- ================ -->
-          <nav class="navbar navbar-default" role="navigation">
-            <div class="container-fluid text-xs-right">
-            
-            <% if logged_in? %>
-            
-              <ul class="nav navbar-nav  pull-md-right">
-                <li id="user-dropdown" class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <%= truncate current_user.username, length: 10 %>
-                    <%= raw "<sup>#{current_user.notifications.unread.count}</sup>" if current_user.notifications.unread.any? %>
-                  </a>
-                  <div class="dropdown-menu">
-                    <%= link_to t('site.menu.user.dashboard'), users_dashboard_index_path,  class: 'dropdown-item' %>
-                    <%= link_to t('site.menu.user.edit'), users_edit_path, class: 'dropdown-item' %>
-                    <%= link_to t('site.menu.user.preferences'), users_preferences_path, class: 'dropdown-item' %>
-                    <div class="dropdown-divider"></div>
-                    
-                    <%= link_to t('site.menu.user.notifications'), users_notifications_path, class: 'dropdown-item' %>
-                    <% if current_user.notifications.any? %>
-                      <ul class="list-unstyled">
-                        <% current_user.notifications.latest(3).each do |n| %>
-                          <li class="<%= "row-unread" unless n.read? %>"><i class="fa fa-<%= n.icon %> font-second-color" aria-hidden="true"></i><%= n.title %></li>
-                        <% end %>
-                        <li class="text-xs-right"><%= link_to t('site.menu.user.view_all_notifications'), users_notifications_path, class: '' %></li>
-                      </ul>
-                    <% end %>
-                    <div class="dropdown-divider"></div>
-                    <%= link_to t('site.menu.user.log-out'), logout_path(current_user), method: 'delete', class: 'dropdown-item' %>
-                  </div>
-                  </li>
-                  
-                  <li class="nav-item dropdown nav-general">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i></a>
+          <% unless defined?(no_nav) && no_nav == true %>
+            <nav class="navbar navbar-default" role="navigation">
+              <div class="container-fluid text-xs-right">
+
+              <% if logged_in? %>
+
+                <ul class="nav navbar-nav  float-md-right">
+                  <li id="user-dropdown" class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                      <%= truncate current_user.username, length: 10 %>
+                      <%= raw "<sup>#{current_user.notifications.unread.count}</sup>" if current_user.notifications.unread.any? %>
+                    </a>
                     <div class="dropdown-menu">
-                      <% if admin? %>
-                        <%= link_to t('site.menu.general.admin'), admin_dashboard_index_path,  class: 'dropdown-item' %>
-                          <div class="dropdown-divider"></div>
-                        <% end %>
-                      <%= link_to t('site.menu.general.about'), '#', class: 'dropdown-item' %>
-                      <%= link_to t('site.menu.general.help'), '#', class: 'dropdown-item' %>
+                      <%= link_to t('site.menu.user.dashboard'), users_dashboard_index_path,  class: 'dropdown-item' %>
+                      <%= link_to t('site.menu.user.edit'), users_edit_path, class: 'dropdown-item' %>
+                      <%= link_to t('site.menu.user.preferences'), users_preferences_path, class: 'dropdown-item' %>
+                      <div class="dropdown-divider"></div>
+
+                      <%= link_to t('site.menu.user.notifications'), users_notifications_path, class: 'dropdown-item' %>
+                      <% if current_user.notifications.any? %>
+                        <ul class="list-unstyled">
+                          <% current_user.notifications.latest(3).each do |n| %>
+                            <li class="<%= "row-unread" unless n.read? %>"><i class="fa fa-<%= n.icon %> font-second-color" aria-hidden="true"></i><%= n.title %></li>
+                          <% end %>
+                          <li class="text-xs-right"><%= link_to t('site.menu.user.view_all_notifications'), users_notifications_path, class: '' %></li>
+                        </ul>
+                      <% end %>
+                      <div class="dropdown-divider"></div>
+                      <%= link_to t('site.menu.user.log-out'), logout_path(current_user), method: 'delete', class: 'dropdown-item' %>
                     </div>
                     </li>
-              </ul>
-              
-            <% else %>
-              <%= link_to t('site.menu.user.log-in'), login_path, class: 'link-secondary', role: 'button' %>
-              <%= link_to t('site.menu.user.sign-up'), signup_path, class: 'link-secondary', role: 'button' %>
-            <% end %>
 
-            </div>
-          </nav>
+                    <li class="nav-item dropdown nav-general">
+                      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars"></i></a>
+                      <div class="dropdown-menu">
+                        <% if admin? %>
+                          <%= link_to t('site.menu.general.admin'), admin_dashboard_index_path,  class: 'dropdown-item' %>
+                            <div class="dropdown-divider"></div>
+                          <% end %>
+                        <%= link_to t('site.menu.general.about'), '#', class: 'dropdown-item' %>
+                        <%= link_to t('site.menu.general.help'), '#', class: 'dropdown-item' %>
+                      </div>
+                      </li>
+                </ul>
+
+              <% else %>
+                <%= link_to t('site.menu.user.log-in'), login_path, class: 'link-secondary', role: 'button' %>
+                <%= link_to t('site.menu.user.sign-up'), signup_path, class: 'link-secondary', role: 'button' %>
+              <% end %>
+
+              </div>
+            </nav>
+          <% end %>
           <!-- navbar end -->
 
         </div>

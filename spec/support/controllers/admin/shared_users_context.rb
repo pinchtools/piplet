@@ -6,13 +6,13 @@ shared_context 'a request by username' do |path|
   }
     
   it 'renders view when user exists' do
-    get path, username: user.username_lower
+    get path, params: { username: user.username_lower }
     
     expect(response).to have_http_status(:success)
   end
   
   it 'redirects when usersame is invalid' do
-    get path, username: 'a'
+    get path, params: { username: 'a' }
     
     expect(response).to redirect_to(:admin_users_users)
   end

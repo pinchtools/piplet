@@ -7,10 +7,11 @@ module Concerns::Loggable
   
   def log( action, options  = {} )
     return if Log.actions[action].nil?
-    
+
+    # TODO: interest of these 3 lines ?
     empty_log = self.logs.new
     attributes = empty_log.attributes
-    
+
      self.logs.delete(empty_log)
     
     attributes[:action] = Log.actions[action]

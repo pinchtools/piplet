@@ -1,0 +1,56 @@
+<% provide(:title, t("omniauth.complete_profile.title")) %>
+<% content_for :header do %>
+    <%= javascript_include_tag 'users/user' %>
+<% end %>
+<h1><%= t "omniauth.complete_profile.title" %></h1>
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+    <%= form_with url: auth_finalize_path do |f| %>
+      <%= render 'shared/error_messages', object: @user %>
+
+      <div class="row">
+        <div class="col-md-8">
+          <%= f.label :username %>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-8">
+          <%= f.text_field :username, class: 'form-control', value: @username, id: 'user_username' %>
+        </div>
+        <div id="notice-username" class="col-md-4 col-notice"></div>
+      </div>
+
+      <% if params[:auth_email] == '1' %>
+        <div class="row">
+          <div class="col-md-8">
+            <%= f.label :use_email, class: "checkbox inline" do %>
+                <%= f.check_box :use_email %>
+                <span><%= t 'omniauth.complete_profile.auth_email' %></span>
+            <% end %>
+            <%= f.hidden_field :auth_email, value: 1 %>
+          </div>
+        </div>
+      <% end %>
+
+      <% if params[:auth_img] == '1' %>
+        <div class="row">
+          <div class="col-md-8">
+            <%= f.label :use_img, class: "checkbox inline" do %>
+                <%= f.check_box :use_img %>
+                <span><%= t 'omniauth.complete_profile.auth_img' %></span>
+            <% end %>
+            <%= f.hidden_field :auth_img, value: 1 %>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="row row-section">
+        <div class="col-md-8">
+          <%= f.submit t("omniauth.complete_profile.submit"), class: "btn btn-primary" %>
+        </div>
+      </div>
+
+    <% end %>
+  </div>
+</div>

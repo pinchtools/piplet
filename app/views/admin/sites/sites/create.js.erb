@@ -1,0 +1,7 @@
+<% if site.errors.any? %>
+ $('#newSiteModal #error_explanation').remove();
+ $('#newSiteModal .modal-body').prepend("<%= j  render 'shared/error_messages', object: site %>");
+<% else %>
+ window.location = '<%= edit_admin_site_path(@site.uid) %>'
+ $('#newSiteModal form')[0].reset();
+<% end %>

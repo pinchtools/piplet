@@ -66,144 +66,41 @@ RSpec.describe UserFilter, type: :model do
       
       expect(subject).to be_valid
     end
-    
   end
-  
 
-  
+  it 'calls service wich apply filter' do
+    expect(UserFilter::ApplyWorker).to receive(:perform_async)
+    subject.save
+  end
+
   describe 'when related to users' do
-    
-    context 'blocking filter' do
-      subject {build(:user_filter_blocked_email) }
-      
-      it 'should call block method on concerned users' do
-        user = build(:user)
-        user.email = "default@" + subject.email_provider
-        
-        expect(user.save).to be true
-        expect(user).not_to be_blocked
-                
-        
-        expect(subject).to receive(:delay).and_return(subject)
+    let!(:user) {create(:user, filters: [subject])}
 
-        expect(subject.save).to be true
-        
-        expect(user).to be_blocked
-      end
-      
-    end
-        
-    
-    it 'should remove relation with users when destroyed' do
-      subject.save
-      
-      expect(subject.users).to be_empty
-      
-      subject.users << create(:user)
-      
-      user_id = subject.users.first.id
-      
-      #look if the filter is link to the user
-      expect(User.find(user_id).filters.find_by(:id => subject.id)).to be_present
-      
-      expect(subject.destroy).not_to be(false)
-
-      #look if the link between filter and user has been removed
-      expect(User.find(user_id).filters.find_by(:id => subject.id)).to be_nil
-    end
-    
-    describe '.. by the email provider' do
-      subject {build(:user_filter_blocked_email) }
-      
-      let(:user) { build(:user) }
-      
-      it 'should concerned a user with same domain' do
-        user.email = "example@" + subject.email_provider
-        user.save
-        
-        expect(subject).to receive(:delay).and_return(subject)
-        
-        expect(subject.save).to be true
-        
-        expect(subject.users.find_by_id(user.id)).to be_present
-      
-      end
-    end
-    
-    describe 'by the ip address' do
-      subject {build(:user_filter_blocked_ip) }
-
-      let(:user) { build(:user) }
-    
-      describe 'should concerned a user ' do
-        it '... with same ip v4' do
-          subject.ip_address = Faker::Internet.ip_v4_address
-          
-          user.creation_ip_address = subject.ip_address
-          user.save
-          
-          expect(subject).to receive(:delay).and_return(subject)
-          expect(subject.save).to be true
-          expect(subject.users.find_by_id(user.id)).to be_present
-        end
-      
-        it '... with same ip v6' do
-          subject.ip_address = Faker::Internet.ip_v6_address
-          
-          user.creation_ip_address = subject.ip_address
-          user.save
-          
-          expect(subject).to receive(:delay).and_return(subject)
-          expect(subject.save).to be true
-          expect(subject.users.find_by_id(user.id)).to be_present
-      end
-      
-      it '.. included in wildcard ip' do
-        subject.ip_address = "192.168.1.*"
-        
-        user.creation_ip_address = "192.168.1.5"
-        user.save
-        
-        expect(subject).to receive(:delay).and_return(subject)
-        expect(subject.save).to be true
-        expect(subject.users.find_by_id(user.id)).to be_present
-      end
-      
-        it '.. doesn\'t include too many ips with wildcard ip' do
-          subject.ip_address = "192.168.1.*"
-          
-          user.creation_ip_address = "192.168.2.5"
-          user.save
-          
-          expect(subject).to receive(:delay).and_return(subject)
-          expect(subject.save).to be true
-          expect(subject.users.find_by_id(user.id)).to be_nil
-        end
-      
-        it '.. included in ip mask' do
-          subject.ip_address = "192.168.1.0/24"
-          
-          user.creation_ip_address = "192.168.1.5"
-          user.save
-          
-          expect(subject).to receive(:delay).and_return(subject)
-          expect(subject.save).to be true
-          expect(subject.users.find_by_id(user.id)).to be_present
-        end
-
-        it '... doesn\'t include too many ips with  ip mask' do
-          subject.ip_address = "192.168.1.0/24"
-          
-          user.creation_ip_address = "192.168.2.5"
-          user.save
-          
-          expect(subject).to receive(:delay).and_return(subject)
-          expect(subject.save).to be true
-          expect(subject.users.find_by_id(user.id)).to be_nil
-        end
-        
-      end
+    it 'removes relation with users when destroyed' do
+      expect(subject.destroy).to be_truthy
+      expect(user.reload.filters).to be_empty
     end
   end
-  
+
+  describe 'update' do
+    context 'filter activate' do
+      subject{ create(:user_filter_blocked_email) }
+
+      it 'does not apply filter when deactivate' do
+        expect(subject).not_to receive(:apply_to_existing_users)
+        subject.update_attribute(:blocked, false)
+      end
+    end
+
+    context 'filter deactivate' do
+      subject{ create(:user_filter_blocked_email, blocked: false) }
+
+      it 'applies filter when reactivated' do
+        expect(subject).to receive(:apply_to_existing_users)
+        subject.update_attribute(:blocked, true)
+      end
+
+    end
+
+  end
 end

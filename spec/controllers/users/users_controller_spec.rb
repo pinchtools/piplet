@@ -12,26 +12,36 @@ RSpec.describe Users::UsersController, type: :controller do
       expect(response).to have_http_status(:success)
     end
   end
+
   
   describe "POST #create" do
-    it "fails when invalid information are send " do
-      user_params = { :name => "", 
-        :email => "",
-        :password => "", 
-        :password_confirmation => ""
-      }
-      
-      count = User.count
-      
-      post(:create, user: user_params)
-      
-      expect(User.count).to eq(count)
-      expect(response).to render_template(:new)
+    shared_examples 'user validation failed' do
+      it 'does not add an user on db' do
+        expect {
+          post(:create, params: { user: user_params })
+        }.not_to change {User.count}
+      end
 
+      it 'renders new template' do
+        post(:create, params: { user: user_params })
+        expect(response).to render_template(:new)
+      end
     end
-    
+
+    context 'form is empty' do
+      let(:user_params) { { :name => '', :email => '', :password => '', :password_confirmation => '' } }
+      include_examples 'user validation failed'
+    end
+
+    context 'concerned by filter' do
+      let(:user_params) { { email: 'foobar@foobar.com'} }
+      let(:email_provider) { user_params[:email].partition('@').last }
+      let!(:filter) {create(:user_filter_blocked_email, email_provider: email_provider)}
+
+      include_examples 'user validation failed'
+    end
+
     context "valid user" do
-      
       let(:user_params) {
          build(:user).attributes.merge({
                   :password => 'foobarfoobar',
@@ -41,48 +51,14 @@ RSpec.describe Users::UsersController, type: :controller do
       }
       
       it "create a valid user" do
-        ActionMailer::Base.deliveries.clear
-        
-        count = User.count
-        
-        expect(Sidekiq::Extensions::DelayedMailer.jobs.size).to eq(0)
-  
-        post :create, :user => user_params
-        
-        expect(Sidekiq::Extensions::DelayedMailer.jobs.size).to eq(1)
-        
-        expect(User.count).to eq(count + 1) # add a new User
+        expect {
+          post :create, params: { :user => user_params }
+        }.to change{User.count}. by(1)
+
         expect(response).to redirect_to(:root)
-        expect(assigns(:user)).not_to be_activated
         expect(flash[:info]).to be_present
       end
-      
-      it "set a default locale when available" do
-        locale = :en
-        
-        expect(I18n.available_locales).to include(locale)
-        
-        request.headers['Accept-Language'] = 'en-US'
-        
-        post :create, { user: user_params }
-          
-        expect(assigns(:user).locale).to eq(locale.to_s)
-      end
-      
-      it "let locale empty if browser locale is not available" do
-        locale = 'zzz'
-        
-        expect(I18n.available_locales).not_to include(locale)
-        
-        request.headers['Accept-Language'] = locale
-        
-        post :create, { :user => user_params }
-          
-        expect(assigns(:user).locale).to be_nil
-      end
-      
     end
-    
   end # END POST #create
   
   describe "GET #show" do
@@ -91,7 +67,7 @@ RSpec.describe Users::UsersController, type: :controller do
       
       expect(User.find_by_username_lower(username)).to be nil
       
-      get :show, :username => username
+      get :show, params: { :username => username }
       
       expect(response).to redirect_to(:root)
     end
@@ -99,7 +75,7 @@ RSpec.describe Users::UsersController, type: :controller do
     it 'show profile of existing user' do
       user = create(:user)
       
-      get :show, :username => user.username_lower
+      get :show, params: { :username => user.username_lower }
       
       expect(response).to be_success
     end
@@ -128,8 +104,7 @@ RSpec.describe Users::UsersController, type: :controller do
       expect(response).to redirect_to (users_edit_path)
       expect(session[:forwarding_url]).to be_nil
     end
-    
-    
+
     context 'user is logged' do
       let (:user) { log_in_as( create(:user) ) }
 
@@ -142,24 +117,21 @@ RSpec.describe Users::UsersController, type: :controller do
     it "need to be logged" do
       user = create(:user)
       
-      patch :update, :user => user.attributes, :id => user.id
+      patch :update, params: { :user => user.attributes, :id => user.id }
     
       should_redirect_to_login
     end
-    
-        
+
     context 'when user is logged' do
       let(:user) { log_in_as( create(:user) ) }
         
       it "handle invalid validation" do
         user.email = nil
         
-        patch :update, :user => user.attributes, :id => user.id
+        patch :update, params: { :user => user.attributes, :id => user.id }
         
-        expect(assigns(:user)).not_to be_valid
         expect(response).to render_template(:edit)
       end
-      
       
       it 'update valid form' do
         new_password = 'foobarfoobar2'
@@ -171,37 +143,45 @@ RSpec.describe Users::UsersController, type: :controller do
           :password_confirmation => new_password
         })
         
-        patch :update, :id => user.id, :user => user_params
+        patch :update, params: { :id => user.id, :user => user_params }
         expect(flash[:success]).to be_present
         expect(response).to redirect_to( users_edit_path )
-        expect(user.password_digest).not_to eq(assigns(:user).password_digest)
-        
       end
-      
       
       it 'accepts empty password' do
         user.password = nil
         user.password_confirmation = nil
         
-        patch :update, :id => user.id, :user => user.attributes
+        patch :update, params: { :id => user.id, :user => user.attributes }
   
         expect(flash[:success]).to be_present
         expect(response).to redirect_to( users_edit_path )
       end
       
-      
       it 'should not be able to set a user as admin' do
-        
         expect(user.admin?).to be false
         
-        patch :update, :id => user.id, :user => user.attributes.merge({
-          :admin => true
-        })
+        patch :update,
+              params: {
+                  :id => user.id,
+                  :user => user.attributes.merge({
+                                                     :admin => true
+                                                 })
+              }
         
         expect(User.find(user.id)).not_to be_admin
-        
       end
-      
+
+      context 'concerned by filter' do
+        let(:email_provider) { user.email.partition('@').last }
+        let!(:filter) {create(:user_filter_blocked_email, email_provider: email_provider)}
+
+        it 'renders edit template' do
+          patch :update, params: { :user => user.attributes, :id => user.id }
+
+          expect(response).to render_template(:edit)
+        end
+      end
     end
   end
   
@@ -216,7 +196,7 @@ RSpec.describe Users::UsersController, type: :controller do
       
       log_in_as(admin)
       
-      delete :destroy, username: admin.username_lower
+      delete :destroy, params: { username: admin.username_lower }
       
       expect(:response).to redirect_to(:root)
       expect(flash[:danger]).to be_present
@@ -227,17 +207,17 @@ RSpec.describe Users::UsersController, type: :controller do
       
       count = User.actives.count
 
-      expect(cookies).to have_key(:remember_token)
-      expect(cookies).to have_key(:user_id)
-      
+      expect(response.cookies['remember_token']).not_to be_nil
+      expect(response.cookies['user_id']).not_to be_nil
+
       delete :destroy
-      
+
       expect(:response).to redirect_to(:root)
-      
+
       expect(User.actives.count).to eq(count - 1)
 
-      expect(cookies).to_not have_key(:remember_token)
-      expect(cookies).to_not have_key(:user_id)
+      expect(response.cookies['remember_token']).to be_nil
+      expect(response.cookies['user_id']).to be_nil
     end
       
   end
@@ -246,7 +226,7 @@ RSpec.describe Users::UsersController, type: :controller do
     it 'returns an error when username already exists' do
       user = create(:user)
       
-      get :check_username, :username => user.username
+      get :check_username, params: { :username => user.username }
       
       expect(response).to have_http_status(:bad_request)
     end
@@ -256,7 +236,7 @@ RSpec.describe Users::UsersController, type: :controller do
       
       expect(User.find_by_username(username)).to be_nil
       
-      get :check_username, :username => username
+      get :check_username, params: { :username => username }
       
       expect(response).to have_http_status(:success)
     end

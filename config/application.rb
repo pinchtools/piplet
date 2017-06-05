@@ -1,4 +1,4 @@
-require File.expand_path('../boot', __FILE__)
+require_relative 'boot'
 
 require 'rails/all'
 
@@ -12,28 +12,18 @@ module Piplet
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
-    # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
-    # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
-    # config.time_zone = 'Central Time (US & Canada)'
-
-    config.cache_store = :redis_store, ENV['MEM_STORAGE_URL'],
-      { namespace: 'cache' }
-    
-    config.autoload_paths += Dir["#{config.root}/lib/validators/", "#{config.root}/lib/decorators/"]
+    config.autoload_paths += Dir["#{config.root}/lib/validators/"]
     config.autoload_paths += Dir[File.join(Rails.root, "lib", "core_ext", "*.rb")].each {|l| require l }
-    
+
     config.eager_load_paths += ["#{config.root}/lib/workers"]
-    
-    config.active_job.queue_adapter = :sidekiq
-      
+
+    config.middleware.use Rack::Attack
+
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     config.i18n.available_locales = [:en]
     # config.i18n.default_locale = :de
 
-    # Do not swallow errors in after_commit/after_rollback callbacks.
-    config.active_record.raise_in_transactional_callbacks = true
-    
     config.generators do |g|
       g.view_specs false
       g.helper_specs false

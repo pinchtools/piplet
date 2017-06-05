@@ -58,6 +58,23 @@ Rails.application.routes.draw do
         resources :logs, only: [:index, :show]
       end
     end
+
+    scope module: 'sites' do
+
+      resources :sites, param: :site_uid
+
+      scope('sites/:site_uid') do
+        patch 'edit', to: 'sites#update', as: :site_update
+
+        resources :api_keys
+      end
+
+    end
+
+    # resources :settings, only: [:index]
+    get 'settings/index', as: :settings
+    post 'settings/update', as: :update_settings
+
   end
   
   namespace :users do
@@ -65,8 +82,7 @@ Rails.application.routes.draw do
     get 'sessions/new'
     
     get 'user/edit' => 'users#edit', as: :edit
-    
-    
+
     patch 'user' => 'users#update', as: :update
   
     delete 'user' => 'users#destroy', as: :destroy
@@ -97,6 +113,24 @@ Rails.application.routes.draw do
       end
     end
   end # namespace users
+
+  #omniauth
+  match '/auth/:provider/callback', to: 'users/omniauth#callback', via: :all
+  match '/auth/failure', to: 'users/omniauth#failure', via: :all
+  match '/auth/:token', to: 'users/omniauth#complete_profile', via: :get, as: :auth_complete_profile
+  match '/auth/:token', to: 'users/omniauth#finalize', via: :post, as: :auth_finalize
+
+  namespace :api do
+    namespace :v1 do
+      resources :users, only: [:create] do
+        collection do
+          put :update
+        end
+      end
+      resources :tokens, only: [:create]
+    end #v1
+  end # namespace api
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

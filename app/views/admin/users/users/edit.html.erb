@@ -1,10 +1,14 @@
 <% provide(:title, t('user.form.edit.title')) %>
 
 <div class="container">
-  <%= render 'layouts/admin/users/nav_bar' , locals: { username: @user.username_lower } %>
-  
   <div class="row">
-    <div class="col-md-9 col-md-offset-3">
+    <div class="col-md-12">
+      <%= render 'admin/users/shared/nav_bar' , locals: { username: @user.username_lower } %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-9 offset-md-3">
         <div class="row page-hd">
           <div class="col-md-6">
             <h1 class='page-title'><%= t('user.form.edit.title') %></h1>

@@ -12,7 +12,6 @@ class Admin::Users::FiltersController < Admin::AdminController
     @filter.blocked = true
     
     @filter.save
-    
   end
   
   

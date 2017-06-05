@@ -2,8 +2,10 @@ require_dependency "banned_email_providers"
 
 class EmailValidator < ActiveModel::EachValidator
 
+  MAX_SIZE =  255.freeze
+
   attr_accessor :record, :attribute, :value
-  
+
   def validate_each(record, attribute, value)
     return if value.blank?
     
@@ -12,6 +14,16 @@ class EmailValidator < ActiveModel::EachValidator
     self.value = value
     
     is_using_banned_provider?
+    well_formated?
+    not_too_long?
+  end
+
+  def well_formated?
+    record.errors.add(attribute, :invalid) unless !!(value =~ /\A[^@\s]+@[^\@\s\.]+\.[^\@\s]+[^\@\.\s]+\z/)
+  end
+
+  def not_too_long?
+    record.errors.add(attribute, :too_long, count: MAX_SIZE) if value.length > MAX_SIZE
   end
   
   def is_using_banned_provider?

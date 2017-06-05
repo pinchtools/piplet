@@ -1,3 +1,14 @@
 @import 'variables';
 
 @import 'layout/admin/*';
+
+.nav-inline .nav-link.active,
+.nav-inline .nav-link.active:focus,
+.nav-inline .nav-link.active:hover {
+  color: #55595c;
+  border-bottom: 1px solid #55595c;
+}
+
+.tab-content {
+  margin: 20px 0;
+}
