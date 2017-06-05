@@ -78,6 +78,7 @@ class Users::OmniauthController < ApplicationController
       username: @username,
       auth_account: @account,
       creation_ip_address: request.remote_ip,
+      creation_domain: request.host + request.port_string,
       locale: detect_language,
       password: password,
       password_confirmation: password

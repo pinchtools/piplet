@@ -19,7 +19,8 @@ class Users::UsersController < Users::BaseController
     @user = User.new(user_create_params)
     
     @user.creation_ip_address = request.remote_ip
-    
+    @user.creation_domain = request.host + request.port_string
+
     @user.locale = detect_language
 
     concerned_by_filters = Users::ConcernedByFiltersService.new(@user).call

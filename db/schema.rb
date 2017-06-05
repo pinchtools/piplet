@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170522061026) do
+ActiveRecord::Schema.define(version: 20170605120955) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -157,6 +157,7 @@ ActiveRecord::Schema.define(version: 20170522061026) do
     t.boolean "to_be_deleted", default: false
     t.datetime "to_be_deleted_at"
     t.string "blocked_note"
+    t.string "creation_domain"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
     t.index ["username_lower"], name: "index_users_on_username_lower", unique: true

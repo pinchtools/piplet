@@ -6,6 +6,7 @@ class Api::V1::UsersController < ApiController
     @user = User.create( user_create_params )
 
     @user.creation_ip_address = request.remote_ip
+    @user.creation_domain = request.host + request.port_string
 
     @user.locale = detect_language
 
