@@ -21,7 +21,9 @@
             <% if setting('global.auth', 'google', 'enable') == '1' %>
               <a href="/auth/google" role="button" class="btn btn-secondary"><i class="fa fa-google" aria-hidden="true"></i> Google</a>
             <% end %>
-            <a role="button" class="btn btn-secondary"><i class="fa fa-twitter" aria-hidden="true"></i> Twitter</a>
+            <% if setting('global.auth', 'twitter', 'enable') == '1' %>
+              <a  href="/auth/twitter" role="button" class="btn btn-secondary"><i class="fa fa-twitter" aria-hidden="true"></i> Twitter</a>
+            <% end %>
           </div>
         </div>
         <hr/>

@@ -101,23 +101,42 @@
               <h6>Twitter</h6>
               <hr/>
               <div class="container">
+                <div class="form-group clearfix">
+                  <label class="col-form-label-sm col-md-2">Activate</label>
+                  <div class="col-md-10">
+                    <div class="btn-group" data-toggle="buttons">
+                      <label class="btn btn-primary btn-sm <%= 'active' if setting('global.auth', 'twitter', 'enable') == '1' %>">
+                        <%= form.radio_button 'settings[global.auth][twitter][enable]',
+                                              '1',
+                                              :checked => setting('global.auth', 'twitter', 'enable') == '1',
+                                              autocomplete: 'off' %>Yes
+                      </label>
+                      <label class="btn btn-primary btn-sm <%= 'active' if setting('global.auth', 'twitter', 'enable') != '1' %>">
+                        <%= form.radio_button 'settings[global.auth][twitter][enable]',
+                                              '0',
+                                              :checked => setting('global.auth', 'twitter', 'enable') != '1',
+                                              autocomplete: 'off' %>No
+                      </label>
+                    </div>
+                  </div>
+                </div>
                 <div class="form-group">
                   <label class="col-form-label-sm col-md-2">Api key</label>
                   <div class="col-md-10">
-                    <%= form.text_field 'settings[global.auth][twitter][api_key]',
+                    <%= form.text_field 'settings[global.auth][twitter][consumer_key]',
                                         class: 'form-control form-control-sm',
-                                        placeholder: 'Api key',
-                                        value: setting('global.auth', 'twitter', 'api_key')
+                                        placeholder: 'Consumer key',
+                                        value: setting('global.auth', 'twitter', 'consumer_key')
                     %>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-form-label-sm col-md-2">Api secret</label>
                   <div class="col-md-10">
-                    <%= form.text_field 'settings[global.auth][twitter][api_secret]',
+                    <%= form.text_field 'settings[global.auth][twitter][consumer_secret]',
                                         class: 'form-control form-control-sm',
-                                        placeholder: 'Api secret',
-                                        value: setting('global.auth', 'twitter', 'api_secret')
+                                        placeholder: 'Consumer secret',
+                                        value: setting('global.auth', 'twitter', 'consumer_secret')
                     %>
                   </div>
                 </div>

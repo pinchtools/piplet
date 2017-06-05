@@ -9,6 +9,7 @@ Rails.application.config.middleware.use OmniAuth::Builder do
              {
                secure_image_url: true
              }
+    provider :twitter, Setting['global.auth']['twitter']['consumer_key'], Setting['global.auth']['twitter']['consumer_secret']
   rescue ActiveRecord::StatementInvalid
     # This will happen when migrating a new database
   rescue => e

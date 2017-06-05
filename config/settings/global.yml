@@ -7,4 +7,8 @@ auth:
     enable: '1'
     facebook_key: ''
     facebook_secret: ''
+  twitter:
+    enable: '1'
+    consumer_key: ''
+    consumer_secret: ''
 domain: ''
