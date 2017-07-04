@@ -28,3 +28,7 @@
 
 #default avatars
 /public/images/avatars
+
+#webpacker
+/public/packs
+/node_modules
