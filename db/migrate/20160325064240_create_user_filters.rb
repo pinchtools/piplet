@@ -1,4 +1,4 @@
-class CreateUserFilters < ActiveRecord::Migration
+class CreateUserFilters < ActiveRecord::Migration[5.1]
   def change
     create_table :user_filters do |t|
       t.string :email_provider

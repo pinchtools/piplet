@@ -7,8 +7,8 @@
 #  value      :text
 #  thing_id   :integer
 #  thing_type :string(30)
-#  created_at :datetime
-#  updated_at :datetime
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 # Indexes
 #

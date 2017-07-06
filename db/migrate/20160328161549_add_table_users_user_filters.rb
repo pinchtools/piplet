@@ -1,4 +1,4 @@
-class AddTableUsersUserFilters < ActiveRecord::Migration
+class AddTableUsersUserFilters < ActiveRecord::Migration[5.1]
   def change
     create_table :users_user_filters do |t|
       t.integer :user_id

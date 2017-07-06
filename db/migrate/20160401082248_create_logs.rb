@@ -1,4 +1,4 @@
-class CreateLogs < ActiveRecord::Migration
+class CreateLogs < ActiveRecord::Migration[5.1]
   def change
     create_table :logs do |t|
       t.integer :action
@@ -12,7 +12,7 @@ class CreateLogs < ActiveRecord::Migration
       t.references :loggable, polymorphic: true, index: true
       t.timestamps null: false
     end
-    
+
     add_index :logs, :action
     add_index :logs, :level
     add_index :logs, :action_user_id
