@@ -3,8 +3,9 @@
 <head>
   <title>Piplet</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <%= javascript_pack_tag 'hello_react' %>
 </head>
 <body>
+  <%= yield %>
+  <%= javascript_pack_tag 'application' %>
 </body>
 </html>

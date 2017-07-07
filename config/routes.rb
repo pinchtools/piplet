@@ -132,6 +132,6 @@ Rails.application.routes.draw do
   end # namespace api
 
   namespace :client do
-    get 'home/index'
+    get '/' =>'home#index', as: :home
   end
 end
