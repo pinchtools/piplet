@@ -2,8 +2,8 @@ const fs = require('fs')
 const { sync } = require('glob')
 const mkdirp = require('mkdirp')
 
-const filePattern = '/app/javascript/build/messages/**/*.json';
-const outputDir = '/app/javascript/build/locales/';
+const filePattern = './app/javascript/build/messages/**/*.json';
+const outputDir = './app/javascript/build/locales/';
 
 function AggregateTranslations() {
 }
