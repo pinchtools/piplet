@@ -20,6 +20,13 @@
       {
         "spec": true
       }
+    ],
+    "transform-object-rest-spread",
+    [
+      "react-intl", {
+        "messagesDir": "./app/javascript/build/messages",
+        "enforceDescriptions": false
+      }
     ]
   ]
 }

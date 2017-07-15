@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Header from './../../components/home/Header'
 
 class Index extends Component {
   componentDidMount() {
@@ -7,6 +8,7 @@ class Index extends Component {
   render() {
     return (
       <div>
+        <Header/>
         Index page
       </div>
     )
