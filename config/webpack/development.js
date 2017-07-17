@@ -3,6 +3,9 @@
 const merge = require('webpack-merge')
 const sharedConfig = require('./shared.js')
 const { settings, output } = require('./configuration.js')
+const path = require("path")
+const { WatchIgnorePlugin } = require("webpack")
+const AggregateTranslations = require('./../../app/javascript/modules/AggregateTranslations.js')
 
 module.exports = merge(sharedConfig, {
   devtool: 'cheap-eval-source-map',
@@ -14,6 +17,14 @@ module.exports = merge(sharedConfig, {
   output: {
     pathinfo: true
   },
+
+  plugins: [
+    new AggregateTranslations(),
+    new WatchIgnorePlugin([
+      path.resolve(__dirname, '../../app/javascript/build/locales.json'),
+      path.resolve(__dirname, '../../app/javascript/packs/locales/en.json'),
+    ]),
+  ],
 
   devServer: {
     clientLogLevel: 'none',

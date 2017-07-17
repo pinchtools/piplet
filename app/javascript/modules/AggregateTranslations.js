@@ -1,9 +1,12 @@
 const fs = require('fs')
 const { sync } = require('glob')
 const mkdirp = require('mkdirp')
+const path = require('path')
 
-const filePattern = './app/javascript/build/messages/**/*.json';
-const outputDir = './app/javascript/build/locales/';
+const localeDir = './app/javascript/packs/locales/'
+const buildDir = './app/javascript/build/'
+const filePattern = `${buildDir}messages/**/*.json`
+const localePattern = `${localeDir}*.json`
 
 function AggregateTranslations() {
 }
@@ -14,8 +17,7 @@ AggregateTranslations.prototype.apply = function(compiler) {
     // React components via the React Intl Babel plugin. An error will be thrown if
     // there are messages in different components that use the same `id`. The result
     // is a flat collection of `id: message` pairs for the app's default locale.
-    console.log('Messages pattern: ' + filePattern);
-    defaultMessages =  sync(filePattern)
+    enMessages =  sync(filePattern)
       .map((filename) => fs.readFileSync(filename, 'utf8'))
       .map((file) => JSON.parse(file))
       .reduce((collection, descriptors) => {
@@ -28,11 +30,25 @@ AggregateTranslations.prototype.apply = function(compiler) {
         return collection
       }, {})
 
-    // Create a new directory that we want to write the aggregate messages to
-    mkdirp.sync(outputDir)
+    mkdirp.sync(buildDir)
 
     // Write the messages to this directory
-    fs.writeFileSync(outputDir + 'data.json', `{ "en": ${JSON.stringify(defaultMessages, null, 2)} }`)
+    var jsonEn = JSON.stringify(enMessages, null, 2)
+    fs.writeFileSync(localeDir + 'en.json', jsonEn)
+    var jsonAll = {}
+
+    //Merge all locales defined in packs/locales
+    sync(localePattern).forEach(
+      function(filename) {
+        var ln = path.basename(filename, '.json')
+        if (ln != 'en') {
+          file = fs.readFileSync(filename, 'utf8')
+          jsonAll[ln] =  JSON.parse(file)
+        }
+      }
+    )
+
+    fs.writeFileSync(buildDir + 'locales.json', JSON.stringify(jsonAll, null, 2))
     console.log('Aggregating translations JSON complete!')
     callback()
   })
