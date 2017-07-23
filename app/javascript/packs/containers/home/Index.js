@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import Header from './../../components/home/Header'
+import Header from './../../containers/home/Header'
+import LoginDialog from './../../containers/session/LoginDialog'
 
 class Index extends Component {
   componentDidMount() {
@@ -9,6 +10,7 @@ class Index extends Component {
     return (
       <div>
         <Header/>
+        <LoginDialog/>
         Index page
       </div>
     )

@@ -17,9 +17,7 @@ const styleSheet = createStyleSheet('Header', theme => ({
 }));
 
 
-const Header = (props) => {
-  const classes = props.classes
-
+const Header = ({ classes, onLoginToggle }) => {
   return (
     <div className={classes.root}>
       <Grid container gutter={8}  className={classes.container} align="center">
@@ -31,7 +29,7 @@ const Header = (props) => {
         <Grid item xs={4}>
           <Grid container justify="flex-end">
             <Grid item>
-              <Button raised color='accent'>
+              <Button raised color='accent' onClick={() => onLoginToggle()}>
                 <FormattedMessage
                   id="Header.login"
                   defaultMessage={`login`}
@@ -49,6 +47,7 @@ const Header = (props) => {
 
 Header.propTypes = {
   classes: PropTypes.object.isRequired,
+  onLoginToggle: PropTypes.func.isRequired
 }
 
 export default withStyles(styleSheet)(Header)

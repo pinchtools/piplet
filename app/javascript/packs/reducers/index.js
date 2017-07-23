@@ -1,9 +1,8 @@
 import { combineReducers } from 'redux'
-import user from './user'
-// import visibilityFilter from './visibilityFilter'
+import loginDialog from './loginDialog'
 
 const appReducer = combineReducers({
-  user,
+  loginDialog
 })
 
 export default appReducer
