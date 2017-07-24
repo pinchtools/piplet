@@ -1,3 +1,7 @@
 {
-  "Header.login": "login"
+  "Header.login": "login",
+  "LoginDialog.username": "username",
+  "LoginDialog.password": "password",
+  "LoginDialog.cancel": "cancel",
+  "LoginDialog.submit": "submit"
 }
