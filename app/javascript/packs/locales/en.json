@@ -2,6 +2,7 @@
   "Header.login": "login",
   "LoginDialog.username": "username",
   "LoginDialog.password": "password",
+  "LoginDialog.createAccount": "create an account",
   "LoginDialog.cancel": "cancel",
   "LoginDialog.submit": "submit"
 }

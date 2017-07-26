@@ -50,7 +50,7 @@ const LoginDialog = ({ classes, loginProps, onLoginToggle }) => {
       <Grid container gutter={24} className={classes.body}>
         <Grid item xs={12}>
           <FormControl  fullWidth>
-            <InputLabel htmlFor="username">
+            <InputLabel required htmlFor="username">
               <FormattedMessage
                 id="LoginDialog.username"
                 defaultMessage={`username`}
@@ -61,7 +61,7 @@ const LoginDialog = ({ classes, loginProps, onLoginToggle }) => {
         </Grid>
         <Grid item xs={12}>
           <FormControl fullWidth>
-            <InputLabel htmlFor="password">
+            <InputLabel required htmlFor="password">
               <FormattedMessage
                 id="LoginDialog.password"
                 defaultMessage={`password`}
@@ -71,24 +71,39 @@ const LoginDialog = ({ classes, loginProps, onLoginToggle }) => {
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          <Grid container justify="flex-end">
-            <Grid item >
-              <Button onClick={() => onLoginToggle()}>
-                <FormattedMessage
-                  id="LoginDialog.cancel"
-                  defaultMessage={`cancel`}
-                />
+          <Grid container>
+            <Grid item xs={6}>
+              <Button dense onClick={() => onLoginToggle()}>
+                <Typography type="caption" align="center">
+                  <FormattedMessage
+                    id="LoginDialog.createAccount"
+                    defaultMessage={`create an account`}
+                  />
+                </Typography>
               </Button>
             </Grid>
-            <Grid item >
-              <Button raised color='accent' onClick={() => onLoginToggle()}>
-                <FormattedMessage
-                  id="LoginDialog.submit"
-                  defaultMessage={`submit`}
-                />
-              </Button>
+            <Grid item xs={6}>
+              <Grid container justify="flex-end">
+                <Grid item >
+                  <Button onClick={() => onLoginToggle()}>
+                    <FormattedMessage
+                      id="LoginDialog.cancel"
+                      defaultMessage={`cancel`}
+                    />
+                  </Button>
+                </Grid>
+                <Grid item >
+                  <Button raised color='accent' onClick={() => onLoginToggle()}>
+                    <FormattedMessage
+                      id="LoginDialog.submit"
+                      defaultMessage={`submit`}
+                    />
+                  </Button>
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
+
         </Grid>
       </Grid>
     </ResponsiveDialog>
