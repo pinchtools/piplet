@@ -1,8 +1,8 @@
 {
   "Header.login": "login",
+  "LoginDialog.title": "Login",
   "LoginDialog.username": "username",
   "LoginDialog.password": "password",
-  "LoginDialog.createAccount": "create an account",
   "LoginDialog.cancel": "cancel",
   "LoginDialog.submit": "submit"
 }

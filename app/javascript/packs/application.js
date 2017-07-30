@@ -13,18 +13,15 @@ import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 import appReducer from './reducers'
 import App from './components/App'
-import Theme from './components/Theme'
 import Intl from './components/Intl'
 
 const store = createStore(appReducer)
 
 ReactDOM.render(
   <Provider store={store}>
-    <Theme>
-      <Intl>
-        <App />
-      </Intl>
-    </Theme>
+    <Intl>
+      <App />
+    </Intl>
   </Provider>,
   document.getElementById('root')
 )
