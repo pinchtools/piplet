@@ -13,18 +13,27 @@ const Comment = (props) => {
             <i className="icon-like fa fa-heart-o" aria-hidden="true"></i>
           </div>
           <div>
-            eze<br/>ez
+            <div className="username"><a href="#">Pinchtools</a></div>
+            <div className="date">5 minutes ago</div>
           </div>
         </div>
         <div className="panel-body">
           Panel content
         </div>
         <div className="panel-footer">
-          <i className="icon-like highlight fa fa-bullhorn" aria-hidden="true"></i>
-          <i className="icon-like fa fa-graduation-cap" aria-hidden="true"></i>
-          <i className="icon-like fa fa-bullhorn" aria-hidden="true"></i>
-          <i className="icon-like fa fa-thumbs-o-up" aria-hidden="true"></i>
-          <i className="icon-like fa fa-lightbulb-o" aria-hidden="true"></i>
+          <div className="pull-right">
+            <a href="#"><small>reply</small></a>
+            <a href="#" title="copy the link to the clipboard"><small>link</small></a>
+            <i className="fa fa-chevron-down" aria-hidden="true"></i>
+          </div>
+          <div>
+            <i className="highlight fa fa-bullhorn" aria-hidden="true"></i>
+
+            <a href="#"><i className="fa fa-graduation-cap" aria-hidden="true"></i></a>
+            <a href="#"><i className="fa fa-bullhorn" aria-hidden="true"></i></a>
+            <a href="#"><i className="fa fa-thumbs-o-up" aria-hidden="true"></i></a>
+            <a href="#"><i className="fa fa-lightbulb-o" aria-hidden="true"></i></a>
+          </div>
         </div>
       </div>
       {props.children}

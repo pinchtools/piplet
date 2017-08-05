@@ -47,15 +47,25 @@ $green: #00C566;
     .panel-heading {
       color: inherit;
       background-color: transparent;
+      padding: 10px 15px 0;
 
       .avatar {
         border-radius: 100%;
-        width: 48px;
+        width: 40px;
+      }
+
+      .username, .date {
+        line-height: 150%;
+        font-size: 87%;
+      }
+
+      .date {
+        color: $gray-light;
       }
 
       > div:last-child {
-        margin-left: 60px;
-        margin-right: 60px;
+        margin-left: 50px;
+        margin-right: 50px;
       }
 
       .icon-like {
@@ -64,9 +74,17 @@ $green: #00C566;
       }
     }
 
+    .panel-body {
+      padding: 10px 15px;
+    }
+
     .panel-footer {
-      color: $gray;
-      padding: 5px 15px;
+      color: lighten( $gray, 20%);
+      padding: 2px 5px;
+
+      > div:last-child {
+        margin-right: 100px;
+      }
 
       i {
         margin: 0 5px;
@@ -74,6 +92,14 @@ $green: #00C566;
 
       i.highlight {
         color: $green;
+        margin-right: 15px;
+      }
+
+      a {
+        color: lighten( $gray, 20%);
+        &:hover {
+          color: $brand-primary;
+        }
       }
     }
   }
