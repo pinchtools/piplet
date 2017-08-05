@@ -1,0 +1,80 @@
+// ~ to tell webpack that this is not a relative import:
+@import 'variables';
+@import '~bootstrap-sass/assets/stylesheets/_bootstrap';
+@import 'bootswatch';
+@import 'font-awesome/scss/font-awesome';
+
+
+$green: #00C566;
+
+* {
+  outline: none !important;
+}
+
+.btn {
+  margin: 0 10px;
+}
+
+// Modal Login
+#login-modal {
+  .nav-tabs li {
+    width: 50%;
+    text-align: center;
+  }
+
+  form {
+    padding: 20px 10px 0;
+
+    .control-label span {
+      text-transform: capitalize;
+    }
+
+    .btn {
+      i {
+        margin: 0 10px 0 0;
+      }
+    }
+  }
+}
+
+// Thread
+.thread-level {
+  @for $i from 0 through 3 {
+    &.level-#{$i + 1} .panel { margin-left: 2em * $i; }
+  }
+
+  .comment {
+    .panel-heading {
+      color: inherit;
+      background-color: transparent;
+
+      .avatar {
+        border-radius: 100%;
+        width: 48px;
+      }
+
+      > div:last-child {
+        margin-left: 60px;
+        margin-right: 60px;
+      }
+
+      .icon-like {
+        color: $gray;
+        font-size: 1.3em;
+      }
+    }
+
+    .panel-footer {
+      color: $gray;
+      padding: 5px 15px;
+
+      i {
+        margin: 0 5px;
+      }
+
+      i.highlight {
+        color: $green;
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { toggleDialog } from './../../actions/LoginDialog'
+import { toggleDialog, selectLogin, selectSignup } from './../../actions/LoginDialog'
 import LoginDialogComp from  './../../components/session/LoginDialog'
 
 const mapStateToProps = (state) => {
@@ -12,6 +12,12 @@ const mapDispatchToProps = dispatch => {
   return {
     onLoginToggle: () => {
       dispatch(toggleDialog())
+    },
+    onSelectLogin: () => {
+      dispatch(selectLogin())
+    },
+    onSelectSignup: () => {
+      dispatch(selectSignup())
     }
   }
 }

@@ -1,8 +1,11 @@
 {
   "Header.login": "login",
-  "LoginDialog.title": "Login",
+  "LoginDialog.Tab.Signup.Title": "Signup",
+  "LoginDialog.Tab.Login.Title": "Login",
+  "LoginDialog.auth.fb": "Facebook",
+  "LoginDialog.auth.google": "Google",
+  "LoginDialog.auth.twitter": "Twitter",
   "LoginDialog.username": "username",
-  "LoginDialog.password": "password",
-  "LoginDialog.cancel": "cancel",
-  "LoginDialog.submit": "submit"
+  "LoginDialog.email": "email",
+  "LoginDialog.password": "password"
 }

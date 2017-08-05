@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Header from './../../containers/home/Header'
 import LoginDialog from './../../containers/session/LoginDialog'
+import Thread from './../../components/Thread'
 
 class Index extends Component {
   componentDidMount() {
@@ -11,7 +12,7 @@ class Index extends Component {
       <div>
         <Header/>
         <LoginDialog/>
-        Index page
+        <Thread/>
       </div>
     )
   }
