@@ -16,27 +16,32 @@ const LoginForm = ({ form }) => {
   return (
     <Form>
       <Row>
-        <Col xs={12} className="text-center">
+        <Col sm={12} className="text-center hidden-xs">
           <Button bsStyle="primary">
             <i className="fa fa-facebook" aria-hidden="true"></i>
-            <FormattedMessage
-              id="LoginDialog.auth.fb"
-              defaultMessage={`Facebook`}
-            />
+            <FormattedMessage id="LoginDialog.auth.fb" defaultMessage={`Facebook`} />
           </Button>
           <Button bsStyle="primary">
             <i className="fa fa-google" aria-hidden="true"></i>
-            <FormattedMessage
-              id="LoginDialog.auth.google"
-              defaultMessage={`Google`}
-            />
+            <FormattedMessage id="LoginDialog.auth.google" defaultMessage={`Google`} />
           </Button>
           <Button bsStyle="primary">
             <i className="fa fa-twitter" aria-hidden="true"></i>
-            <FormattedMessage
-              id="LoginDialog.auth.twitter"
-              defaultMessage={`Twitter`}
-            />
+            <FormattedMessage id="LoginDialog.auth.twitter" defaultMessage={`Twitter`} />
+          </Button>
+        </Col>
+        <Col xs={12} className="text-center visible-xs">
+          <Button bsStyle="primary" bsSize="small" block>
+            <i className="fa fa-facebook" aria-hidden="true"></i>
+            <FormattedMessage id="LoginDialog.auth.fb" defaultMessage={`Facebook`} />
+          </Button>
+          <Button bsStyle="primary" bsSize="small" block>
+            <i className="fa fa-google" aria-hidden="true"></i>
+            <FormattedMessage id="LoginDialog.auth.google" defaultMessage={`Google`} />
+          </Button>
+          <Button bsStyle="primary" bsSize="small" block>
+            <i className="fa fa-twitter" aria-hidden="true"></i>
+            <FormattedMessage id="LoginDialog.auth.twitter" defaultMessage={`Twitter`} />
           </Button>
         </Col>
       </Row>

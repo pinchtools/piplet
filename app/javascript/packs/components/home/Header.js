@@ -10,12 +10,12 @@ const Header = ({ onLoginToggle }) => {
     <div>
       <Navbar collapseOnSelect>
         <Navbar.Header>
+          <Navbar.Brand>
+              84 comments
+          </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
-          <Nav>
-            <NavItem eventKey={1} href="#">84 comments</NavItem>
-          </Nav>
           <Nav pullRight>
             <NavItem eventKey={1} onClick={() => onLoginToggle()} href="#">
               <FormattedMessage
