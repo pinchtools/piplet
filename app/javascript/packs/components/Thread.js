@@ -7,7 +7,7 @@ import Comment from './Comment'
 
 const Thread = () => {
   return (
-    <Grid>
+    <Grid className="thread">
       <Row>
         <Col xs={12}>
           <ThreadLevel classes="level-1">

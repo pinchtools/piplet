@@ -1,5 +1,9 @@
 import React from 'react'
 import avatar from './../images/avatar.jpg'
+import Button from 'react-bootstrap/lib/Button'
+import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar'
+import DropdownButton from 'react-bootstrap/lib/DropdownButton'
+import MenuItem from 'react-bootstrap/lib/MenuItem'
 
 const Comment = (props) => {
   return (
@@ -10,7 +14,8 @@ const Comment = (props) => {
             <img className="avatar" src={avatar}/>
           </div>
           <div className="pull-right">
-            <i className="icon-like fa fa-heart-o" aria-hidden="true"></i>
+            <Button bsSize="small" bsStyle='link'><i className="fa fa-link" aria-hidden="true"></i></Button>
+            <Button bsSize="small" bsStyle='link'><i className="fa fa-heart-o" aria-hidden="true"></i></Button>
           </div>
           <div>
             <div className="username"><a href="#">Pinchtools</a></div>
@@ -18,21 +23,25 @@ const Comment = (props) => {
           </div>
         </div>
         <div className="panel-body">
-          Panel content
+          That camera looks pretty terrible, way to hype up nothing.
         </div>
         <div className="panel-footer">
-          <div className="pull-right">
-            <a href="#"><small>reply</small></a>
-            <a href="#" title="copy the link to the clipboard"><small>link</small></a>
-            <i className="fa fa-chevron-down" aria-hidden="true"></i>
+          <div className="pull-right secondary-actions">
+            <ButtonToolbar>
+              <Button bsSize="small" bsStyle='link'><small>reply</small></Button>
+              <DropdownButton bsSize="small" bsStyle='link' pullRight id='dropdown-more-actions'>
+                <MenuItem eventKey="1">Block user</MenuItem>
+                <MenuItem eventKey="2">Flag as innapropriate</MenuItem>
+              </DropdownButton>
+            </ButtonToolbar>
           </div>
-          <div>
+          <div className="primary-actions">
             <i className="highlight fa fa-bullhorn" aria-hidden="true"></i>
 
-            <a href="#"><i className="fa fa-graduation-cap" aria-hidden="true"></i></a>
-            <a href="#"><i className="fa fa-bullhorn" aria-hidden="true"></i></a>
-            <a href="#"><i className="fa fa-thumbs-o-up" aria-hidden="true"></i></a>
-            <a href="#"><i className="fa fa-lightbulb-o" aria-hidden="true"></i></a>
+            <Button bsStyle='link'><i className="fa fa-graduation-cap" aria-hidden="true"></i></Button>
+            <Button bsStyle='link'><i className="fa fa-bullhorn" aria-hidden="true"></i></Button>
+            <Button bsStyle='link'><i className="fa fa-thumbs-o-up" aria-hidden="true"></i></Button>
+            <Button bsStyle='link'><i className="fa fa-lightbulb-o" aria-hidden="true"></i></Button>
           </div>
         </div>
       </div>
