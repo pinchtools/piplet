@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Header from './Header'
 import LoginDialog from './../session/LoginDialog'
 import CommentEditor from './../../containers/CommentEditor'
-import Thread from './../../components/Thread'
+import Thread from './../../bundles/thread/container'
 
 class Index extends Component {
   componentDidMount() {

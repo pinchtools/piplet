@@ -1,4 +1,5 @@
 {
+  "CommentEditor.placeholder": "Write a comment ...",
   "Header.login": "login",
   "LoginDialog.Tab.Signup.Title": "Signup",
   "LoginDialog.Tab.Login.Title": "Login",

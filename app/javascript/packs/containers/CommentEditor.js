@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { focusEditor, changeEditor } from './../actions/CommentEditor'
+import { focusEditor } from './../actions/CommentEditor'
 import CommentEditorComp from  './../components/CommentEditor'
 
 const mapStateToProps = (state) => {

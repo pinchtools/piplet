@@ -1,11 +1,14 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import avatar from './../images/avatar.jpg'
 import Button from 'react-bootstrap/lib/Button'
 import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar'
 import DropdownButton from 'react-bootstrap/lib/DropdownButton'
 import MenuItem from 'react-bootstrap/lib/MenuItem'
+import CommentEditor from './../containers/CommentEditor'
 
 const Comment = (props) => {
+  let editor = (props.comment._reply) ? <CommentEditor /> : '';
   return (
     <div className="comment">
       <div className="panel panel-default">
@@ -32,10 +35,10 @@ const Comment = (props) => {
         <div className="panel-footer">
           <div className="pull-right secondary-actions">
             <ButtonToolbar>
-              <Button bsSize="small" bsStyle='link'><small>reply</small></Button>
+              <Button bsSize="small" bsStyle='link' onClick={() => props.onReply(props.comment.id)}><small>reply</small></Button>
               <DropdownButton bsSize="small" bsStyle='link' pullRight id='dropdown-more-actions' title="">
                 <MenuItem eventKey="1">Block user</MenuItem>
-                <MenuItem eventKey="2">Flag as innapropriate</MenuItem>
+                <MenuItem eventKey="2">Flag as inappropriate</MenuItem>
               </DropdownButton>
             </ButtonToolbar>
           </div>
@@ -49,9 +52,15 @@ const Comment = (props) => {
           </div>
         </div>
       </div>
+      {editor}
       {props.children}
     </div>
   )
+}
+
+Comment.propTypes = {
+  comment: PropTypes.object.isRequired,
+  onReply: PropTypes.func.isRequired
 }
 
 export default Comment

@@ -31,7 +31,7 @@ const LoginDialog = ({ loginProps, onLoginToggle, onSelectLogin, onSelectSignup,
   let loginButtonClass = loginProps.form == SIGNUP_FORM ? 'hidden' : ''
 
   return (
-    <Modal id="login-modal" show={loginProps.open} onHide={() => onLoginToggle()}>
+    <Modal id="login-modal" show={loginProps.open} onHide={onLoginToggle}>
       <Modal.Body >
         <Tabs defaultActiveKey={2} onSelect={handleSelect}>
           <Tab eventKey={1} title={intl.formatMessage(messages.tabSignupTitle)}>
@@ -43,19 +43,19 @@ const LoginDialog = ({ loginProps, onLoginToggle, onSelectLogin, onSelectSignup,
         </Tabs>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={() => onLoginToggle()}>
+        <Button onClick={onLoginToggle}>
           <FormattedMessage
             id="LoginDialog.cancel"
             defaultMessage={`cancel`}
           />
         </Button>
-        <Button bsStyle="primary" className={signupButtonClass} onClick={() => onLoginToggle()}>
+        <Button bsStyle="primary" className={signupButtonClass} onClick={onLoginToggle}>
           <FormattedMessage
             id="LoginDialog.submit.signup"
             defaultMessage={`signup`}
           />
         </Button>
-        <Button bsStyle="primary" className={loginButtonClass} onClick={() => onLoginToggle()}>
+        <Button bsStyle="primary" className={loginButtonClass} onClick={onLoginToggle}>
           <FormattedMessage
             id="LoginDialog.submit.login"
             defaultMessage={`login`}
