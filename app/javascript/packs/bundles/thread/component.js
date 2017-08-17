@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import Grid from 'react-bootstrap/lib/Grid'
 import Row from 'react-bootstrap/lib/Row'
 import Col from 'react-bootstrap/lib/Col'
-import ThreadLevel from './../../components/ThreadLevel'
-import Comment from './../../containers/Comment'
+import Level from './level/component'
+import Comment from './../comment/container'
 import * as req from './requests'
 
 class Thread extends Component {
@@ -41,9 +41,9 @@ class Thread extends Component {
     }
 
     return (
-      <ThreadLevel classes={`level-${level}`}>
+      <Level classes={`level-${level}`}>
         {comps}
-      </ThreadLevel>
+      </Level>
     )
   }
 

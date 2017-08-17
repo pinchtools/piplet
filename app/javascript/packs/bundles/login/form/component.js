@@ -8,7 +8,7 @@ import ControlLabel from 'react-bootstrap/lib/ControlLabel'
 import Row from 'react-bootstrap/lib/Row'
 import Col from 'react-bootstrap/lib/Col'
 import Button from 'react-bootstrap/lib/Button'
-import {LOGIN_FORM} from './../../actions/LoginDialog'
+import {LOGIN_FORM} from './../actions'
 
 const LoginForm = ({ form }) => {
   let emailClass = form == LOGIN_FORM ? 'hidden' : ''

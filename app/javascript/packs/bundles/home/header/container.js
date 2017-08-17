@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
-import { toggleDialog } from './../../actions/LoginDialog'
-import HeaderComp from  './../../components/home/Header'
+import { toggleDialog } from './../../login/actions'
+import HeaderComp from  './component'
 
 const mapStateToProps = () => { return {} }
 

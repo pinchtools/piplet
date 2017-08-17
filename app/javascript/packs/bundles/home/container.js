@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import Header from './Header'
-import LoginDialog from './../session/LoginDialog'
-import CommentEditor from './../../containers/CommentEditor'
-import Thread from './../../bundles/thread/container'
+import Header from './header/container'
+import LoginDialog from './../login/container'
+import CommentEditor from './../comment_editor/container'
+import Thread from './../thread/container'
 
 class Index extends Component {
   componentDidMount() {

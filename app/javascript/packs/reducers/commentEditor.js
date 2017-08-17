@@ -1,4 +1,4 @@
-import {FOCUS_EDITOR, CHANGE_EDITOR, DEFAULT_FOCUS} from './../actions/CommentEditor'
+import {FOCUS_EDITOR, CHANGE_EDITOR, DEFAULT_FOCUS} from './../bundles/comment_editor/actions'
 import {EditorState} from 'draft-js'
 
 function commentEditor(state = {}, action) {

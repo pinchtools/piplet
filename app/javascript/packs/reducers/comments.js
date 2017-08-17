@@ -1,4 +1,4 @@
-import {REPLY_COMMENT} from './../actions/Comment'
+import {COMMENT_REPLY} from './../bundles/comment/actions'
 import { COMMENTS_RECEIVE } from './../bundles/thread/actions'
 
 function comments(state = {}, action) {
@@ -8,7 +8,7 @@ function comments(state = {}, action) {
         ...state,
         ...action.list
       }
-    case REPLY_COMMENT:
+    case COMMENT_REPLY:
       return {
         ...state,
         [action.id]: {

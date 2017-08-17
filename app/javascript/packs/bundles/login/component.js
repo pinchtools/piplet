@@ -5,8 +5,8 @@ import Modal from 'react-bootstrap/lib/Modal'
 import Button from 'react-bootstrap/lib/Button'
 import Tabs from 'react-bootstrap/lib/Tabs'
 import Tab from 'react-bootstrap/lib/Tab'
-import LoginForm from './LoginForm'
-import {LOGIN_FORM, SIGNUP_FORM} from './../../actions/LoginDialog'
+import LoginForm from './form/component'
+import {LOGIN_FORM, SIGNUP_FORM} from './actions'
 
 const messages = defineMessages({
   tabSignupTitle: {

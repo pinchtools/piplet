@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
-import { replyComment } from './../actions/Comment'
-import CommentComp from  './../components/Comment'
+import { replyComment } from './actions'
+import CommentComp from  './component'
 
 const mapStateToProps = (state, props) => {
   return {

@@ -1,4 +1,4 @@
-import {TOGGLE_LOGIN, SELECT_LOGIN, SELECT_SIGNUP, DEFAULT_VISIBILITY, LOGIN_FORM, SIGNUP_FORM} from './../actions/LoginDialog'
+import {TOGGLE_LOGIN, SELECT_LOGIN, SELECT_SIGNUP, DEFAULT_VISIBILITY, LOGIN_FORM, SIGNUP_FORM} from './../bundles/login/actions'
 
 function loginDialog(state = {}, action) {
   switch (action.type) {

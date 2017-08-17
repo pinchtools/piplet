@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const ThreadLevel = (props) => {
+const Level = (props) => {
   return (
     <div className={`thread-level ` + props.classes}>
       {props.children}
@@ -9,8 +9,8 @@ const ThreadLevel = (props) => {
   )
 }
 
-ThreadLevel.propTypes = {
+Level.propTypes = {
   classes: PropTypes.string.isRequired,
 }
 
-export default ThreadLevel
+export default Level

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
-import { toggleDialog, selectLogin, selectSignup } from './../../actions/LoginDialog'
-import LoginDialogComp from  './../../components/session/LoginDialog'
+import { toggleDialog, selectLogin, selectSignup } from './actions'
+import LoginDialogComp from  './component'
 
 const mapStateToProps = (state) => {
   return {
