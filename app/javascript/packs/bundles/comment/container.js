@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { replyComment } from './actions'
+import { toggleEditor } from './../comment_editor/actions'
 import CommentComp from  './component'
 
 const mapStateToProps = (state, props) => {
@@ -11,7 +11,7 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = dispatch => {
   return {
     onReply: (id) => {
-      dispatch(replyComment(id))
+      dispatch(toggleEditor(id))
     }
   }
 }

@@ -1,4 +1,5 @@
 import * as actions from './actions'
+import { addEditor } from './../comment_editor/actions'
 
 export const fetchComments = () => dispatch => {
   dispatch(actions.requestComments())
@@ -16,6 +17,10 @@ export const fetchComments = () => dispatch => {
     11: { id: 11, level: 1, parent: 0}
   }
   dispatch(actions.receiveComments(comments))
+
+  for (var id of Object.keys(comments)) {
+    dispatch(addEditor(id))
+  }
 }
 
 

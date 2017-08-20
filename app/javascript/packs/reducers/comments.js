@@ -8,14 +8,14 @@ function comments(state = {}, action) {
         ...state,
         ...action.list
       }
-    case COMMENT_REPLY:
-      return {
-        ...state,
-        [action.id]: {
-          ...state[action.id],
-          _reply: !state[action.id]['_reply']
-        }
-      }
+    // case COMMENT_REPLY:
+    //   return {
+    //     ...state,
+    //     [action.id]: {
+    //       ...state[action.id],
+    //       _reply: !state[action.id]['_reply']
+    //     }
+    //   }
     default:
       return state
   }

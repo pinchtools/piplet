@@ -1,23 +1,23 @@
-import React, { Component } from 'react'
-import Header from './header/container'
-import LoginDialog from './../login/container'
-import CommentEditor from './../comment_editor/container'
-import Thread from './../thread/container'
+import { connect } from 'react-redux'
+import { addEditor } from './../comment_editor/actions'
+import HomeComp from  './component'
 
-class Index extends Component {
-  componentDidMount() {
-  }
 
-  render() {
-    return (
-      <div>
-        <Header/>
-        <LoginDialog/>
-        <CommentEditor/>
-        <Thread/>
-      </div>
-    )
+const mapStateToProps = (state, props) => {
+  return {}
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    createDefaultEditor: (id) => {
+      dispatch(addEditor(id))
+    }
   }
 }
 
-export default Index
+const Home = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HomeComp)
+
+export default Home

@@ -1,21 +1,25 @@
 import { connect } from 'react-redux'
-import { focusEditor } from './actions'
+import { focusEditor, publishEditor } from './actions'
 import CommentEditorComp from  './component'
 
-const mapStateToProps = (state) => {
+
+const mapStateToProps = (state, props) => {
   return {
-    editorProps: state.commentEditor
+    editor: state.editors[props.id]
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFocus: () => {
-      dispatch(focusEditor())
+    onFocus: (id) => {
+      dispatch(focusEditor(id))
     },
-    onChange: (editorState) => {
-      dispatch(changeEditor(editorState))
+    onPublish: (id, content) => {
+      dispatch(publishEditor(id, content))
     }
+    // onChange: (editorState) => {
+    //   dispatch(changeEditor(editorState))
+    // }
   }
 }
 

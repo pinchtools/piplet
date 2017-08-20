@@ -66,99 +66,100 @@ $green: #00C566;
   }
 
   .comment {
+    > .panel {
+      .btn-link {
+        color: lighten( $gray, 20%);
+        background: none;
+        border-radius: 0;
 
-    .btn-link {
-      color: lighten( $gray, 20%);
-      background: none;
-      border-radius: 0;
-
-      &:hover,
-      &:focus {
-        @include box-shadow(none);
-        color: $brand-primary;
-        text-decoration: none;
-      }
-    }
-
-    .panel-heading {
-      color: inherit;
-      background-color: transparent;
-      padding: 10px 15px 0;
-
-      @media (max-width: $screen-xs-min) {
-        padding: 10px 10px 0;
-      }
-
-      .avatar {
-        border-radius: 100%;
-        width: 40px;
-      }
-
-      .username, .date {
-        line-height: 150%;
-        font-size: 87%;
-      }
-
-      .date {
-        color: $gray-light;
-      }
-
-      > div:last-child {
-        margin-left: 50px;
-        margin-right: 50px;
-      }
-
-      .btn {
-        margin: 0 5px;
-        padding: 0;
-        font-size: 1.2em;
-      }
-    }
-
-    .panel-body {
-      padding: 10px 15px;
-
-      @media (max-width: $screen-xs-min) {
-        padding: 10px 10px;
-      }
-    }
-
-    .panel-footer {
-      color: lighten( $gray, 20%);
-      padding: 2px 15px;
-
-      > div:last-child {
-        margin-right: 80px;
-      }
-
-      i {
-        margin: 0 5px;
-
-        &.highlight {
-          color: $gray;
-          margin-right: 5px;
-          &:after {
-            margin-left: 10px;
-            content: '\007c';
-          }
+        &:hover,
+        &:focus {
+          @include box-shadow(none);
+          color: $brand-primary;
+          text-decoration: none;
         }
       }
 
-      .primary-actions {
+      .panel-heading {
+        color: inherit;
+        background-color: transparent;
+        padding: 10px 15px 0;
+
+        @media (max-width: $screen-xs-min) {
+          padding: 10px 10px 0;
+        }
+
+        .avatar {
+          border-radius: 100%;
+          width: 40px;
+        }
+
+        .username, .date {
+          line-height: 150%;
+          font-size: 87%;
+        }
+
+        .date {
+          color: $gray-light;
+        }
+
+        > div:last-child {
+          margin-left: 50px;
+          margin-right: 50px;
+        }
+
         .btn {
           margin: 0 5px;
           padding: 0;
-
-          @media (max-width: $screen-xs-min) {
-            margin: 0 1px;
-          }
+          font-size: 1.2em;
         }
       }
 
-      .secondary-actions {
-        .btn {
-          margin: 0;
-          padding: 5px 5px;
+      .panel-body {
+        padding: 10px 15px;
+
+        @media (max-width: $screen-xs-min) {
+          padding: 10px 10px;
+        }
+      }
+
+      .panel-footer {
+        color: lighten( $gray, 20%);
+        padding: 2px 15px;
+
+        > div:last-child {
+          margin-right: 80px;
+        }
+
+        i {
+          margin: 0 5px;
+
+          &.highlight {
+            color: $gray;
+            margin-right: 5px;
+            &:after {
+              margin-left: 10px;
+              content: '\007c';
+            }
+          }
+        }
+
+        .primary-actions {
+          .btn {
+            margin: 0 5px;
+            padding: 0;
+
+            @media (max-width: $screen-xs-min) {
+              margin: 0 1px;
+            }
+          }
+        }
+
+        .secondary-actions {
+          .btn {
+            margin: 0;
+            padding: 5px 5px;
+          }
         }
       }
     }

@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux'
 import loginDialog from './loginDialog'
 import comments from './comments'
-import commentEditor from './commentEditor'
+import editors from './editors'
 
 const appReducer = combineReducers({
   loginDialog,
   comments,
-  commentEditor
+  editors
 })
 
 export default appReducer
