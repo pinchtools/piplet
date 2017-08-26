@@ -14,7 +14,7 @@ class Thread extends Component {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props
+    let { dispatch } = this.props
     dispatch(req.fetchComments())
   }
 

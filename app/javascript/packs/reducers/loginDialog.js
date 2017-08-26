@@ -1,15 +1,20 @@
-import {TOGGLE_LOGIN, SELECT_LOGIN, SELECT_SIGNUP, DEFAULT_VISIBILITY, LOGIN_FORM, SIGNUP_FORM} from './../bundles/login/actions'
+import * as actions from './../bundles/login/actions'
 
 function loginDialog(state = {}, action) {
   switch (action.type) {
-    case TOGGLE_LOGIN:
+    case actions.TOGGLE_LOGIN:
       return Object.assign({}, state, { open: !state.open })
-    case SELECT_LOGIN:
-      return Object.assign({}, state, { form: LOGIN_FORM })
-    case SELECT_SIGNUP:
-      return Object.assign({}, state, { form: SIGNUP_FORM })
+    case actions.SELECT_LOGIN:
+      return Object.assign({}, state, { form: actions.LOGIN_FORM })
+    case actions.SELECT_SIGNUP:
+      return Object.assign({}, state, { form: actions.SIGNUP_FORM })
+    case actions.LOGIN_REQUEST:
+      return Object.assign({}, state, { loading: true })
+    case actions.LOGIN_FAILURE:
+      return Object.assign({}, state, { loading: false, errors: action.errors })
+
     default:
-      return { open: DEFAULT_VISIBILITY, form: LOGIN_FORM }
+      return Object.assign({}, { open: actions.DEFAULT_VISIBILITY, form: actions.LOGIN_FORM }, state)
   }
 }
 

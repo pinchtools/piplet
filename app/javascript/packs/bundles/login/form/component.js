@@ -8,6 +8,7 @@ import ControlLabel from 'react-bootstrap/lib/ControlLabel'
 import Row from 'react-bootstrap/lib/Row'
 import Col from 'react-bootstrap/lib/Col'
 import Button from 'react-bootstrap/lib/Button'
+import Alert from 'react-bootstrap/lib/Alert'
 import {LOGIN_FORM} from './../actions'
 
 const LoginForm = ({ form }) => {
@@ -46,8 +47,20 @@ const LoginForm = ({ form }) => {
         </Col>
       </Row>
       <br/>
+
+      <Alert bsStyle="danger">
+        <h4>Oh snap! You got an error!</h4>
+        <ul>
+          <li>jkjkj</li>
+          <li>jqsqsqkjkj</li>
+        </ul>
+        <p>sdqdq</p>
+        <p>Change this and that and try again. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum.</p>
+      </Alert>
+
       <FormGroup
         controlId="formUsername"
+        validationState="error"
       >
         <ControlLabel>
           <FormattedMessage

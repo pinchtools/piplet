@@ -458,6 +458,10 @@ input[type="checkbox"],
   }
 }
 
+.has-feedback label ~ .form-control-feedback {
+  top: 24px;
+}
+
 // Remove the Bootstrap feedback styles for input addons
 .input-group-addon {
   .has-warning &, .has-error &, .has-success & {

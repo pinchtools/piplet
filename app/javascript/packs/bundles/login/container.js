@@ -1,24 +1,43 @@
 import { connect } from 'react-redux'
-import { toggleDialog, selectLogin, selectSignup } from './actions'
+import * as actions from './actions'
 import LoginDialogComp from  './component'
 
 const mapStateToProps = (state) => {
   return {
-    loginProps: state.loginDialog
+    loginState: state.loginDialog,
+    loginData: state.api[actions.LOGIN_ENDPOINT]
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     onLoginToggle: () => {
-      dispatch(toggleDialog())
+      dispatch(actions.toggleDialog())
     },
     onSelectLogin: () => {
-      dispatch(selectLogin())
+      dispatch(actions.selectLogin())
     },
     onSelectSignup: () => {
-      dispatch(selectSignup())
-    }
+      dispatch(actions.selectSignup())
+    },
+    onRequestSignup: (options) => {
+    },
+    onSuccessSignup: () => {
+
+    },
+    onErrorSignup: () => {
+
+    },
+    onRequestLogin: (options) => {
+      dispatch(actions.apiLogin(options))
+    },
+    onSuccessLogin: () => {
+
+    },
+
+    onErrorLogin: () => {
+
+    },
   }
 }
 

@@ -15,8 +15,9 @@ import thunk from 'redux-thunk'
 import appReducer from './reducers'
 import App from './components/App'
 import Intl from './components/Intl'
+import api from './middlewares/api'
 
-const middleware = [ thunk ]
+const middleware = [ thunk, api ]
 
 const store = createStore(
   appReducer,

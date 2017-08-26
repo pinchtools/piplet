@@ -74,7 +74,6 @@ CommentEditor.propTypes = {
     content: PropTypes.object.isRequired
   }).isRequired,
   onFocus: PropTypes.func.isRequired,
-  onCreate: PropTypes.func.isRequired,
   intl: intlShape.isRequired,
 }
 
