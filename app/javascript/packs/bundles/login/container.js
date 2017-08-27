@@ -1,11 +1,12 @@
 import { connect } from 'react-redux'
 import * as actions from './actions'
 import LoginDialogComp from  './component'
+import { DEFAULT_RESPONSE } from './../../lib/http'
 
 const mapStateToProps = (state) => {
   return {
     loginState: state.loginDialog,
-    loginData: state.api[actions.LOGIN_ENDPOINT]
+    loginData: state.api[actions.LOGIN_ENDPOINT] || DEFAULT_RESPONSE
   }
 }
 

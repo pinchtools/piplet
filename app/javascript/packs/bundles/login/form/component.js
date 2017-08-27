@@ -8,11 +8,14 @@ import ControlLabel from 'react-bootstrap/lib/ControlLabel'
 import Row from 'react-bootstrap/lib/Row'
 import Col from 'react-bootstrap/lib/Col'
 import Button from 'react-bootstrap/lib/Button'
-import Alert from 'react-bootstrap/lib/Alert'
+import Alert from './../../alert/component'
 import {LOGIN_FORM} from './../actions'
 
-const LoginForm = ({ form }) => {
+const LoginForm = ({ form, data }) => {
   let emailClass = form == LOGIN_FORM ? 'hidden' : ''
+  let error = data.meta.error
+  let alertVisible = !!error
+  let errors = (alertVisible) ? error.data.errors.map((e) => e.detail) : []
 
   return (
     <Form>
@@ -48,15 +51,10 @@ const LoginForm = ({ form }) => {
       </Row>
       <br/>
 
-      <Alert bsStyle="danger">
-        <h4>Oh snap! You got an error!</h4>
-        <ul>
-          <li>jkjkj</li>
-          <li>jqsqsqkjkj</li>
-        </ul>
-        <p>sdqdq</p>
-        <p>Change this and that and try again. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum.</p>
-      </Alert>
+      <Alert
+        visibility={alertVisible}
+        list={errors}
+      />
 
       <FormGroup
         controlId="formUsername"
@@ -107,7 +105,8 @@ const LoginForm = ({ form }) => {
 }
 
 LoginForm.propTypes = {
-  form: PropTypes.string.isRequired
+  form: PropTypes.string.isRequired,
+  data: PropTypes.object.isRequired
 }
 
 export default LoginForm

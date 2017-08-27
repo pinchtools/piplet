@@ -64,16 +64,16 @@ class LoginDialog extends Component {
     let {loginState, onLoginToggle, intl} = this.props
     let signupButtonClass = loginState.form == LOGIN_FORM ? 'hidden' : ''
     let loginButtonClass = loginState.form == SIGNUP_FORM ? 'hidden' : ''
-
+    let signupLoading = this.props.loginData.meta.loading
     return (
       <Modal id="login-modal" show={loginState.open} onHide={onLoginToggle}>
         <Modal.Body >
           <Tabs id="login-tabs" defaultActiveKey={2} onSelect={(key) => this.handleSelect(key)}>
             <Tab id="signup-tab"  eventKey={1} title={intl.formatMessage(this.constructor.messages.tabSignupTitle)}>
-              <LoginForm form={SIGNUP_FORM}/>
+              <LoginForm form={SIGNUP_FORM} data={this.props.loginData}/>
             </Tab>
             <Tab id="login-tab" eventKey={2} title={intl.formatMessage(this.constructor.messages.tabLoginTitle)}>
-              <LoginForm form={LOGIN_FORM}/>
+              <LoginForm form={LOGIN_FORM} data={this.props.loginData}/>
             </Tab>
           </Tabs>
         </Modal.Body>
@@ -90,11 +90,17 @@ class LoginDialog extends Component {
               defaultMessage={`signup`}
             />
           </Button>
-          <Button bsStyle="primary" className={loginButtonClass} onClick={this.login}>
+          <Button
+            bsStyle="primary"
+            className={loginButtonClass}
+            disabled={signupLoading}
+            onClick={!signupLoading ? this.login : null}
+          >
             <FormattedMessage
               id="LoginDialog.submit.login"
               defaultMessage={`login`}
             />
+            {signupLoading ? '...' : ''}
           </Button>
         </Modal.Footer>
       </Modal>

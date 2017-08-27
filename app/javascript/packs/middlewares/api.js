@@ -10,19 +10,19 @@ function callApi(endpoint, options = {}) {
     console.log('intercept ok')
     return Object.assign({}, normalize(response.data, { endpoint }))
   }, function (error) {
-    let payload = {data: null, status: null, message: null}
+    let o = {data: null, status: null, message: null}
     if (error.response) {
-      payload = {
+      o = {
         data: error.response.data,
         status: error.response.status,
         message: error.response.statusText,
       }
     }
     else {
-      payload['message'] = error.message || 'Unexpected error'
+      o['message'] = error.message || 'Unexpected error'
     }
-    console.log(payload)
-    return Promise.reject(payload)
+    // console.log(o)
+    return Promise.reject(o)
   });
 
   return axios(options)
