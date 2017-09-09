@@ -7,7 +7,6 @@ function api(state = {}, action) {
         {meta: {loading: true, error: null}}
     })
   } else if (action.type.endsWith(FAILURE)) {
-    console.log('failed')
     return Object.assign({}, state, {
       [action.endpoint]: {
         ...state[action.endpoint],

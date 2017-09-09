@@ -3,27 +3,24 @@ import axios from 'axios'
 
 const API_ROOT = 'http://localhost:3000/api/v1/'
 
+axios.interceptors.response.use(function (response) {
+  return Object.assign({}, normalize(response.data, { endpoint }))
+}, function (error) {
+  let o = {data: null, status: null, message: null}
+  if (error.response) {
+    o = {
+      data: error.response.data,
+      status: error.response.status,
+      message: error.response.statusText,
+    }
+  } else {
+    o['message'] = error.message || 'Unexpected error'
+  }
+  return Promise.reject(o)
+});
+
 function callApi(endpoint, options = {}) {
   options['url'] = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint
-
-  axios.interceptors.response.use(function (response) {
-    console.log('intercept ok')
-    return Object.assign({}, normalize(response.data, { endpoint }))
-  }, function (error) {
-    let o = {data: null, status: null, message: null}
-    if (error.response) {
-      o = {
-        data: error.response.data,
-        status: error.response.status,
-        message: error.response.statusText,
-      }
-    }
-    else {
-      o['message'] = error.message || 'Unexpected error'
-    }
-    // console.log(o)
-    return Promise.reject(o)
-  });
 
   return axios(options)
 }
