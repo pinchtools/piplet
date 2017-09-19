@@ -11,6 +11,15 @@ const mapDispatchToProps = dispatch => {
   return {
     createDefaultEditor: (id) => {
       dispatch(addEditor(id))
+    },
+    isLogged:() => {
+
+    },
+    isAccessTokenValid:() => {
+
+    },
+    requestNewAccessToken:() => {
+
     }
   }
 }

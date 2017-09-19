@@ -16,7 +16,7 @@ function api(state = {}, action) {
   } else if (action.type.endsWith(SUCCESS)) {
     return Object.assign({}, state, {
       [action.endpoint]: {
-        response: action.response,
+        ...action.response,
         meta: {loading: false, error: null}
       }
     })

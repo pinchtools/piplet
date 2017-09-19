@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import object from 'lodash/object'
 import * as actions from './../actions'
 import LoginFormComp from  './component'
 import { DEFAULT_RESPONSE } from './../../../lib/http'
@@ -8,7 +9,8 @@ import { DEFAULT_RESPONSE } from './../../../lib/http'
 
 class LoginForm extends Component {
   static propTypes = {
-    handleChange: PropTypes.func.isRequired
+    handleChange: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -16,10 +18,15 @@ class LoginForm extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    /// TODO get the reponse via middleware/api does not seem to 'normalize' correctly
-    // {"data":{"id":"1","type":"users","attributes":{"email":"example@piplet.io","username":"Example","api-access-token":"XXX","api-refresh-token":"XXX"}}}
-    // if (this.props.response.data)
-    console.log(this.props.response)
+    let response = this.props.response
+    let data
+    if (response && (data = response.data)) {
+      let user = object.values(data.users)[0]
+      for (let attr in user.attributes) {
+        localStorage.setItem(attr, user.attributes[attr])
+      }
+      this.props.dispatch(actions.toggleDialog())
+    }
   }
 
   render() {
@@ -35,12 +42,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LoginForm)
+export default connect(mapStateToProps)(LoginForm)

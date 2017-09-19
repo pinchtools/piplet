@@ -5,7 +5,6 @@ import Form from 'react-bootstrap/lib/Form'
 import FormGroup from 'react-bootstrap/lib/FormGroup'
 import FormControl from 'react-bootstrap/lib/FormControl'
 import ControlLabel from 'react-bootstrap/lib/ControlLabel'
-import HelpBlock from 'react-bootstrap/lib/HelpBlock'
 import Alert from './../../alert/component'
 import Oauth from './../oauth/component'
 
@@ -37,7 +36,6 @@ class LoginForm extends Component {
 
         <FormGroup
           controlId="formEmail"
-          validationState="error"
         >
           <ControlLabel>
             <FormattedMessage
@@ -51,7 +49,6 @@ class LoginForm extends Component {
             onChange={this.handleChange}
           />
           <FormControl.Feedback />
-          <HelpBlock>Help text with validation state.</HelpBlock>
         </FormGroup>
         <FormGroup
           controlId="formPassword"

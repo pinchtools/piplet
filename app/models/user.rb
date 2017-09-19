@@ -340,8 +340,9 @@ class User < ActiveRecord::Base
   def api_access_token
     JsonWebToken.encode({
                             iat: Time.current.to_i,
-                            exp: refresh_token_duration,
-                            user: id
+                            exp: access_token_duration,
+                            user: id,
+                            salt: 'access-token' + SecureRandom.base64
                         })
   end
 
@@ -349,7 +350,8 @@ class User < ActiveRecord::Base
     JsonWebToken.encode({
                             iat: Time.current.to_i,
                             exp: refresh_token_duration,
-                            user: id
+                            user: id,
+                            salt: 'refresh-token' + SecureRandom.base64
                         })
   end
 

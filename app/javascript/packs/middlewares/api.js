@@ -4,7 +4,7 @@ import axios from 'axios'
 const API_ROOT = 'http://localhost:3000/api/v1/'
 
 axios.interceptors.response.use(function (response) {
-  return Object.assign({}, normalize(response.data, { endpoint }))
+  return Object.assign({}, {...response, data: normalize(response.data)})
 }, function (error) {
   let o = {data: null, status: null, message: null}
   if (error.response) {
@@ -53,13 +53,13 @@ export default store => next => action => {
     throw new Error('Expected action types to be strings.')
   }
 
+  const [ requestType, successType, failureType ] = types
   const actionWith = data => {
     const finalAction = Object.assign({}, action, data)
     delete finalAction[CALL_API]
     return finalAction
   }
 
-  const [ requestType, successType, failureType ] = types
   next(actionWith({ type: requestType, endpoint }))
 
   return callApi(endpoint, options)
