@@ -29,6 +29,10 @@ class Api::V1::UsersController < ApiController
     end
   end
 
+  def show
+    head :ok
+  end
+
   private
 
   def user_create_params

@@ -113,4 +113,43 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       expect(user.reload.description).to eq(description)
     end
   end
+
+  describe '#show' do
+    context 'does not pass a token' do
+      before { get :show}
+      it { expect(response).to have_http_status(:unauthorized) }
+    end
+
+    context 'passes an invalid token' do
+      before do
+        request.headers['Authorization'] = 'aaa'
+        get :show
+      end
+      it { expect(response).to have_http_status(:unauthorized) }
+    end
+
+    context 'passes an expired token' do
+      let(:user) {create(:user)}
+      let(:options) { {user: user.id, exp: 1.day.ago.to_i, iat: 5.minutes.ago.to_i} }
+      let(:token) { JsonWebToken.encode(options) }
+
+      before do
+        request.headers['Authorization'] = token
+        get :show
+      end
+      it { expect(response).to have_http_status(:unauthorized) }
+    end
+
+    context 'passes a valid token' do
+      let(:user) {create(:user)}
+      let(:options) { {user: user.id, exp: 1.day.after.to_i, iat: 5.minutes.ago.to_i} }
+      let(:token) { JsonWebToken.encode(options) }
+
+      before do
+        request.headers['Authorization'] = token
+        get :show
+      end
+      it { expect(response).to have_http_status(:ok) }
+    end
+  end
 end

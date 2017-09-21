@@ -7,8 +7,9 @@ class ApiController < ActionController::API
 
   TOKEN_REQUIRED_ATTRS = %w(user exp iat).freeze
 
-  rescue_from JWT::ExpiredSignature, with: :unauthorized_response
+  rescue_from JWT::ExpiredSignature, with: :expired_token_response
   rescue_from Exception, with: :unprocessable_entity_response
+  rescue_from InvalidToken, with: :invalid_token_response
 
   private
 
@@ -18,7 +19,11 @@ class ApiController < ActionController::API
   end
 
   def authorize_request
-    token_payload = JsonWebToken.decode(http_auth_header)
+    begin
+      token_payload = JsonWebToken.decode(http_auth_header)
+    rescue
+      raise InvalidToken, I18n.t('user.errors.base.invalid-token')
+    end
 
     raise InvalidToken, I18n.t('user.errors.base.invalid-token') if TOKEN_REQUIRED_ATTRS.any? {|a| token_payload.fetch(a, nil).blank? }
 
@@ -34,7 +39,12 @@ class ApiController < ActionController::API
     end
   end
 
-  def unauthorized_response
+  def invalid_token_response
+    user = User.new.tap{|u| u.errors.add(:base, I18n.t('user.errors.base.invalid-token'))}
+    render_error(user, :unauthorized)
+  end
+
+  def expired_token_response
     user = User.new.tap{|u| u.errors.add(:base, I18n.t('user.errors.base.expired-token'))}
     render_error(user, :unauthorized)
   end

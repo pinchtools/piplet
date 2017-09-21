@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe ApiController, type: :controller do
 
   shared_examples 'invalid tokens' do
-    it 'raises a record not found error' do
+    it 'raises an invalid token error' do
       expect { subject.instance_eval { authorize_request } }.to raise_error ApiController::InvalidToken
     end
   end
