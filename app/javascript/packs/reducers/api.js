@@ -1,6 +1,8 @@
-const [REQUEST, SUCCESS, FAILURE] = ['REQUEST', 'SUCCESS', 'FAILURE']
+import {REQUEST, SUCCESS, FAILURE, API_DELETE} from './../middlewares/api'
 
 function api(state = {}, action) {
+  if (!action.endpoint) return state
+
   if (action.type.endsWith(REQUEST)) {
     return Object.assign({}, state, {
       [action.endpoint]:
@@ -17,9 +19,12 @@ function api(state = {}, action) {
     return Object.assign({}, state, {
       [action.endpoint]: {
         ...action.response,
-        meta: {loading: false, error: null}
+        meta: {loading: false, error: null, success: true}
       }
     })
+  } else if (action.type == API_DELETE) {
+    let {[action.endpoint]: omit, ...newState} = state
+    return newState
   }
   return state
 }

@@ -8,11 +8,6 @@ function loginDialog(state = {}, action) {
       return Object.assign({}, state, { form: actions.LOGIN_FORM })
     case actions.SELECT_SIGNUP:
       return Object.assign({}, state, { form: actions.SIGNUP_FORM })
-    case actions.LOGIN_REQUEST:
-      return Object.assign({}, state, { loading: true })
-    case actions.LOGIN_FAILURE:
-      return Object.assign({}, state, { loading: false, errors: action.errors })
-
     default:
       return Object.assign({}, { open: actions.DEFAULT_VISIBILITY, form: actions.LOGIN_FORM }, state)
   }

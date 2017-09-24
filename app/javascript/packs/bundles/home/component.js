@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import Header from './header/container'
 import LoginDialog from './../login/container'
 import CommentEditor from './../comment_editor/container'
@@ -9,15 +10,13 @@ import Col from 'react-bootstrap/lib/Col'
 
 class Index extends Component {
   constructor (props) {
-    super(props);
-    props.createDefaultEditor(0)
+    super(props)
   }
 
   render() {
-    return (
-      <div>
-        <Header/>
-        <LoginDialog/>
+    let content
+    if (this.props.connected) {
+      content = <div>
         <Grid>
           <Row>
             <Col xs={12}>
@@ -27,8 +26,23 @@ class Index extends Component {
         </Grid>
         <Thread/>
       </div>
+    } else {
+      content = <div>
+        <LoginDialog/>
+      </div>
+    }
+
+    return (
+      <div>
+        <Header connected={this.props.connected}/>
+        {content}
+      </div>
     )
   }
+}
+
+Index.propTypes = {
+  connected: PropTypes.bool.isRequired
 }
 
 export default Index

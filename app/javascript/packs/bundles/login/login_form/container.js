@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import object from 'lodash/object'
 import * as actions from './../actions'
+import * as userActions from './../../user/actions'
 import LoginFormComp from  './component'
 import { DEFAULT_RESPONSE } from './../../../lib/http'
 
@@ -26,6 +27,7 @@ class LoginForm extends Component {
         localStorage.setItem(attr, user.attributes[attr])
       }
       this.props.dispatch(actions.toggleDialog())
+      this.props.dispatch(userActions.loginSucceed())
     }
   }
 

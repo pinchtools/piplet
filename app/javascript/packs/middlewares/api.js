@@ -2,8 +2,15 @@ import normalize from 'json-api-normalizer'
 import axios from 'axios'
 
 const API_ROOT = 'http://localhost:3000/api/v1/'
+const EVENTS = ['REQUEST', 'SUCCESS', 'FAILURE']
+export const [REQUEST, SUCCESS, FAILURE] = EVENTS
+export const API_DELETE = 'API_DELETE'
 
-axios.interceptors.response.use(function (response) {
+const httpClient = axios.create({
+  baseURL: API_ROOT
+})
+
+httpClient.interceptors.response.use(function (response) {
   return Object.assign({}, {...response, data: normalize(response.data)})
 }, function (error) {
   let o = {data: null, status: null, message: null}
@@ -20,9 +27,18 @@ axios.interceptors.response.use(function (response) {
 });
 
 function callApi(endpoint, options = {}) {
-  options['url'] = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint
+  options['url'] = endpoint
+  options['headers'] = options['headers'] || {}
+  let token
+  if (token = localStorage.getItem('apiAccessToken')) {
+    options['headers']['Authorisation'] = token
+  }
 
-  return axios(options)
+  return httpClient(options)
+}
+
+export const apiEvents = (endpointName) => {
+  return EVENTS.map((e) => {return endpointName + '_' + e})
 }
 
 // Action key that carries API call info interpreted by this Redux middleware.

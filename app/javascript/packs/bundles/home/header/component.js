@@ -5,7 +5,22 @@ import Navbar from 'react-bootstrap/lib/Navbar'
 import Nav from 'react-bootstrap/lib/Nav'
 import NavItem from 'react-bootstrap/lib/NavItem'
 
-const Header = ({ onLoginToggle }) => {
+const Header = (props) => {
+  console.log('HHHHH')
+  let rightNav = null
+  if (props.connected) {
+    rightNav = null
+  } else {
+    rightNav = <NavItem eventKey={1} onClick={() => props.onLoginToggle()} href="#">
+      <FormattedMessage
+        id="Header.login"
+        defaultMessage={`login`}
+      />
+    </NavItem>
+  }
+
+
+
   return (
     <div>
       <Navbar collapseOnSelect>
@@ -17,12 +32,7 @@ const Header = ({ onLoginToggle }) => {
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav pullRight>
-            <NavItem eventKey={1} onClick={() => onLoginToggle()} href="#">
-              <FormattedMessage
-                id="Header.login"
-                defaultMessage={`login`}
-              />
-            </NavItem>
+            {rightNav}
           </Nav>
         </Navbar.Collapse>
       </Navbar>
@@ -32,7 +42,8 @@ const Header = ({ onLoginToggle }) => {
 
 
 Header.propTypes = {
-  onLoginToggle: PropTypes.func.isRequired
+  onLoginToggle: PropTypes.func.isRequired,
+  connected: PropTypes.bool.isRequired
 }
 
 export default Header

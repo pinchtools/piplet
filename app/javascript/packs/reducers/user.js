@@ -10,7 +10,7 @@ function user(state = {}, action) {
         refresh_token_expired: false
       }
     case actions.USER_LOGIN_FAILED:
-      return {...state, logged: true}
+      return {...state, logged: false}
     case actions.USER_ACCESS_TOKEN_EXPIRED:
       return {...state, access_token_expired: true}
     case actions.USER_REFRESH_TOKEN_EXPIRED:
