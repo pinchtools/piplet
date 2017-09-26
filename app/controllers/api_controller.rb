@@ -13,9 +13,19 @@ class ApiController < ActionController::API
 
   private
 
-  def render_error(resource, status)
-    render json: resource, status: status,
-           serializer: ActiveModel::Serializer::ErrorSerializer
+  def render_error(resource, key_code)
+    api_code = api_codes(key_code)
+
+    serializer = ActiveModel::Serializer::ErrorSerializer.new(resource)
+    adapter = ActiveModelSerializers::Adapter.create(serializer)
+    json = adapter.as_json.merge({meta: {code: api_code[:response_code]}})
+
+    render json: json, status: api_code[:http_code]
+  end
+
+  def render_success(resource, key_code, **instance_options)
+    api_code = api_codes(key_code)
+    render json: resource, status: api_code[:http_code], meta: {code: api_code[:response_code]}, **instance_options
   end
 
   def authorize_request
@@ -41,12 +51,12 @@ class ApiController < ActionController::API
 
   def invalid_token_response
     user = User.new.tap{|u| u.errors.add(:base, I18n.t('user.errors.base.invalid-token'))}
-    render_error(user, :unauthorized)
+    render_error(user, :invalid_token)
   end
 
   def expired_token_response
     user = User.new.tap{|u| u.errors.add(:base, I18n.t('user.errors.base.expired-token'))}
-    render_error(user, :unauthorized)
+    render_error(user, :expired_token)
   end
 
   def unprocessable_entity_response exception
