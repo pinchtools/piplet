@@ -64,8 +64,8 @@ class User < ActiveRecord::Base
 
   @@SETTINGS = {}
 
-  ACCESS_TOKEN_DURATION = 1.freeze #days
-  REFRESH_TOKEN_DURATION = 15.freeze #days
+  ACCESS_TOKEN_DURATION = 30.freeze #minutes
+  REFRESH_TOKEN_DURATION = 30.freeze #days
 
   has_and_belongs_to_many :filters, :class_name => 'UserFilter', :join_table => :users_user_filters
 
@@ -427,7 +427,7 @@ class User < ActiveRecord::Base
   end
 
   def access_token_duration
-    ACCESS_TOKEN_DURATION.days.after.to_i
+    ACCESS_TOKEN_DURATION.minutes.after.to_i
   end
 
 end
