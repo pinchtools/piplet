@@ -49,11 +49,6 @@ class Rack::Attack
   # Throttle POST requests to /login by email param
   #
   # Key: "rack::attack:#{Time.now.to_i/:period}:logins/email:#{req.email}"
-  #
-  # Note: This creates a problem where a malicious user could intentionally
-  # throttle logins for another user and force their login requests to be
-  # denied, but that's not very common and shouldn't happen to you. (Knock
-  # on wood!)
   throttle("logins/email", :limit => 5, :period => 20.seconds) do |req|
     if req.path == '/login' && req.post?
       # return the email if present, nil otherwise
