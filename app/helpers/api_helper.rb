@@ -1,6 +1,9 @@
 module ApiHelper
   class InvalidToken < StandardError; end
 
+  WEB_CLIENT = 'web'.freeze
+  STATELESS_CLIENT = 'stateless'.freeze
+
   def api_codes(key)
     case key
       when :ok
@@ -13,14 +16,30 @@ module ApiHelper
         {http_code: :accepted, response_code: 2}
       when :unprocessable_entity
         {http_code: :unprocessable_entity, response_code: 100}
-      when :no_route_matches
+      when :not_found
         {http_code: :not_found, response_code: 101}
-      when :invalid_key
+      when :invalid_token
         {http_code: :unauthorized, response_code: 102}
-      when :expired_key
+      when :expired_token
         {http_code: :unauthorized, response_code: 103}
-      when :expired_refresh_key
+      when :expired_refresh_token
         {http_code: :unprocessable_entity, response_code: 104}
     end
+  end
+
+  def client_platform
+    @client_platform ||= ([WEB_CLIENT].include?(params[:client_platform])) ? params[:client_platform] : STATELESS_CLIENT
+  end
+
+  def access_token
+    @access_token ||= if client_platform == WEB_CLIENT
+                        cookies[:token].presence
+                      elsif request.headers['Authorization'].present?
+                        request.headers['Authorization'].split(' ').last
+                      end
+  end
+
+  def csrf_token
+    @csrf_token ||= request.headers['x-csrf-token'].presence
   end
 end

@@ -3,34 +3,47 @@ class Api::V1::UsersController < ApiController
   skip_before_action :authorize_request, only: :create
 
   def create
-    @user = User.create( user_create_params )
+    @user = User.new( user_create_params.merge({
+                                                    creation_ip_address: request.remote_ip,
+                                                    creation_domain: request.host + request.port_string,
+                                                    locale: detect_language
+                                                  }) )
 
-    @user.creation_ip_address = request.remote_ip
-    @user.creation_domain = request.host + request.port_string
+    if Users::ConcernedByFiltersService.new(@user).call
+      @user.errors.add(:base, I18n.t('user.notice.danger.invalid-login'))
+    elsif params[:client_platform].blank?
+      @user.errors.add(:base, I18n.t('user.notice.danger.client-platform-required'))
+    end
 
-    @user.locale = detect_language
+    if @user.errors.empty? && @user.save
+      refresh_token = Users::ObtainRefreshTokenService.new(@user, client_platform).call
+      options = { client_platform: client_platform, refresh_token: refresh_token }
 
-    concerned_by_filters = Users::ConcernedByFiltersService.new(@user).call
+      if client_platform == WEB_CLIENT
+        cookies['token'] = { :value => @user.api_access_token, :httponly => true }
+        options[:csrf_token] = Users::GenerateCsrfTokenService.new(@user).call
+      end
 
-    if !concerned_by_filters && @user.save
-      render json: @user, status: :created
+      render_success(@user, :created, **options)
     else
       render_error(@user, :unprocessable_entity)
     end
   end
 
   def update
-    concerned_by_filters = Users::ConcernedByFiltersService.new(@current_user).call
+    if Users::ConcernedByFiltersService.new(@current_user).call
+      @current_user.errors.add(:base, I18n.t('user.notice.danger.invalid-login'))
+    end
 
-    if !concerned_by_filters && @current_user.update_attributes(user_update_params)
-      render json: @current_user, hide_tokens: true
+    if @current_user.errors.empty? && @current_user.update_attributes(user_update_params)
+      render_success(@current_user, :ok, hide_tokens: true)
     else
       render_error(@current_user, :unprocessable_entity)
     end
   end
 
   def show
-    head :ok
+    head :no_content
   end
 
   private

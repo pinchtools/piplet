@@ -4,8 +4,9 @@ import { connect } from 'react-redux'
 import { addEditor } from './../comment_editor/actions'
 import HomeComp from  './component'
 import * as actions from './actions'
+import * as userActions from './../user/actions'
 import { LOGIN_ENDPOINT } from './../login/actions'
-import { DEFAULT_RESPONSE } from './../../lib/http'
+import { DEFAULT_RESPONSE, doesTokenExpired } from './../../lib/http'
 
 class Home extends Component {
   static propTypes = {
@@ -21,23 +22,31 @@ class Home extends Component {
   constructor(props) {
     super(props)
     props.createDefaultEditor(0)
-    if (this.connected = this.tokenExists()) {
-      props.getUser()
+    if (this.tokenExists()) {
+      this.props.getUser()
     }
   }
 
-  componentWillUpdate(prevProps, prevState) {
+  componentWillReceiveProps(nextProps) {
     let userResponse = this.props.userResponse
-    if (userResponse.meta.error) {
-      console.log('rere')
-      //// TODO ask for new token before
-      /// and when the refresh token expired to ask for a new one
-      localStorage.removeItem('apiAccessToken')
+    let nextUserResponse = nextProps.userResponse
+    let error
+    if ((error = nextUserResponse.meta.error) && !userResponse.meta.error) {
+      if (doesTokenExpired(error)) {
+        console.log('expired')
+
+        //// TODO ask for new token before
+        /// and when the refresh token expired to ask for a new one
+      } else {
+        console.log('failed')
+        // localStorage.removeItem('apiAccessToken')
+        this.props.loginFailed()
+      }
+    } else if (nextUserResponse.meta.success && !userResponse.meta.success) {
+      this.props.loginSucceed()
     }
 
-    this.connected = this.tokenExists()
-
-    if (this.props.userState.logged) {
+    if (this.props.userState.logged && this.tokenExists()) {
       this.connected = true
     }
   }
@@ -68,6 +77,12 @@ const mapDispatchToProps = dispatch => {
     },
     getUser:() => {
       dispatch(actions.getUser())
+    },
+    loginSucceed:() => {
+      dispatch(userActions.loginSucceed())
+    },
+    loginFailed:() => {
+      dispatch(userActions.loginFailed())
     }
   }
 }

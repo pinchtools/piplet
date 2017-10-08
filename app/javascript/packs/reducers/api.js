@@ -6,13 +6,13 @@ function api(state = {}, action) {
   if (action.type.endsWith(REQUEST)) {
     return Object.assign({}, state, {
       [action.endpoint]:
-        {meta: {loading: true, error: null}}
+        {meta: {loading: true, error: null, success: false}}
     })
   } else if (action.type.endsWith(FAILURE)) {
     return Object.assign({}, state, {
       [action.endpoint]: {
         ...state[action.endpoint],
-        meta: {loading: false, error: action.error}
+        meta: {loading: false, error: action.error, success: false}
       }
     })
   } else if (action.type.endsWith(SUCCESS)) {

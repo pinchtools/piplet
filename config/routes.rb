@@ -128,7 +128,11 @@ Rails.application.routes.draw do
           get '/show' => 'users#show'
         end
       end
-      resources :tokens, only: [:create]
+      resources :tokens, only: [:create] do
+        collection do
+          put :update
+        end
+      end
     end #v1
   end # namespace api
 

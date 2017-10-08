@@ -3,12 +3,20 @@ require 'rails_helper'
 RSpec.describe Api::V1::UsersController, type: :controller do
 
   describe '#create' do
-    let(:required_params) { { username: 'totolitoto', email: 'foobar@foobar.com', password: 'foobarfoobar', password_confirmation: 'foobarfoobar' } }
+    let(:client_platform) { 'stateless' }
+    let(:required_params) {
+      {
+        username: 'totolitoto',
+        email: 'foobar@foobar.com',
+        password: 'foobarfoobar',
+        password_confirmation: 'foobarfoobar',
+        client_platform: client_platform
+      }
+    }
     let(:params) { required_params }
 
     it 'returns a success code' do
       post :create, params: params
-
       expect(response).to have_http_status(:created)
     end
 
@@ -25,15 +33,14 @@ RSpec.describe Api::V1::UsersController, type: :controller do
                               )
     end
 
-    it 'returns access tokens' do
+    it 'returns the access token' do
       post :create, params: params
 
       json = JSON.parse response.body
 
       expect(json['data']).to include(
                                   'attributes'=> hash_including(
-                                      'api-access-token'=> kind_of(String),
-                                      'api-refresh-token'=> kind_of(String)
+                                      'api-access-token'=> kind_of(String)
                                   )
                               )
     end
@@ -85,6 +92,46 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 
       include_examples 'returns an error'
     end
+
+    context 'user is concerned by a blocking filter' do
+      let(:filter_service) {instance_double('Users::ConcernedByFiltersService')}
+      let(:concerned_by_filter) { true }
+      before do
+        allow(Users::ConcernedByFiltersService).to receive(:new).and_return(filter_service)
+        allow(filter_service).to receive(:call).and_return(concerned_by_filter)
+      end
+
+      include_examples 'returns an error'
+    end
+
+    context 'web client perform' do
+      let(:params) { required_params.merge(client_platform: 'web') }
+      before {post :create, params: params}
+
+      it 'does not include the access token in the response' do
+        json = JSON.parse response.body
+
+        expect(json['data']).not_to include(
+                                  'attributes'=> hash_including(
+                                    'api-access-token'=> kind_of(String)
+                                  )
+                                )
+      end
+
+      it 'sets a token cookie' do
+        expect(cookies).to have_key(:token)
+      end
+
+      it 'includes a csrf-token' do
+        json = JSON.parse response.body
+
+        expect(json['data']).to include(
+                                  'attributes'=> hash_including(
+                                    'csrf-token'=> kind_of(String)
+                                  )
+                                )
+      end
+    end
   end
 
   describe '#update' do
@@ -115,41 +162,6 @@ RSpec.describe Api::V1::UsersController, type: :controller do
   end
 
   describe '#show' do
-    context 'does not pass a token' do
-      before { get :show}
-      it { expect(response).to have_http_status(:unauthorized) }
-    end
-
-    context 'passes an invalid token' do
-      before do
-        request.headers['Authorization'] = 'aaa'
-        get :show
-      end
-      it { expect(response).to have_http_status(:unauthorized) }
-    end
-
-    context 'passes an expired token' do
-      let(:user) {create(:user)}
-      let(:options) { {user: user.id, exp: 1.day.ago.to_i, iat: 5.minutes.ago.to_i} }
-      let(:token) { JsonWebToken.encode(options) }
-
-      before do
-        request.headers['Authorization'] = token
-        get :show
-      end
-      it { expect(response).to have_http_status(:unauthorized) }
-    end
-
-    context 'passes a valid token' do
-      let(:user) {create(:user)}
-      let(:options) { {user: user.id, exp: 1.day.after.to_i, iat: 5.minutes.ago.to_i} }
-      let(:token) { JsonWebToken.encode(options) }
-
-      before do
-        request.headers['Authorization'] = token
-        get :show
-      end
-      it { expect(response).to have_http_status(:ok) }
-    end
+    include_examples 'authentication validation', :get, :show
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170605120955) do
+ActiveRecord::Schema.define(version: 20171001161607) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,6 +71,18 @@ ActiveRecord::Schema.define(version: 20170605120955) do
     t.string "icon"
     t.index ["kind"], name: "index_notifications_on_kind"
     t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
+
+  create_table "refresh_tokens", force: :cascade do |t|
+    t.string "token"
+    t.integer "platform"
+    t.bigint "user_id"
+    t.datetime "blocked_at"
+    t.string "blocked_reason"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["token", "user_id"], name: "index_refresh_tokens_on_token_and_user_id", unique: true
+    t.index ["user_id"], name: "index_refresh_tokens_on_user_id"
   end
 
   create_table "settings", force: :cascade do |t|
@@ -169,4 +181,5 @@ ActiveRecord::Schema.define(version: 20170605120955) do
   end
 
   add_foreign_key "auth_accounts", "users"
+  add_foreign_key "refresh_tokens", "users"
 end

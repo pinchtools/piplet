@@ -6,7 +6,6 @@ import Nav from 'react-bootstrap/lib/Nav'
 import NavItem from 'react-bootstrap/lib/NavItem'
 
 const Header = (props) => {
-  console.log('HHHHH')
   let rightNav = null
   if (props.connected) {
     rightNav = null

@@ -19,7 +19,6 @@
 class Setting < RailsSettings::CachedSettings
   @@DEFAULT_SETTING_ROOT = Rails.root.join('config', 'settings')
 
-
   def self.load_default_settings
     Dir["#{@@DEFAULT_SETTING_ROOT}/*.yml"].each do |file|
       basename = File.basename(file, ".yml")
