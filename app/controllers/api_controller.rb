@@ -35,11 +35,14 @@ class ApiController < ActionController::API
     begin
       token_payload = JsonWebToken.decode(access_token)
     rescue JWT::ExpiredSignature
-      raise unless accept_expiration
+      if accept_expiration
+        token_payload = JsonWebToken.decode(access_token, true, verify_expiration: false)
+      else
+        raise unless accept_expiration
+      end
     rescue
       raise InvalidToken, I18n.t('user.errors.base.invalid-token')
     end
-
     raise InvalidToken, I18n.t('user.errors.base.invalid-token') if TOKEN_REQUIRED_ATTRS.any? {|a| token_payload.fetch(a, nil).blank? }
 
     if client_platform == WEB_CLIENT
@@ -50,18 +53,17 @@ class ApiController < ActionController::API
         raise InvalidToken, I18n.t('user.errors.base.invalid-token')
       end
     end
-
     @current_user = User.actives.find( token_payload['user'] )
   end
 
   def invalid_token_response
     user = User.new.tap{|u| u.errors.add(:base, I18n.t('user.errors.base.invalid-token'))}
-    render_error(user, :expired_token)
+    render_error(user, :invalid_token)
   end
 
   def expired_token_response
     user = User.new.tap{|u| u.errors.add(:base, I18n.t('user.errors.base.expired-token'))}
-    render_error(user, :invalid_token)
+    render_error(user, :expired_token)
   end
 
   def unprocessable_entity_response exception

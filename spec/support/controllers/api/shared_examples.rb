@@ -163,3 +163,23 @@ shared_examples "authentication validation" do |method, url, request_options: {}
     end
   end
 end
+
+shared_examples 'object response contains' do |key, kind:|
+  it "includes #{key} in the response body" do
+    json = JSON.parse response.body
+
+    expect(json['data']).to include(
+                              'attributes' => hash_including(key => kind_of(kind))
+                            )
+  end
+end
+
+shared_examples 'object response does not contain' do |key|
+  it "includes #{key} in the response body" do
+    json = JSON.parse response.body
+
+    expect(json['data']).not_to include(
+                              'attributes' => hash_including(key)
+                            )
+  end
+end

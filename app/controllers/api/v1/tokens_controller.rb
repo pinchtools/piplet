@@ -37,7 +37,7 @@ class Api::V1::TokensController < ApiController
 
   def update
     if Users::ConcernedByFiltersService.new(@current_user).call
-      @current_user.errors.add(:base, I18n.t('user.notice.danger.invalid-login'))
+      @current_user.errors.add(:base, I18n.t('user.notice.danger.invalid-user'))
     end
 
     refresh_token = params[:refresh_token].presence
@@ -46,7 +46,7 @@ class Api::V1::TokensController < ApiController
       token = @current_user.refresh_tokens.all_valid.where(token: refresh_token, platform: client_platform).first
       @current_user.errors.add(:base, I18n.t('user.notice.danger.invalid-refresh-token')) unless token
     else
-      @current_user.errors.add(:base, I18n.t('user.notice.danger.invalid-login'))
+      @current_user.errors.add(:base, I18n.t('user.notice.danger.invalid-user'))
     end
 
     if @current_user.errors.any?
@@ -56,7 +56,6 @@ class Api::V1::TokensController < ApiController
 
       if client_platform == WEB_CLIENT
         cookies['token'] = { :value => @current_user.api_access_token, :httponly => true }
-        # options[:csrf_token] = Users::GenerateCsrfTokenService.new(@current_user).call
       end
 
       render_success(@current_user, :created, **options)

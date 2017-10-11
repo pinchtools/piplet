@@ -49,13 +49,8 @@ RSpec.describe Users::SessionsController, type: :controller do
 
     context 'user is concerned by a blocking filter' do
       let(:user) { create(:user) }
-      let(:filter_service) {instance_double('Users::ConcernedByFiltersService')}
-      let(:concerned_by_filter) { true }
-      before do
-        allow(Users::ConcernedByFiltersService).to receive(:new).with(user).and_return(filter_service)
-        allow(filter_service).to receive(:call).and_return(concerned_by_filter)
-        log_in_as(user)
-      end
+      include_context 'concerned by filters returns true'
+      before { log_in_as(user) }
 
       it { expect(response).to have_http_status(:unprocessable_entity) }
       it { expect(flash[:danger]).to be_present }

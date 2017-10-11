@@ -14,55 +14,38 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       }
     }
     let(:params) { required_params }
+    let!(:http_request) { post :create, params: params }
 
     it 'returns a success code' do
-      post :create, params: params
       expect(response).to have_http_status(:created)
     end
 
-    it 'returns info about user' do
-      post :create, params: params
+    include_examples 'object response contains', 'username', kind: String
+    include_examples 'object response contains', 'email', kind: String
+    include_examples 'object response contains', 'api-access-token', kind: String
 
-      json = JSON.parse response.body
+    describe 'when a required parameter is missing' do
+      let(:http_request) { nil }
 
-      expect(json['data']).to include(
-                                  'attributes'=> hash_including(
-                                      'username'=> kind_of(String),
-                                      'email'=> kind_of(String)
-                                  )
-                              )
-    end
+      it 'returns an error' do
+        i = 0
+        while i < required_params.count
+          post :create, params: required_params.except( required_params.keys[i] )
+          json = JSON.parse response.body
 
-    it 'returns the access token' do
-      post :create, params: params
-
-      json = JSON.parse response.body
-
-      expect(json['data']).to include(
-                                  'attributes'=> hash_including(
-                                      'api-access-token'=> kind_of(String)
-                                  )
-                              )
-    end
-
-    it 'returns an errors key when a required param is missing' do
-      i = 0
-      while i < required_params.count
-        post :create, params: required_params.except( required_params.keys[i] )
-        json = JSON.parse response.body
-
-        expect(json).to have_key('errors')
-        i += 1
+          expect(json).to have_key('errors')
+          i += 1
+        end
       end
-    end
 
-    it 'returns an unprocessable error when a required param is missing' do
-      i = 0
-      while i < required_params.count
-        post :create, params: required_params.except( required_params.keys[i] )
+      it 'returns an unprocessable error when a required param is missing' do
+        i = 0
+        while i < required_params.count
+          post :create, params: required_params.except( required_params.keys[i] )
 
-        expect(response).to have_http_status(:unprocessable_entity)
-        i += 1
+          expect(response).to have_http_status(:unprocessable_entity)
+          i += 1
+        end
       end
     end
 
@@ -75,89 +58,60 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     end
 
     context 'username exists' do
+      let(:http_request) { nil }
       let!(:user) { create(:user, username: params[:username]) }
 
       include_examples 'returns an error'
     end
 
     context 'email exists' do
+      let(:http_request) { nil }
       let!(:user) { create(:user, email: params[:email]) }
 
       include_examples 'returns an error'
     end
 
     context 'concerned by filter' do
+      let(:http_request) { nil }
       let(:email_provider) { params[:email].partition('@').last }
       let!(:filter) {create(:user_filter_blocked_email, email_provider: email_provider)}
 
       include_examples 'returns an error'
     end
 
-    context 'user is concerned by a blocking filter' do
-      let(:filter_service) {instance_double('Users::ConcernedByFiltersService')}
-      let(:concerned_by_filter) { true }
-      before do
-        allow(Users::ConcernedByFiltersService).to receive(:new).and_return(filter_service)
-        allow(filter_service).to receive(:call).and_return(concerned_by_filter)
-      end
-
-      include_examples 'returns an error'
-    end
-
     context 'web client perform' do
       let(:params) { required_params.merge(client_platform: 'web') }
-      before {post :create, params: params}
+      let(:http_request) {post :create, params: params}
 
-      it 'does not include the access token in the response' do
-        json = JSON.parse response.body
-
-        expect(json['data']).not_to include(
-                                  'attributes'=> hash_including(
-                                    'api-access-token'=> kind_of(String)
-                                  )
-                                )
-      end
+      include_examples 'object response does not contain', 'api-access-token'
 
       it 'sets a token cookie' do
         expect(cookies).to have_key(:token)
       end
 
-      it 'includes a csrf-token' do
-        json = JSON.parse response.body
-
-        expect(json['data']).to include(
-                                  'attributes'=> hash_including(
-                                    'csrf-token'=> kind_of(String)
-                                  )
-                                )
-      end
+      include_examples 'object response contains', 'csrf-token', kind: String
     end
   end
 
   describe '#update' do
-    include_context 'having a valid token'
+    let(:user) { create(:user) }
+    include_context 'valid access-token'
+    let!(:http_request) { put :update }
 
     it 'returns an ok status code' do
-      put :update
       expect(response).to have_http_status(:ok)
     end
 
-    it 'does not return access_token' do
-      post :update
-      json = JSON.parse response.body
-      expect(json['data']['attributes']).not_to have_key('api-access-token')
-    end
+    include_examples 'object response does not contain', 'api-access-token'
+    include_examples 'object response does not contain', 'refresh-token'
 
-    it 'does not return refresh_token' do
-      post :update
-      json = JSON.parse response.body
-      expect(json['data']['attributes']).not_to have_key('api-access-token')
-    end
+    describe 'a new description is post' do
+      let(:description) { 'update_test' }
+      let!(:http_request) { put :update, params: {description: description} }
 
-    it 'updates the user' do
-      description = 'update_test'
-      post :update, params: {description: description}
-      expect(user.reload.description).to eq(description)
+      it 'updates the user\'s description ' do
+        expect(user.reload.description).to eq(description)
+      end
     end
   end
 
