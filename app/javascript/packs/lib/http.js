@@ -12,6 +12,10 @@ export const doesTokenExpired = (response) => {
   return responseCode(response) == RESPONSE_CODES['expired_token']
 }
 
+export const isUnableToProcess = (response) => {
+  return responseCode(response) == RESPONSE_CODES['unprocessable_entity']
+}
+
 export const RESPONSE_CODES = {
   ok: 0,
   no_content: 0,

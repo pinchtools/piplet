@@ -23,9 +23,14 @@ class LoginForm extends Component {
     let data
     if (response && (data = response.data)) {
       let user = object.values(data.users)[0]
-      for (let attr in user.attributes) {
-        localStorage.setItem(attr, user.attributes[attr])
+      let attrs = user.attributes
+      if (attrs['csrfToken']) {
+        localStorage.setItem('csrfToken', attrs['csrfToken'])
       }
+      if (attrs['refreshToken']) {
+        localStorage.setItem('refreshToken', attrs['refreshToken'])
+      }
+
       this.props.dispatch(actions.toggleDialog())
       this.props.dispatch(userActions.loginSucceed())
     }

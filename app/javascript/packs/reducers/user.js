@@ -6,17 +6,14 @@ function user(state = {}, action) {
       return {
         ...state,
         logged: true,
-        access_token_expired: false,
-        refresh_token_expired: false
+        access_token_expired: false
       }
     case actions.USER_LOGIN_FAILED:
       return {...state, logged: false}
     case actions.USER_ACCESS_TOKEN_EXPIRED:
       return {...state, access_token_expired: true}
-    case actions.USER_REFRESH_TOKEN_EXPIRED:
-      return {...state, refresh_token_expired: true}
     default:
-      return Object.assign({}, {logged: false, access_token_expired: false, refresh_token_expired: false}, state)
+      return Object.assign({}, {logged: false, access_token_expired: false}, state)
   }
 }
 

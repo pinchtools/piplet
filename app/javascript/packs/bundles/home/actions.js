@@ -3,6 +3,9 @@ import { CALL_API, apiEvents } from './../../middlewares/api'
 export const GET_USER_ENDPOINT_NAME = 'GET_USER'
 export const GET_USER_ENDPOINT = 'users/show'
 
+export const UPDATE_TOKEN_ENDPOINT_NAME = 'UPDATE_TOKEN'
+export const UPDATE_TOKEN_ENDPOINT = 'tokens'
+
 export const getUser = (options) => ({
   [CALL_API]: {
     types: apiEvents(GET_USER_ENDPOINT_NAME),
@@ -11,11 +14,10 @@ export const getUser = (options) => ({
   }
 })
 
-
-export const deleteUser = () => {
-  return {
-    type: 'API_DELETE',
-    endpoint: GET_USER_ENDPOINT,
+export const updateToken = (options) => ({
+  [CALL_API]: {
+    types: apiEvents(UPDATE_TOKEN_ENDPOINT_NAME),
+    endpoint: UPDATE_TOKEN_ENDPOINT,
+    options: {...options, method: 'put'}
   }
-}
-
+})

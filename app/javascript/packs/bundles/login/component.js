@@ -50,7 +50,6 @@ class LoginDialog extends Component {
   }
 
   login(event) {
-    // alert('Your favorite flavor is: ' + this.state.value);
     // event.preventDefault();
     this.props.onRequestLogin({
       data: {

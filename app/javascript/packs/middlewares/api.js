@@ -2,6 +2,7 @@ import normalize from 'json-api-normalizer'
 import axios from 'axios'
 
 const API_ROOT = 'http://localhost:3000/api/v1/'
+const CLIENT_PLATFORM = 'web'
 const EVENTS = ['REQUEST', 'SUCCESS', 'FAILURE']
 export const [REQUEST, SUCCESS, FAILURE] = EVENTS
 export const API_DELETE = 'API_DELETE'
@@ -30,9 +31,14 @@ function callApi(endpoint, options = {}) {
   options['url'] = endpoint
   options['headers'] = options['headers'] || {}
   let token
-  if (token = localStorage.getItem('apiAccessToken')) {
-    options['headers']['Authorisation'] = token
+  if (token = localStorage.getItem('csrfToken')) {
+    options['headers']['x-csrf-token'] = token
   }
+
+  let paramsAttr = (options['method'] == 'get') ? 'params' : 'data'
+
+  options[paramsAttr] = options[paramsAttr] || {}
+  options[paramsAttr]['client_platform'] = CLIENT_PLATFORM
 
   return httpClient(options)
 }

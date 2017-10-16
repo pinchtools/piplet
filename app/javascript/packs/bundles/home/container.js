@@ -6,7 +6,7 @@ import HomeComp from  './component'
 import * as actions from './actions'
 import * as userActions from './../user/actions'
 import { LOGIN_ENDPOINT } from './../login/actions'
-import { DEFAULT_RESPONSE, doesTokenExpired } from './../../lib/http'
+import { DEFAULT_RESPONSE, doesTokenExpired, isUnableToProcess } from './../../lib/http'
 
 class Home extends Component {
   static propTypes = {
@@ -14,41 +14,26 @@ class Home extends Component {
     loginResponse: PropTypes.object.isRequired,
     userState: PropTypes.object.isRequired,
     createDefaultEditor: PropTypes.func.isRequired,
-    getUser: PropTypes.func.isRequired
+    getUser: PropTypes.func.isRequired,
+    updateToken: PropTypes.func.isRequired
   }
 
   connected = false
+  tokenPingInterval = 1000 * 60 * 10
 
   constructor(props) {
     super(props)
     props.createDefaultEditor(0)
-    if (this.tokenExists()) {
+    if (this.tokensPresent())
       this.props.getUser()
-    }
+    setInterval(this.updateToken.bind(this), this.tokenPingInterval)
   }
 
   componentWillReceiveProps(nextProps) {
-    let userResponse = this.props.userResponse
-    let nextUserResponse = nextProps.userResponse
-    let error
-    if ((error = nextUserResponse.meta.error) && !userResponse.meta.error) {
-      if (doesTokenExpired(error)) {
-        console.log('expired')
+    this.receiveUserResponse(nextProps)
+    this.receiveTokenResponse(nextProps)
 
-        //// TODO ask for new token before
-        /// and when the refresh token expired to ask for a new one
-      } else {
-        console.log('failed')
-        // localStorage.removeItem('apiAccessToken')
-        this.props.loginFailed()
-      }
-    } else if (nextUserResponse.meta.success && !userResponse.meta.success) {
-      this.props.loginSucceed()
-    }
-
-    if (this.props.userState.logged && this.tokenExists()) {
-      this.connected = true
-    }
+    this.connected = nextProps.userState.logged && this.tokensPresent()
   }
 
   render() {
@@ -57,8 +42,49 @@ class Home extends Component {
     )
   }
 
-  tokenExists() {
-    return localStorage.getItem('apiAccessToken') != null
+  receiveUserResponse(nextProps) {
+    let response = this.props.userResponse
+    let nextResponse = nextProps.userResponse
+    let error
+
+    if (!nextResponse || response.meta.timestamp == nextResponse.meta.timestamp)
+      return
+    if ((error = nextResponse.meta.error) && !response.meta.error) {
+      if (doesTokenExpired(error)) {
+        this.updateToken()
+      } else {
+        localStorage.clear()
+        this.props.loginFailed()
+      }
+    } else if (nextResponse.meta.success && !response.meta.success) {
+      this.props.loginSucceed()
+    }
+  }
+
+  receiveTokenResponse(nextProps) {
+    let response = this.props.tokenResponse
+    let nextResponse = nextProps.tokenResponse
+    let error
+
+    if (!nextResponse || response.meta.timestamp == nextResponse.meta.timestamp)
+      return
+    if ((error = nextResponse.meta.error) && !response.meta.error) {
+      if (isUnableToProcess(error)) {
+        localStorage.clear()
+        this.props.loginFailed()
+      }
+    }
+  }
+
+  updateToken() {
+    let refreshToken = localStorage.getItem('refreshToken')
+    if (refreshToken) {
+      this.props.updateToken({ data: { refresh_token: refreshToken } })
+    }
+  }
+
+  tokensPresent() {
+    return localStorage.getItem('csrfToken') != null && localStorage.getItem('refreshToken') != null
   }
 }
 
@@ -77,6 +103,9 @@ const mapDispatchToProps = dispatch => {
     },
     getUser:() => {
       dispatch(actions.getUser())
+    },
+    updateToken:(options) => {
+      dispatch(actions.updateToken(options))
     },
     loginSucceed:() => {
       dispatch(userActions.loginSucceed())
