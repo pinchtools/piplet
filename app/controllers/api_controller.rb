@@ -41,28 +41,28 @@ class ApiController < ActionController::API
         raise unless accept_expiration
       end
     rescue
-      raise InvalidToken, I18n.t('user.errors.base.invalid-token')
+      raise InvalidToken, I18n.t('user.notice.danger.invalid-token')
     end
-    raise InvalidToken, I18n.t('user.errors.base.invalid-token') if TOKEN_REQUIRED_ATTRS.any? {|a| token_payload.fetch(a, nil).blank? }
+    raise InvalidToken, I18n.t('user.notice.danger.invalid-token') if TOKEN_REQUIRED_ATTRS.any? {|a| token_payload.fetch(a, nil).blank? }
 
     if client_platform == WEB_CLIENT
       begin
         csrf_payload = JsonWebToken.decode(csrf_token)
         throw Exception if csrf_payload['user'] != token_payload['user']
       rescue
-        raise InvalidToken, I18n.t('user.errors.base.invalid-token')
+        raise InvalidToken, I18n.t('user.notice.danger.invalid-token')
       end
     end
     @current_user = User.actives.find( token_payload['user'] )
   end
 
   def invalid_token_response
-    user = User.new.tap{|u| u.errors.add(:base, I18n.t('user.errors.base.invalid-token'))}
+    user = User.new.tap{|u| u.errors.add(:base, I18n.t('user.notice.danger.invalid-token'))}
     render_error(user, :invalid_token)
   end
 
   def expired_token_response
-    user = User.new.tap{|u| u.errors.add(:base, I18n.t('user.errors.base.expired-token'))}
+    user = User.new.tap{|u| u.errors.add(:base, I18n.t('user.notice.danger.expired-token'))}
     render_error(user, :expired_token)
   end
 

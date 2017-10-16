@@ -791,11 +791,4 @@ RSpec.describe User, type: :model do
 
     it {expect(subject.api_access_token).to eq(fakejwt)}
   end
-
-  describe '#api_refresh_token' do
-    let(:fakejwt) { 'fakejwt' }
-    before { allow(JWT).to receive(:encode).and_return(fakejwt) }
-
-    it {expect(subject.api_refresh_token).to eq(fakejwt)}
-  end
 end

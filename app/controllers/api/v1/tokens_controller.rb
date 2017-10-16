@@ -24,7 +24,7 @@ class Api::V1::TokensController < ApiController
       render_error(user, :unprocessable_entity)
     else
       refresh_token = Users::ObtainRefreshTokenService.new(user, client_platform).call
-      options = { client_platform: client_platform, refresh_token: refresh_token }
+      options = { client_platform: client_platform, refresh_token: refresh_token.try(:token) }
 
       if client_platform == WEB_CLIENT
         cookies['token'] = { :value => user.api_access_token, :httponly => true }

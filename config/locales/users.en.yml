@@ -91,6 +91,12 @@ en:
         suspect: "Account can't be mark  as suspect"
         revert-suspect: "Account can't removed from the suspected list"
         auth-failure: 'Something went wrong processing your log in, please try again.'
+        unexpected-error: "Unexpected Error"
+        invalid-token: "Invalid token"
+        expired-token: "Token has expired"
+        client-platform-required: "Invalid client platform"
+        invalid-user: "Invalid user"
+        invalid-refresh-token: "Invalid refresh token"
       info:
         account-need-activation: 'Please check your email to activate your account.'
       loading:
@@ -130,10 +136,6 @@ en:
         provider-banned: "Invalid email"
         similar-to-blocked-one: "Email is similar to a blocked one, please see logs for further details"
         similar-to-suspected-one: "Email is similar to a suspected one, please see logs for further details"
-      base:
-        unexpected-error: "Unexpected Error"
-        invalid-token: "Invalid token"
-        expired-token: "Token has expired"
   admin:
     users:
       users:

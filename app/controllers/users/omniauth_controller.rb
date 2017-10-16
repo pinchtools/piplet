@@ -25,8 +25,7 @@ class Users::OmniauthController < ApplicationController
       end
 
       if from == 'client'
-        cookies.permanent[:at] = account.user.api_access_token
-        cookies.permanent[:rt] = account.user.api_refresh_token
+        cookies[:token] = account.user.api_access_token
         render layout: false
       else
         log_in account.user
@@ -99,8 +98,7 @@ class Users::OmniauthController < ApplicationController
     end
 
     if @cache_infos['from'] == 'client'
-      cookies.permanent[:at] = @account.user.api_access_token
-      cookies.permanent[:rt] = @account.user.api_refresh_token
+      cookies[:token] = @account.user.api_access_token
 
       render 'callback', layout: false
     else
