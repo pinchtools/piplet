@@ -1,4 +1,4 @@
-export const DEFAULT_RESPONSE = { meta: { loading: false, error: null, success: false } }
+export const DEFAULT_RESPONSE = { meta: { loading: false, error: null, success: false, timestamp: null } }
 
 export const doesRequestSucceed = (response) => {
  return response.status && response.status.toString().indexOf(2) == 0

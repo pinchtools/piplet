@@ -6,7 +6,7 @@ import { DEFAULT_RESPONSE } from './../../lib/http'
 const mapStateToProps = (state) => {
   return {
     loginState: state.loginDialog,
-    loginResponse: state.api[actions.LOGIN_ENDPOINT] || DEFAULT_RESPONSE
+    loginResponse: state.api[actions.LOGIN_ENDPOINT_NAME] || DEFAULT_RESPONSE
   }
 }
 

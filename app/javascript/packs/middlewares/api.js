@@ -58,7 +58,7 @@ export default store => next => action => {
     return next(action)
   }
 
-  let { endpoint } = callAPI
+  let { endpoint, name } = callAPI
   const { options, types } = callAPI
 
   if (typeof endpoint === 'function') {
@@ -67,6 +67,9 @@ export default store => next => action => {
 
   if (typeof endpoint !== 'string') {
     throw new Error('Specify a string endpoint URL.')
+  }
+  if (typeof name !== 'string') {
+    throw new Error('Specify an unique endpoint name.')
   }
   if (!Array.isArray(types) || types.length !== 3) {
     throw new Error('Expected an array of three action types.')
@@ -82,19 +85,21 @@ export default store => next => action => {
     return finalAction
   }
 
-  next(actionWith({ type: requestType, endpoint }))
+  next(actionWith({ type: requestType, endpoint, name }))
 
   return callApi(endpoint, options)
     .then(response => next(actionWith({
         type: successType,
         response,
-        endpoint
+        endpoint,
+        name
       }))
     )
     .catch(error => next(actionWith({
         type: failureType,
         error,
-        endpoint
+        endpoint,
+        name
       }))
     )
 }

@@ -33,6 +33,7 @@ export const apiLogin = (options) => ({
   [CALL_API]: {
     types: apiEvents(LOGIN_ENDPOINT_NAME),
     endpoint: LOGIN_ENDPOINT,
+    name: LOGIN_ENDPOINT_NAME,
     options: {...options, method: 'post'}
   }
 })

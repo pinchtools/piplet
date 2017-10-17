@@ -45,7 +45,7 @@ class LoginForm extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    response: state.api[actions.LOGIN_ENDPOINT] || DEFAULT_RESPONSE
+    response: state.api[actions.LOGIN_ENDPOINT_NAME] || DEFAULT_RESPONSE
   }
 }
 

@@ -11,7 +11,6 @@ import { DEFAULT_RESPONSE, doesTokenExpired, isUnableToProcess } from './../../l
 class Home extends Component {
   static propTypes = {
     userResponse: PropTypes.object.isRequired,
-    loginResponse: PropTypes.object.isRequired,
     userState: PropTypes.object.isRequired,
     createDefaultEditor: PropTypes.func.isRequired,
     getUser: PropTypes.func.isRequired,
@@ -46,17 +45,18 @@ class Home extends Component {
     let response = this.props.userResponse
     let nextResponse = nextProps.userResponse
     let error
+    let timestamp = nextResponse.meta.timestamp
 
-    if (!nextResponse || response.meta.timestamp == nextResponse.meta.timestamp)
+    if (timestamp == null || timestamp == response.meta.timestamp)
       return
-    if ((error = nextResponse.meta.error) && !response.meta.error) {
+    if (error = nextResponse.meta.error) {
       if (doesTokenExpired(error)) {
         this.updateToken()
       } else {
         localStorage.clear()
         this.props.loginFailed()
       }
-    } else if (nextResponse.meta.success && !response.meta.success) {
+    } else if (nextResponse.meta.success) {
       this.props.loginSucceed()
     }
   }
@@ -65,14 +65,18 @@ class Home extends Component {
     let response = this.props.tokenResponse
     let nextResponse = nextProps.tokenResponse
     let error
+    let timestamp = nextResponse.meta.timestamp
 
-    if (!nextResponse || response.meta.timestamp == nextResponse.meta.timestamp)
+    if (timestamp == null || timestamp == response.meta.timestamp)
       return
-    if ((error = nextResponse.meta.error) && !response.meta.error) {
+
+    if ((error = nextResponse.meta.error)  && !response.meta.error ) {
       if (isUnableToProcess(error)) {
         localStorage.clear()
         this.props.loginFailed()
       }
+    } else if (nextResponse.meta.success && !response.meta.success) {
+      this.props.loginSucceed()
     }
   }
 
@@ -90,8 +94,8 @@ class Home extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    loginResponse: state.api[LOGIN_ENDPOINT] || DEFAULT_RESPONSE,
-    userResponse: state.api[actions.GET_USER_ENDPOINT] || DEFAULT_RESPONSE,
+    userResponse: state.api[actions.GET_USER_ENDPOINT_NAME] || DEFAULT_RESPONSE,
+    tokenResponse: state.api[actions.UPDATE_TOKEN_ENDPOINT_NAME] || DEFAULT_RESPONSE,
     userState: state.user
   }
 }
