@@ -1,4 +1,6 @@
 <script>
-    window.opener.location.reload();
-    window.close();
+  localStorage.setItem('csrfToken', <%= @csrf_token %>);
+  localStorage.setItem('refreshToken', <%= @refresh_token.try(:token) %>);
+  window.opener.location.reload();
+//  window.close();
 </script>

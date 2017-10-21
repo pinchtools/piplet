@@ -2,6 +2,7 @@ require 'redis_connect'
 
 class Users::OmniauthController < ApplicationController
   include ApplicationHelper
+  include Users::OmniauthHelper
 
   skip_before_action :verify_authenticity_token, only: :callback
   before_action :use_cache_infos, only: [:complete_profile, :finalize]
@@ -25,7 +26,7 @@ class Users::OmniauthController < ApplicationController
       end
 
       if from == 'client'
-        cookies[:token] = account.user.api_access_token
+        gain_access_on_client(account.user)
         render layout: false
       else
         log_in account.user
@@ -98,8 +99,7 @@ class Users::OmniauthController < ApplicationController
     end
 
     if @cache_infos['from'] == 'client'
-      cookies[:token] = @account.user.api_access_token
-
+      gain_access_on_client(@user)
       render 'callback', layout: false
     else
       log_in @account.user

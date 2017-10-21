@@ -1,14 +1,14 @@
 auth:
   google:
-    enable: '1'
+    enable: '0'
     client_id: ''
     client_secret: ''
   facebook:
-    enable: '1'
+    enable: '0'
     facebook_key: ''
     facebook_secret: ''
   twitter:
-    enable: '1'
+    enable: '0'
     consumer_key: ''
     consumer_secret: ''
 domain: ''

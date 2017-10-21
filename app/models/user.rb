@@ -66,8 +66,6 @@ class User < ActiveRecord::Base
 
   ACCESS_TOKEN_DURATION = 30.freeze #minutes
 
-  has_and_belongs_to_many :filters, :class_name => 'UserFilter', :join_table => :users_user_filters
-
   has_many :notifications, dependent: :destroy
 
   has_one :avatar, class_name: 'UserAvatar', dependent: :destroy
@@ -348,7 +346,7 @@ class User < ActiveRecord::Base
   end
 
   def active?
-    activated? && !deactivated? && !blocked? && !filters.all_blocked.exists?
+    activated? && !deactivated? && !blocked?
   end
 
   ########

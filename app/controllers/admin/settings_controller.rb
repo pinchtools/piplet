@@ -9,6 +9,7 @@ class Admin::SettingsController < Admin::AdminController
     permitted_settings.each do |key, value|
       Setting[key] = value
     end
+    flash[:info] = I18n.t('settings.index.infos.reload')
     redirect_to admin_settings_url
   end
 

@@ -3,36 +3,38 @@
 <div class="row">
   <div class="col-md-6 offset-md-3">
     <%= form_for(:session, url: login_path) do |f| %>
-      <br/>
-      <hr/>
-      <div class="row">
-        <div class="col-md-12 text-center">
-          <% if setting('global.auth', 'facebook', 'enable') == '1' %>
-              <a href="/auth/facebook" role="button" class="btn btn-secondary"><i class="fa fa-facebook" aria-hidden="true"></i> Facebook</a>
-          <% end %>
-          <% if setting('global.auth', 'google', 'enable') == '1' %>
-              <a href="/auth/google" role="button" class="btn btn-secondary"><i class="fa fa-google" aria-hidden="true"></i> Google</a>
-          <% end %>
-          <% if setting('global.auth', 'twitter', 'enable') == '1' %>
-              <a href="/auth/twitter" role="button" class="btn btn-secondary"><i class="fa fa-twitter" aria-hidden="true"></i> Twitter</a>
-          <% end %>
+      <% if @auth_enable %>
+        <br/>
+        <hr/>
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <% if @fb_enable %>
+                <a href="/auth/facebook" role="button" class="btn btn-secondary"><i class="fa fa-facebook" aria-hidden="true"></i> Facebook</a>
+            <% end %>
+            <% if @go_enable %>
+                <a href="/auth/google" role="button" class="btn btn-secondary"><i class="fa fa-google" aria-hidden="true"></i> Google</a>
+            <% end %>
+            <% if @tw_enable %>
+                <a href="/auth/twitter" role="button" class="btn btn-secondary"><i class="fa fa-twitter" aria-hidden="true"></i> Twitter</a>
+            <% end %>
+          </div>
         </div>
-      </div>
-      <hr/>
-      <br/>
+        <hr/>
+        <br/>
+      <% end %>
 
       <%= f.label :email %>
       <%= f.email_field :email, class: 'form-control' %>
-      
+
       <%= f.label :password %>
       <%= link_to t('session.forgot-password'), new_users_password_reset_path %>
       <%= f.password_field :password, class: 'form-control' %>
-      
+
       <%= f.label :remember_me, class: "checkbox inline" do %>
         <%= f.check_box :remember_me %>
         <span><%= t 'session.remember-me' %></span>
       <% end %>
-      
+
       <%= f.submit t("session.form.submit"), class: "btn btn-primary" %>
     <% end %>
     <p>New user? <%= link_to t('session.sign-up-btn'), signup_path %></p>

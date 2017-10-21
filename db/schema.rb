@@ -130,7 +130,6 @@ ActiveRecord::Schema.define(version: 20171001161607) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "link"
-    t.string "message_vars"
     t.index ["action"], name: "index_user_logs_on_action"
     t.index ["action_user_id"], name: "index_user_logs_on_action_user_id"
     t.index ["level"], name: "index_user_logs_on_level"
@@ -173,11 +172,6 @@ ActiveRecord::Schema.define(version: 20171001161607) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
     t.index ["username_lower"], name: "index_users_on_username_lower", unique: true
-  end
-
-  create_table "users_user_filters", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "user_filter_id"
   end
 
   add_foreign_key "auth_accounts", "users"

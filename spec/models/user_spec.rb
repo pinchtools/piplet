@@ -35,8 +35,6 @@ RSpec.describe User, type: :model do
   it { should have_many(:notifications).dependent(:destroy) }
   it { should have_many(:refresh_tokens).dependent(:destroy) }
 
-  it { should have_and_belong_to_many(:filters).class_name('UserFilter') }
-
   it { should validate_presence_of(:username) }
   it { should validate_presence_of(:creation_ip_address) }
 

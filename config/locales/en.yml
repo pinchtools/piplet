@@ -38,14 +38,14 @@ en:
         admin: 'Admin'
         help: 'Help'
         about: 'about'
-      
+
   global:
     no-results-found : 'No results found'
     destroy-confirm: 'Are you sure?'
     destroy-btn: 'delete'
-  admin: 
+  admin:
     links:
-      users: 
+      users:
         index: 'users'
         list: 'list'
         filters: 'filters'
@@ -82,6 +82,8 @@ en:
     index:
       tabs:
         authentication: 'Authentication'
+      infos:
+        reload: 'Please note you have to reload your server when you change authentication settings'
   omniauth:
     complete_profile:
       title: 'Complete your profile'
@@ -98,20 +100,20 @@ en:
       ip_address: "Ip address"
       data: "Data"
       action_user: "Acted by"
-      
+
   helpers:
     label:
       <<: *attributes
-      
+
   activerecord:
     attributes:
       <<: *attributes
-      
+
   datetime:
     distance_in_words_with_directions:
       past: "%{distance} ago"
       future: "in %{distance}"
-      
+
   errors:
     messages:
       wrong_size: "is the wrong size (should be %{file_size})"

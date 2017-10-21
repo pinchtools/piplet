@@ -8,7 +8,7 @@ class Api::V1::TokensController < ApiController
     if user && user.authenticate(params[:password])
       if !user.activated?
         user.errors.add(:base, I18n.t('user.notice.warning.account-not-activated'))
-      elsif Users::ConcernedByFiltersService.new(user).call
+      elsif !user.active?
         user.errors.add(:base, I18n.t('user.notice.danger.invalid-login'))
       end
     else
@@ -36,7 +36,7 @@ class Api::V1::TokensController < ApiController
   end
 
   def update
-    if Users::ConcernedByFiltersService.new(@current_user).call
+    unless @current_user.active?
       @current_user.errors.add(:base, I18n.t('user.notice.danger.invalid-user'))
     end
 

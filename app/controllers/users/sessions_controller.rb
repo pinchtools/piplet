@@ -1,5 +1,10 @@
 class Users::SessionsController < ApplicationController
+  include SettingsHelper
   def new
+    @fb_enable = setting('global.auth', 'facebook', 'enable') == '1'
+    @go_enable = setting('global.auth', 'google', 'enable') == '1'
+    @tw_enable = setting('global.auth', 'twitter', 'enable') == '1'
+    @auth_enable = [@fb_enable, @go_enable, @tw_enable].any?
   end
 
   def create
@@ -9,7 +14,7 @@ class Users::SessionsController < ApplicationController
       if !user.activated?
         flash[:warning] = t('user.notice.warning.account-not-activated')
         redirect_to root_url and return
-      elsif Users::ConcernedByFiltersService.new(user).call
+      elsif !user.active?
         user.errors.add(:base, I18n.t('user.notice.danger.invalid-login'))
       end
     else

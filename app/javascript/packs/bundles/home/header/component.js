@@ -8,7 +8,12 @@ import NavItem from 'react-bootstrap/lib/NavItem'
 const Header = (props) => {
   let rightNav = null
   if (props.connected) {
-    rightNav = null
+    rightNav = <NavItem eventKey={1} onClick={() => props.onLogout()} href="#">
+      <FormattedMessage
+        id="Header.logout"
+        defaultMessage={`logout`}
+      />
+    </NavItem>
   } else {
     rightNav = <NavItem eventKey={1} onClick={() => props.onLoginToggle()} href="#">
       <FormattedMessage
@@ -17,8 +22,6 @@ const Header = (props) => {
       />
     </NavItem>
   }
-
-
 
   return (
     <div>
@@ -42,6 +45,7 @@ const Header = (props) => {
 
 Header.propTypes = {
   onLoginToggle: PropTypes.func.isRequired,
+  onLogout: PropTypes.func.isRequired,
   connected: PropTypes.bool.isRequired
 }
 

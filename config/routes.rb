@@ -133,6 +133,7 @@ Rails.application.routes.draw do
           put :update
         end
       end
+      resources :oauth, only: [:index]
     end #v1
   end # namespace api
 

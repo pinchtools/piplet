@@ -1,6 +1,6 @@
 export const USER_LOGIN_SUCCEED = 'USER_LOGIN_SUCCEED'
 export const USER_LOGIN_FAILED = 'USER_LOGIN_FAILED'
-export const USER_ACCESS_TOKEN_EXPIRED = 'USER_ACCESS_TOKEN_EXPIRED'
+export const USER_LOGOUT = 'USER_LOGOUT'
 
 export const loginSucceed = () => {
   return {
@@ -14,8 +14,9 @@ export const loginFailed = () => {
   }
 }
 
-export const accessTokenExpired = () => {
+export const logout = () => {
   return {
-    type: USER_ACCESS_TOKEN_EXPIRED
+    type: USER_LOGOUT
   }
 }
+

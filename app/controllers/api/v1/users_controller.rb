@@ -31,7 +31,7 @@ class Api::V1::UsersController < ApiController
   end
 
   def update
-    if Users::ConcernedByFiltersService.new(@current_user).call
+    unless @current_user.active?
       @current_user.errors.add(:base, I18n.t('user.notice.danger.invalid-login'))
     end
 
