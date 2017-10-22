@@ -41,7 +41,7 @@ RSpec.describe Users::OmniauthController, type: :controller do
       end
 
       context 'via client' do
-        let(:auth_params) {{ from: 'client' }}
+        let(:auth_params) {{ 'from' => 'client' }}
 
         it 'creates a cookie' do
           get :callback, params: {provider: provider}

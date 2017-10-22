@@ -4,6 +4,6 @@ FactoryGirl.define do
     platform "stateless"
     user nil
     blocked_at nil
-    reason nil
+    blocked_reason nil
   end
 end
