@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::OauthController, type: :controller do
+RSpec.describe Api::V1::OauthProvidersController, type: :controller do
 
   describe '#index' do
     shared_examples 'no providers found' do

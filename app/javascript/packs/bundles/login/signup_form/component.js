@@ -7,7 +7,7 @@ import FormControl from 'react-bootstrap/lib/FormControl'
 import ControlLabel from 'react-bootstrap/lib/ControlLabel'
 import HelpBlock from 'react-bootstrap/lib/HelpBlock'
 import Alert from './../../alert/component'
-import Oauth from './../oauth/component'
+import Oauth from './../oauth/container'
 
 class SignupForm extends Component {
   static propTypes = {

@@ -7,27 +7,31 @@ class Users::OmniauthController < ApplicationController
   skip_before_action :verify_authenticity_token, only: :callback
   before_action :use_cache_infos, only: [:complete_profile, :finalize]
 
-  COMPLETION_TOKEN_EXP = 20.minutes.to_i.freeze
+  COMPLETION_TOKEN_EXP = 10.minutes.to_i.freeze
   COMPLETION_TOKEN_RETRY = 3.freeze
 
   def callback
     auth = request.env['omniauth.auth']
     params = request.env['omniauth.params']
     infos = auth.fetch(:info, {})
-    from = params.fetch(:from, nil)
-
+    from = params.fetch('from', nil)
     account = AuthAccount.find_or_initialize_by(uid: auth['uid'],provider: auth['provider'])
 
     if account.user.present?
       unless account.user.active?
         account.user.log(:auth_login_fail_not_active)
         flash[:warning] = t('user.notice.warning.account-not-activated')
-        redirect_to root_url and return
-      end
 
+        if from == 'client'
+          render layout: 'empty_hd'
+        else
+          redirect_to root_url and return
+        end
+      end
       if from == 'client'
+        flash[:success] = t('omniauth.client.notice.success')
         gain_access_on_client(account.user)
-        render layout: false
+        render layout: 'empty_hd'
       else
         log_in account.user
         redirect_to root_url
@@ -50,7 +54,11 @@ class Users::OmniauthController < ApplicationController
 
       if token.nil?
         flash[:danger] = t('user.notice.warning.auth-completion-fail-no-token')
-        redirect_to root_url and return
+        if from == 'client'
+          render layout: 'empty_hd'
+        else
+          redirect_to root_url and return
+        end
       end
 
       account.update_attributes(name: infos['name'], nickname: infos['nickname'])
@@ -100,7 +108,8 @@ class Users::OmniauthController < ApplicationController
 
     if @cache_infos['from'] == 'client'
       gain_access_on_client(@user)
-      render 'callback', layout: false
+      flash[:success] = t('omniauth.client.notice.success')
+      render 'callback', layout: 'empty_hd'
     else
       log_in @account.user
 

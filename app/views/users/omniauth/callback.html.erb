@@ -1,6 +1,8 @@
-<script>
-  localStorage.setItem('csrfToken', <%= @csrf_token %>);
-  localStorage.setItem('refreshToken', <%= @refresh_token.try(:token) %>);
-  window.opener.location.reload();
-//  window.close();
-</script>
+<% content_for :header do %>
+  <script>
+    localStorage.setItem('csrfToken', '<%= @csrf_token %>');
+    localStorage.setItem('refreshToken', '<%= @refresh_token.try(:token) %>');
+    window.opener.location.reload();
+  </script>
+<% end %>
+<a href="javascript:window.close()" role="button" class="btn btn-primary"><%= I18n.t('default.close') %></a>

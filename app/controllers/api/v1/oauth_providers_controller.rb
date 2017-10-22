@@ -1,4 +1,4 @@
-class Api::V1::OauthController < ApiController
+class Api::V1::OauthProvidersController < ApiController
   skip_before_action :authorize_request, only: [:index]
   include SettingsHelper
 

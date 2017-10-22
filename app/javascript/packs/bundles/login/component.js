@@ -20,6 +20,7 @@ class LoginDialog extends Component {
     onSelectLogin: PropTypes.func.isRequired,
     onSelectSignup: PropTypes.func.isRequired,
     onRequestLogin: PropTypes.func.isRequired,
+    getProviders: PropTypes.func.isRequired,
     intl: intlShape.isRequired,
   }
 
@@ -42,6 +43,7 @@ class LoginDialog extends Component {
       username: null
     }
     this.login = this.login.bind(this)
+    props.getProviders()
   }
 
   handleSelect(key) {

@@ -43,6 +43,8 @@ en:
     no-results-found : 'No results found'
     destroy-confirm: 'Are you sure?'
     destroy-btn: 'delete'
+  default:
+    close: 'close'
   admin:
     links:
       users:
@@ -91,6 +93,9 @@ en:
       auth_img: 'Can we use your avatar?'
       username: 'Username'
       submit: 'Submit'
+    client:
+      notice:
+        success: "You're now logged, you can close this window and go back to the website."
   attributes:  &attributes
     log:
       action: "Action"

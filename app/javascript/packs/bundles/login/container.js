@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
 import * as actions from './actions'
+import * as providersActions from './oauth/actions'
 import LoginDialogComp from  './component'
 import { DEFAULT_RESPONSE } from './../../lib/http'
 
@@ -21,19 +22,12 @@ const mapDispatchToProps = dispatch => {
     onSelectSignup: () => {
       dispatch(actions.selectSignup())
     },
-    onRequestSignup: (options) => {
-    },
-    onSuccessSignup: () => {
-    },
-    onErrorSignup: () => {
-    },
     onRequestLogin: (options) => {
       dispatch(actions.apiLogin(options))
     },
-    onSuccessLogin: () => {
-    },
-    onErrorLogin: () => {
-    },
+    getProviders:() => {
+      dispatch(providersActions.getProviders())
+    }
   }
 }
 
