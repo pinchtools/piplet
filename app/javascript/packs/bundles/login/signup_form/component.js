@@ -20,10 +20,17 @@ class SignupForm extends Component {
     this.handleChange = this.props.handleChange.bind(this)
   }
 
+  label(source) {
+    if (!source) return ''
+    let attr = source.pointer.split('/').pop()
+    if (attr == 'base') return ''
+    return attr.split('/').pop() + ' '
+  }
+
   render() {
     let error = this.props.response.meta.error
     let alertVisible = !!error
-    let errors = (alertVisible) ? error.data.errors.map((e) => e.detail) : []
+    let errors = (alertVisible) ? error.data.errors.map((e) => this.label(e.source) + e.detail) : []
 
     return (
       <Form>
@@ -37,7 +44,7 @@ class SignupForm extends Component {
 
         <FormGroup
           controlId="formUsername"
-          validationState={"error"}
+          validationState={"warning"}
         >
           <ControlLabel>
             <FormattedMessage
@@ -81,6 +88,7 @@ class SignupForm extends Component {
           <FormControl
             name="password"
             type="password"
+            onChange={this.handleChange}
           />
           <FormControl.Feedback />
         </FormGroup>

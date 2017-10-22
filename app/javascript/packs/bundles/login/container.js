@@ -7,7 +7,8 @@ import { DEFAULT_RESPONSE } from './../../lib/http'
 const mapStateToProps = (state) => {
   return {
     loginState: state.loginDialog,
-    loginResponse: state.api[actions.LOGIN_ENDPOINT_NAME] || DEFAULT_RESPONSE
+    loginResponse: state.api[actions.LOGIN_ENDPOINT_NAME] || DEFAULT_RESPONSE,
+    signupResponse: state.api[actions.SIGNUP_ENDPOINT_NAME] || DEFAULT_RESPONSE
   }
 }
 
@@ -24,6 +25,9 @@ const mapDispatchToProps = dispatch => {
     },
     onRequestLogin: (options) => {
       dispatch(actions.apiLogin(options))
+    },
+    onRequestSignup: (options) => {
+      dispatch(actions.apiSignup(options))
     },
     getProviders:() => {
       dispatch(providersActions.getProviders())

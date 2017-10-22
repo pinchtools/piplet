@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/lib/Button'
 import Tabs from 'react-bootstrap/lib/Tabs'
 import Tab from 'react-bootstrap/lib/Tab'
 import LoginForm from './login_form/container'
-import SignupForm from './signup_form/component'
+import SignupForm from './signup_form/container'
 import {LOGIN_FORM, SIGNUP_FORM} from './actions'
 
 class LoginDialog extends Component {
@@ -16,10 +16,12 @@ class LoginDialog extends Component {
       form: PropTypes.string.isRequired
     }).isRequired,
     loginResponse: PropTypes.object.isRequired,
+    signupResponse: PropTypes.object.isRequired,
     onLoginToggle: PropTypes.func.isRequired,
     onSelectLogin: PropTypes.func.isRequired,
     onSelectSignup: PropTypes.func.isRequired,
     onRequestLogin: PropTypes.func.isRequired,
+    onRequestSignup: PropTypes.func.isRequired,
     getProviders: PropTypes.func.isRequired,
     intl: intlShape.isRequired,
   }
@@ -43,6 +45,7 @@ class LoginDialog extends Component {
       username: null
     }
     this.login = this.login.bind(this)
+    this.signup = this.signup.bind(this)
     props.getProviders()
   }
 
@@ -62,6 +65,13 @@ class LoginDialog extends Component {
   }
 
   signup() {
+    this.props.onRequestSignup({
+      data: {
+        email: this.state.email,
+        password: this.state.password,
+        username: this.state.username
+      }
+    })
   }
 
   handleFormChange = (event) => {
@@ -77,12 +87,13 @@ class LoginDialog extends Component {
     let signupButtonClass = loginState.form == LOGIN_FORM ? 'hidden' : ''
     let loginButtonClass = loginState.form == SIGNUP_FORM ? 'hidden' : ''
     let loginLoading = this.props.loginResponse.meta.loading
+    let signupLoading = this.props.signupResponse.meta.loading
     return (
       <Modal id="login-modal" show={loginState.open} onHide={onLoginToggle}>
         <Modal.Body >
           <Tabs id="login-tabs" defaultActiveKey={2} onSelect={(key) => this.handleSelect(key)}>
             <Tab id="signup-tab" eventKey={1} title={intl.formatMessage(this.constructor.messages.tabSignupTitle)}>
-              <SignupForm response={this.props.loginResponse} handleChange={this.handleFormChange}/>
+              <SignupForm handleChange={this.handleFormChange}/>
             </Tab>
             <Tab id="login-tab" eventKey={2} title={intl.formatMessage(this.constructor.messages.tabLoginTitle)}>
               <LoginForm handleChange={this.handleFormChange}/>
@@ -96,11 +107,17 @@ class LoginDialog extends Component {
               defaultMessage={`cancel`}
             />
           </Button>
-          <Button bsStyle="primary" className={signupButtonClass} onClick={() => this.signup()}>
+          <Button
+            bsStyle="primary"
+            className={signupButtonClass}
+            disabled={signupLoading}
+            onClick={!signupLoading ? this.signup : null}
+          >
             <FormattedMessage
               id="LoginDialog.submit.signup"
               defaultMessage={`signup`}
             />
+            {signupLoading ? '...' : ''}
           </Button>
           <Button
             bsStyle="primary"
