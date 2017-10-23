@@ -8,6 +8,7 @@ import ControlLabel from 'react-bootstrap/lib/ControlLabel'
 import HelpBlock from 'react-bootstrap/lib/HelpBlock'
 import Alert from './../../alert/component'
 import Oauth from './../oauth/container'
+import ValidationErrors from './../../../lib/validationErrors'
 
 class SignupForm extends Component {
   static propTypes = {
@@ -20,31 +21,20 @@ class SignupForm extends Component {
     this.handleChange = this.props.handleChange.bind(this)
   }
 
-  label(source) {
-    if (!source) return ''
-    let attr = source.pointer.split('/').pop()
-    if (attr == 'base') return ''
-    return attr.split('/').pop() + ' '
-  }
-
   render() {
-    let error = this.props.response.meta.error
-    let alertVisible = !!error
-    let errors = (alertVisible) ? error.data.errors.map((e) => this.label(e.source) + e.detail) : []
-
+    let validationErrors = new ValidationErrors(this.props.response.meta.error)
     return (
       <Form>
         <Oauth />
         <br/>
-
         <Alert
-          visibility={alertVisible}
-          list={errors}
+          visibility={!validationErrors.empty()}
+          list={validationErrors.messages()}
         />
 
         <FormGroup
           controlId="formUsername"
-          validationState={"warning"}
+          validationState={(validationErrors.contains('username')) ? "error" : null}
         >
           <ControlLabel>
             <FormattedMessage
@@ -62,6 +52,7 @@ class SignupForm extends Component {
         </FormGroup>
         <FormGroup
           controlId="formEmail"
+          validationState={(validationErrors.contains('email')) ? "error" : null}
         >
           <ControlLabel>
             <FormattedMessage
@@ -78,6 +69,7 @@ class SignupForm extends Component {
         </FormGroup>
         <FormGroup
           controlId="formPassword"
+          validationState={(validationErrors.contains('password')) ? "error" : null}
         >
           <ControlLabel>
             <FormattedMessage
