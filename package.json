@@ -24,6 +24,8 @@
     "json-api-normalizer": "^0.4.1",
     "lodash": "^4.17.4",
     "mkdirp": "^0.5.1",
+    "moment": "^2.19.1",
+    "moment-timezone": "^0.5.13",
     "node-sass": "^4.5.3",
     "path": "^0.12.7",
     "path-complete-extname": "^0.1.0",

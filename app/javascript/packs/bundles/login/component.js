@@ -8,6 +8,8 @@ import Tab from 'react-bootstrap/lib/Tab'
 import LoginForm from './login_form/container'
 import SignupForm from './signup_form/container'
 import {LOGIN_FORM, SIGNUP_FORM} from './actions'
+// import moment from 'moment'
+import moment from 'moment-timezone'
 
 class LoginDialog extends Component {
   static propTypes = {
@@ -69,7 +71,9 @@ class LoginDialog extends Component {
       data: {
         email: this.state.email,
         password: this.state.password,
-        username: this.state.username
+        password_confirmation: this.state.password,
+        username: this.state.username,
+        time_zone: moment.tz.guess()
       }
     })
   }

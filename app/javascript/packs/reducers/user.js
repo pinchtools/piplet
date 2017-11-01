@@ -2,6 +2,7 @@ import * as actions from './../bundles/user/actions'
 
 function user(state = {}, action) {
   switch (action.type) {
+    case actions.USER_SIGNUP_SUCCEED:
     case actions.USER_LOGIN_SUCCEED:
       return {
         ...state,

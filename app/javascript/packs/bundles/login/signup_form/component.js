@@ -48,7 +48,6 @@ class SignupForm extends Component {
             onChange={this.handleChange}
           />
           <FormControl.Feedback />
-          <HelpBlock>Help text with validation state.</HelpBlock>
         </FormGroup>
         <FormGroup
           controlId="formEmail"
