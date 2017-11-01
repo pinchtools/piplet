@@ -30,6 +30,10 @@ COPY Gemfile Gemfile.lock ./
 
 RUN bundle install
 
+COPY package.json yarn.lock ./
+
+RUN yarn install --check-files --pure-lockfile
+
 ADD . /app
 
 # Expose port 3000 to the Docker host, so we can access it
