@@ -1,0 +1,15 @@
+{
+  "CommentEditor.placeholder": "Write a comment ...",
+  "Header.logout": "logout",
+  "Header.login": "login",
+  "LoginDialog.Tab.Signup.Title": "Signup",
+  "LoginDialog.Tab.Login.Title": "Login",
+  "LoginForm.email": "email",
+  "LoginForm.password": "password",
+  "LoginDialog.auth.fb": "Facebook",
+  "LoginDialog.auth.google": "Google",
+  "LoginDialog.auth.twitter": "Twitter",
+  "SignupForm.username": "username",
+  "SignupForm.email": "email",
+  "SignupForm.password": "password"
+}

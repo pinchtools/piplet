@@ -9,7 +9,7 @@ class Users::ConcernedByFiltersService
     is_concerned = concerned_by_email_filter ||
       (@user.creation_ip_address && concerned_by_ip_filter)
 
-    @user.errors.add(:base, I18n.t('user.errors.base.unexpected-error')) if is_concerned
+    @user.errors.add(:base, I18n.t('user.notice.danger.unexpected-error')) if is_concerned
 
     return is_concerned
   end

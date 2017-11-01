@@ -7,8 +7,8 @@
 #  value      :text
 #  thing_id   :integer
 #  thing_type :string(30)
-#  created_at :datetime
-#  updated_at :datetime
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 # Indexes
 #
@@ -18,7 +18,6 @@
 # RailsSettings Model
 class Setting < RailsSettings::CachedSettings
   @@DEFAULT_SETTING_ROOT = Rails.root.join('config', 'settings')
-
 
   def self.load_default_settings
     Dir["#{@@DEFAULT_SETTING_ROOT}/*.yml"].each do |file|

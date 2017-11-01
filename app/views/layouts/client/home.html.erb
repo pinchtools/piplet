@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Piplet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%= stylesheet_link_tag 'client', media: 'all' %>
+  <%= stylesheet_pack_tag 'stylesheets/application' %>
+</head>
+<body>
+  <%= yield %>
+  <%= javascript_pack_tag 'application' %>
+</body>
+</html>

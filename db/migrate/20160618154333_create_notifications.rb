@@ -1,4 +1,4 @@
-class CreateNotifications < ActiveRecord::Migration
+class CreateNotifications < ActiveRecord::Migration[5.1]
   def change
     create_table :notifications do |t|
       t.string :title
@@ -9,9 +9,9 @@ class CreateNotifications < ActiveRecord::Migration
 
       t.timestamps null: false
     end
-    
+
     add_index :notifications, :user_id
     add_index :notifications, :kind
-    
+
   end
 end

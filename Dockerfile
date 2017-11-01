@@ -1,12 +1,19 @@
-FROM ruby:2.3
+FROM ruby:2.4
 MAINTAINER vincent.pelle@gmail.com
 
-# Install apt based dependencies required to run Rails as 
-# well as RubyGems. As the Ruby image itself is based on a 
+# Install nodejs
+RUN curl -sSL curl -sL https://deb.nodesource.com/setup_8.x | bash -
+# Install yarn
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+
+# Install apt based dependencies required to run Rails as
+# well as RubyGems. As the Ruby image itself is based on a
 # Debian image, we use apt-get to install those.
-RUN apt-get update && apt-get install -y \ 
-  build-essential \ 
+RUN apt-get update && apt-get install -y \
   nodejs \
+  yarn \
+  build-essential \
   imagemagick
 
 # Configure the main working directory. This is the base
@@ -25,15 +32,15 @@ RUN bundle install
 
 ADD . /app
 
-# Expose port 3000 to the Docker host, so we can access it 
+# Expose port 3000 to the Docker host, so we can access it
 # from the outside.
 EXPOSE 3000
 
-# Configure an entry point, so we don't need to specify 
+# Configure an entry point, so we don't need to specify
 # "bundle exec" for each of our commands.
 ENTRYPOINT ["bundle", "exec"]
 
-# The main command to run when the container starts. Also 
-# tell the Rails dev server to bind to all interfaces by 
+# The main command to run when the container starts. Also
+# tell the Rails dev server to bind to all interfaces by
 # default.
 CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]

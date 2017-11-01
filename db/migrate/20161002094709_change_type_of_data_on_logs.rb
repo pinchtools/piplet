@@ -1,4 +1,4 @@
-class ChangeTypeOfDataOnLogs < ActiveRecord::Migration
+class ChangeTypeOfDataOnLogs < ActiveRecord::Migration[5.1]
   def up
     change_column :logs, :data, 'jsonb USING data::jsonb'
   end

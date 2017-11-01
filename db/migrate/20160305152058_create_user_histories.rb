@@ -1,4 +1,4 @@
-class CreateUserHistories < ActiveRecord::Migration
+class CreateUserHistories < ActiveRecord::Migration[5.1]
   def change
     create_table :user_histories do |t|
       t.integer :action
@@ -11,7 +11,7 @@ class CreateUserHistories < ActiveRecord::Migration
 
       t.timestamps null: false
     end
-    
+
     add_index :user_histories, :action
     add_index :user_histories, :level
     add_index :user_histories, :action_user_id

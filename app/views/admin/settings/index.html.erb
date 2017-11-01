@@ -40,7 +40,8 @@
                     <%= form.text_field 'settings[global.auth][facebook][app_id]',
                                         class: 'form-control form-control-sm',
                                         placeholder: 'App id',
-                                        value: setting('global.auth', 'facebook', 'app_id')
+                                        value: setting('global.auth', 'facebook', 'app_id'),
+                                        autocomplete: 'off'
                     %>
                   </div>
                 </div>
@@ -50,7 +51,8 @@
                     <%= form.text_field 'settings[global.auth][facebook][secret_key]',
                                         class: 'form-control form-control-sm',
                                         placeholder: 'Secret key',
-                                        value: setting('global.auth', 'facebook', 'secret_key')
+                                        value: setting('global.auth', 'facebook', 'secret_key'),
+                                        autocomplete: 'off'
                     %>
                   </div>
                 </div>
@@ -83,7 +85,8 @@
                     <%= form.text_field 'settings[global.auth][google][client_id]',
                                         class: 'form-control form-control-sm',
                                         placeholder: 'Client id',
-                                        value: setting('global.auth', 'google', 'client_id')
+                                        value: setting('global.auth', 'google', 'client_id'),
+                                        autocomplete: 'off'
                     %>
                   </div>
                 </div>
@@ -93,7 +96,8 @@
                     <%= form.text_field 'settings[global.auth][google][client_secret]',
                                         class: 'form-control form-control-sm',
                                         placeholder: 'Client secret',
-                                        value: setting('global.auth', 'google', 'client_secret')
+                                        value: setting('global.auth', 'google', 'client_secret'),
+                                        autocomplete: 'off'
                     %>
                   </div>
                 </div>
@@ -126,7 +130,8 @@
                     <%= form.text_field 'settings[global.auth][twitter][consumer_key]',
                                         class: 'form-control form-control-sm',
                                         placeholder: 'Consumer key',
-                                        value: setting('global.auth', 'twitter', 'consumer_key')
+                                        value: setting('global.auth', 'twitter', 'consumer_key'),
+                                        autocomplete: 'off'
                     %>
                   </div>
                 </div>
@@ -136,7 +141,8 @@
                     <%= form.text_field 'settings[global.auth][twitter][consumer_secret]',
                                         class: 'form-control form-control-sm',
                                         placeholder: 'Consumer secret',
-                                        value: setting('global.auth', 'twitter', 'consumer_secret')
+                                        value: setting('global.auth', 'twitter', 'consumer_secret'),
+                                        autocomplete: 'off'
                     %>
                   </div>
                 </div>

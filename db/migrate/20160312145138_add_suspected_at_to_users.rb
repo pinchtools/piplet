@@ -1,4 +1,4 @@
-class AddSuspectedAtToUsers < ActiveRecord::Migration
+class AddSuspectedAtToUsers < ActiveRecord::Migration[5.1]
   def change
     add_column :users, :suspected_at, :datetime
   end

@@ -41,13 +41,12 @@ RSpec.describe Users::OmniauthController, type: :controller do
       end
 
       context 'via client' do
-        let(:auth_params) {{ from: 'client' }}
+        let(:auth_params) {{ 'from' => 'client' }}
 
         it 'creates a cookie' do
           get :callback, params: {provider: provider}
 
-          expect(cookies).to have_key(:at)
-          expect(cookies).to have_key(:rt)
+          expect(cookies).to have_key(:token)
         end
 
         it 'renders template' do
@@ -152,8 +151,7 @@ RSpec.describe Users::OmniauthController, type: :controller do
 
         it 'creates a cookie' do
           post :finalize, params: {token: token, username: 'newauthuser'}
-          expect(cookies).to have_key(:at)
-          expect(cookies).to have_key(:rt)
+          expect(cookies).to have_key(:token)
         end
 
         it 'renders callback template' do

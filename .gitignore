@@ -28,3 +28,11 @@
 
 #default avatars
 /public/images/avatars
+
+#client
+yarn-error.log
+
+/public/packs
+/node_modules
+
+/app/javascript/build

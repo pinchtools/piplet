@@ -1,0 +1,10 @@
+app:
+  links:
+    - webpack-dev-server
+webpack-dev-server:
+  build: .
+  volumes:
+    - .:/app
+  command: ./bin/webpack-dev-server
+  ports:
+    - "8081:8081"

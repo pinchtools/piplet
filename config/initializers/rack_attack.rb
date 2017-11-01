@@ -41,7 +41,9 @@ class Rack::Attack
   #
   # Key: "rack::attack:#{Time.now.to_i/:period}:logins/ip:#{req.ip}"
   throttle('logins/ip', :limit => 5, :period => 20.seconds) do |req|
-    if req.path == '/login' && req.post?
+    if (req.path == '/login' && req.post?) ||
+      (req.path.start_with?('/api') && req.path.end_with?('tokens') && req.post?) ||
+      (req.path.start_with?('/auth') && req.post?)
       req.ip
     end
   end
@@ -49,14 +51,36 @@ class Rack::Attack
   # Throttle POST requests to /login by email param
   #
   # Key: "rack::attack:#{Time.now.to_i/:period}:logins/email:#{req.email}"
-  #
-  # Note: This creates a problem where a malicious user could intentionally
-  # throttle logins for another user and force their login requests to be
-  # denied, but that's not very common and shouldn't happen to you. (Knock
-  # on wood!)
-  throttle("logins/email", :limit => 5, :period => 20.seconds) do |req|
-    if req.path == '/login' && req.post?
+  throttle('logins/email', :limit => 5, :period => 20.seconds) do |req|
+    if (req.path == '/login' && req.post?) ||
+      (req.path.start_with?('/api') && req.path.end_with?('tokens') && req.post?)
       # return the email if present, nil otherwise
+      req.params['email'].presence
+    end
+  end
+
+  throttle('signups/ip', :limit => 5, :period => 20.seconds) do |req|
+    if (req.path == '/users/users' && req.post?) ||
+      (req.path.start_with?('/api') && req.path.end_with?('users') && req.post?)
+      req.ip
+    end
+  end
+
+  throttle('signups/email', :limit => 5, :period => 20.seconds) do |req|
+    if (req.path == '/users/users' && req.post?) ||
+      (req.path.start_with?('/api') && req.path.end_with?('users') && req.post?)
+      req.params['email'].presence
+    end
+  end
+
+  throttle('password_resets/ip', :limit => 3, :period => 10.seconds) do |req|
+    if req.path == '/password_resets' && req.post?
+      req.ip
+    end
+  end
+
+  throttle('password_resets/email', :limit => 3, :period => 10.seconds) do |req|
+    if req.path == '/password_resets' && req.post?
       req.params['email'].presence
     end
   end

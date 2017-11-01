@@ -59,20 +59,19 @@ class User < ActiveRecord::Base
   @@MIN_USERNAME_CHARACTERS = 3
   @@MAX_USERNAME_CHARACTERS = 50
 
-  @@MIN_PASSWORD_CHARACTERS = 6
+  @@MIN_PASSWORD_CHARACTERS = 8
   @@MAX_PASSWORD_CHARACTERS = 50
 
   @@SETTINGS = {}
 
-  ACCESS_TOKEN_DURATION = 1.freeze #days
-  REFRESH_TOKEN_DURATION = 15.freeze #days
-
-  has_and_belongs_to_many :filters, :class_name => 'UserFilter', :join_table => :users_user_filters
+  ACCESS_TOKEN_DURATION = 30.freeze #minutes
 
   has_many :notifications, dependent: :destroy
 
   has_one :avatar, class_name: 'UserAvatar', dependent: :destroy
   has_one :auth_account, dependent: :destroy
+
+  has_many :refresh_tokens, dependent: :destroy
 
   accepts_nested_attributes_for :avatar
 
@@ -340,21 +339,14 @@ class User < ActiveRecord::Base
   def api_access_token
     JsonWebToken.encode({
                             iat: Time.current.to_i,
-                            exp: refresh_token_duration,
-                            user: id
-                        })
-  end
-
-  def api_refresh_token
-    JsonWebToken.encode({
-                            iat: Time.current.to_i,
-                            exp: refresh_token_duration,
-                            user: id
+                            exp: access_token_duration,
+                            user: id,
+                            jti: SecureRandom.base64(8)
                         })
   end
 
   def active?
-    activated? && !deactivated? && !blocked? && !filters.all_blocked.exists?
+    activated? && !deactivated? && !blocked?
   end
 
   ########
@@ -420,12 +412,7 @@ class User < ActiveRecord::Base
     log( :activated, ip_address: activation_ip_address )
   end
 
-  def refresh_token_duration
-    (Setting['user.refresh_token_duration'] || REFRESH_TOKEN_DURATION).days.after.to_i
-  end
-
   def access_token_duration
-    ACCESS_TOKEN_DURATION.days.after.to_i
+    ACCESS_TOKEN_DURATION.minutes.after.to_i
   end
-
 end
