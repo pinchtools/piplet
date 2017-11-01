@@ -4,15 +4,15 @@
 
 unless User.exists?
     User.create!(username: "Example",
-      email: "example@piplet.io",
-      password: "foobarfoobar",
-      password_confirmation: "foobarfoobar",
-      admin: true,
-      activated: true,
-      activated_at: Time.zone.now,
-      creation_ip_address: '127.6.4.98',
-      activation_ip_address: '127.6.4.98')
-
+                 username_lower: "example",
+                 email: "example@piplet.io",
+                 password: "foobarfoobar",
+                 password_confirmation: "foobarfoobar",
+                 admin: true,
+                 activated: true,
+                 activated_at: Time.zone.now,
+                 creation_ip_address: '127.6.4.98',
+                 activation_ip_address: '127.6.4.98')
 
     49.times do |n|
         name = "example-#{n+1}"
@@ -20,13 +20,14 @@ unless User.exists?
         password = "foobarfoobar"
 
         User.create!(username: name,
-        email: email,
-        password: password,
-        password_confirmation: password,
-        activated: true,
-        activated_at: Time.zone.now,
-        creation_ip_address: '127.6.4.98',
-        activation_ip_address: '127.6.4.98')
+                     username_lower: name,
+                     email: email,
+                     password: password,
+                     password_confirmation: password,
+                     activated: true,
+                     activated_at: Time.zone.now,
+                     creation_ip_address: '127.6.4.98',
+                     activation_ip_address: '127.6.4.98')
     end
 
     p "Users created"
