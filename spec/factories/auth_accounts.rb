@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :auth_account do
     provider 'google'
     sequence(:uid) { |n| "XB-AS-2#{n}" }

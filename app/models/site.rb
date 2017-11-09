@@ -1,14 +1,3 @@
-# == Schema Information
-#
-# Table name: sites
-#
-#  id         :integer          not null, primary key
-#  name       :string
-#  uid        :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#
-
 class Site < ActiveRecord::Base
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }, length: { minimum: 3 }
@@ -31,3 +20,14 @@ class Site < ActiveRecord::Base
     api_keys.create(label: 'default')
   end
 end
+
+# == Schema Information
+#
+# Table name: sites
+#
+#  id         :integer          not null, primary key
+#  name       :string
+#  uid        :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#

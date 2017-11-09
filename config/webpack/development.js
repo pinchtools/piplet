@@ -1,43 +1,22 @@
 // Note: You must restart bin/webpack-dev-server for changes to take effect
-
-const merge = require('webpack-merge')
-const sharedConfig = require('./shared.js')
-const { settings, output } = require('./configuration.js')
+const environment = require('./environment')
+const webpack = require('webpack')
 const path = require("path")
-const { WatchIgnorePlugin } = require("webpack")
 const AggregateTranslations = require('./../../app/javascript/modules/AggregateTranslations.js')
 
-module.exports = merge(sharedConfig, {
-  devtool: 'cheap-eval-source-map',
+// Get a pre-configured plugin
+environment.plugins.get('ExtractText') // Is an ExtractTextPlugin instance
 
-  stats: {
-    errorDetails: true
-  },
+// Add an additional plugin of your choosing : ProvidePlugin
+environment.plugins.set('AggregateTranslations', new AggregateTranslations())
+environment.plugins.set(
+  'WatchIgnorePlugin',
+  new webpack.WatchIgnorePlugin([
+    path.resolve(__dirname, '../../app/javascript/build/locales.json'),
+    path.resolve(__dirname, '../../app/javascript/packs/locales/en.json'),
+  ])
+)
 
-  output: {
-    pathinfo: true
-  },
+module.exports = environment
 
-  plugins: [
-    new AggregateTranslations(),
-    new WatchIgnorePlugin([
-      path.resolve(__dirname, '../../app/javascript/build/locales.json'),
-      path.resolve(__dirname, '../../app/javascript/packs/locales/en.json'),
-    ]),
-  ],
-
-  devServer: {
-    clientLogLevel: 'none',
-    https: settings.dev_server.https,
-    host: settings.dev_server.host,
-    port: settings.dev_server.port,
-    contentBase: output.path,
-    publicPath: output.publicPath,
-    compress: true,
-    headers: { 'Access-Control-Allow-Origin': '*' },
-    historyApiFallback: true,
-    watchOptions: {
-      ignored: /node_modules/
-    }
-  }
-})
+module.exports = environment.toWebpackConfig()

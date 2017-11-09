@@ -190,7 +190,7 @@ RSpec.describe Users::UsersController, type: :controller do
     it "should redirect when there is only one admin" do
       User.admins.destroy_all
 
-      admin = FactoryGirl.create(:admin)
+      admin = FactoryBot.create(:admin)
 
       expect(User.admins.count).to eq(1)
 

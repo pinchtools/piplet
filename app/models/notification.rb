@@ -1,24 +1,3 @@
-# == Schema Information
-#
-# Table name: notifications
-#
-#  id          :integer          not null, primary key
-#  title       :string
-#  description :text
-#  kind        :integer
-#  read        :boolean          default(FALSE)
-#  user_id     :integer
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  link        :string
-#  icon        :string
-#
-# Indexes
-#
-#  index_notifications_on_kind     (kind)
-#  index_notifications_on_user_id  (user_id)
-#
-
 class Notification < ActiveRecord::Base
   include Concerns::Loggable
   
@@ -84,3 +63,24 @@ class Notification < ActiveRecord::Base
   end
   
 end
+
+# == Schema Information
+#
+# Table name: notifications
+#
+#  id          :integer          not null, primary key
+#  title       :string
+#  description :text
+#  kind        :integer
+#  read        :boolean          default(FALSE)
+#  user_id     :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  link        :string
+#  icon        :string
+#
+# Indexes
+#
+#  index_notifications_on_kind     (kind)
+#  index_notifications_on_user_id  (user_id)
+#

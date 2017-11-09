@@ -1,15 +1,3 @@
-# == Schema Information
-#
-# Table name: user_avatars
-#
-#  id         :integer          not null, primary key
-#  kind       :integer
-#  uri        :string
-#  user_id    :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#
-
 require 'file_size_validator'
 require 'default_avatar'
 
@@ -55,3 +43,15 @@ class UserAvatar < ActiveRecord::Base
   end
   
 end
+
+# == Schema Information
+#
+# Table name: user_avatars
+#
+#  id         :integer          not null, primary key
+#  kind       :integer
+#  uri        :string
+#  user_id    :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#

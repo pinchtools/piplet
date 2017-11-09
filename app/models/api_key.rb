@@ -1,21 +1,3 @@
-# == Schema Information
-#
-# Table name: api_keys
-#
-#  id         :integer          not null, primary key
-#  label      :string
-#  public_key :string
-#  secret_key :string
-#  site_id    :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#
-# Indexes
-#
-#  index_api_keys_on_public_key  (public_key)
-#  index_api_keys_on_site_id     (site_id)
-#
-
 class ApiKey < ApplicationRecord
   belongs_to :site
 
@@ -38,3 +20,21 @@ class ApiKey < ApplicationRecord
   end
 
 end
+
+# == Schema Information
+#
+# Table name: api_keys
+#
+#  id         :integer          not null, primary key
+#  label      :string
+#  public_key :string
+#  secret_key :string
+#  site_id    :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+# Indexes
+#
+#  index_api_keys_on_public_key  (public_key)
+#  index_api_keys_on_site_id     (site_id)
+#

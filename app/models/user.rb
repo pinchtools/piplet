@@ -1,49 +1,3 @@
-# == Schema Information
-#
-# Table name: users
-#
-#  id                    :integer          not null, primary key
-#  username              :string
-#  email                 :string
-#  created_at            :datetime         not null
-#  updated_at            :datetime         not null
-#  password_digest       :string
-#  remember_digest       :string
-#  admin                 :boolean          default(FALSE)
-#  activation_digest     :string
-#  activated             :boolean          default(FALSE)
-#  activated_at          :datetime
-#  reset_digest          :string
-#  reset_sent_at         :datetime
-#  username_lower        :string
-#  creation_ip_address   :inet
-#  activation_ip_address :inet
-#  blocked               :boolean          default(FALSE)
-#  suspected             :boolean          default(FALSE)
-#  suspected_note        :string
-#  suspected_by_id       :integer
-#  suspected_at          :datetime
-#  blocked_by_id         :integer
-#  blocked_at            :datetime
-#  last_seen_at          :datetime
-#  time_zone             :string           default("UTC")
-#  description           :text
-#  username_renew_count  :integer          default(0)
-#  locale                :string
-#  deactivated           :boolean          default(FALSE)
-#  deactivated_at        :datetime
-#  to_be_deleted         :boolean          default(FALSE)
-#  to_be_deleted_at      :datetime
-#  blocked_note          :string
-#  creation_domain       :string
-#
-# Indexes
-#
-#  index_users_on_email           (email) UNIQUE
-#  index_users_on_username        (username) UNIQUE
-#  index_users_on_username_lower  (username_lower) UNIQUE
-#
-
 require 'levenshtein'
 require 'ip_addr'
 require 'json_web_token'
@@ -135,13 +89,13 @@ class User < ActiveRecord::Base
 
   def self.method_missing(method_name, *arguments, &block)
 
-    if method_name =~ /\A(\w+)=\z/ && Setting.defaults.key?("user.#{$1}")
+    if method_name =~ /\A(\w+)=\z/ && Setting.default_exists?("user.#{$1}")
       # affectation
       self.settings[$1.to_sym] = arguments[0]
 
       Setting["user.#{$1}"] = arguments[0]
       return
-    elsif Setting.defaults.key?("user.#{method_name}")
+    elsif Setting.default_exists?("user.#{method_name}")
       # undefined method should ask for setting
       return self.settings[method_name] if self.settings.key?(method_name)
 
@@ -416,3 +370,49 @@ class User < ActiveRecord::Base
     ACCESS_TOKEN_DURATION.minutes.after.to_i
   end
 end
+
+# == Schema Information
+#
+# Table name: users
+#
+#  id                    :integer          not null, primary key
+#  username              :string
+#  email                 :string
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  password_digest       :string
+#  remember_digest       :string
+#  admin                 :boolean          default(FALSE)
+#  activation_digest     :string
+#  activated             :boolean          default(FALSE)
+#  activated_at          :datetime
+#  reset_digest          :string
+#  reset_sent_at         :datetime
+#  username_lower        :string
+#  creation_ip_address   :inet
+#  activation_ip_address :inet
+#  blocked               :boolean          default(FALSE)
+#  suspected             :boolean          default(FALSE)
+#  suspected_note        :string
+#  suspected_by_id       :integer
+#  suspected_at          :datetime
+#  blocked_by_id         :integer
+#  blocked_at            :datetime
+#  last_seen_at          :datetime
+#  time_zone             :string           default("UTC")
+#  description           :text
+#  username_renew_count  :integer          default(0)
+#  locale                :string
+#  deactivated           :boolean          default(FALSE)
+#  deactivated_at        :datetime
+#  to_be_deleted         :boolean          default(FALSE)
+#  to_be_deleted_at      :datetime
+#  blocked_note          :string
+#  creation_domain       :string
+#
+# Indexes
+#
+#  index_users_on_email           (email) UNIQUE
+#  index_users_on_username        (username) UNIQUE
+#  index_users_on_username_lower  (username_lower) UNIQUE
+#

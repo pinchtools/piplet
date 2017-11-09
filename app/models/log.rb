@@ -1,29 +1,3 @@
-# == Schema Information
-#
-# Table name: logs
-#
-#  id             :integer          not null, primary key
-#  action         :integer
-#  level          :integer
-#  message        :text
-#  data           :jsonb
-#  ip_address     :inet
-#  link           :string
-#  message_vars   :string
-#  action_user_id :integer
-#  loggable_id    :integer
-#  loggable_type  :string
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#
-# Indexes
-#
-#  index_logs_on_action                         (action)
-#  index_logs_on_action_user_id                 (action_user_id)
-#  index_logs_on_level                          (level)
-#  index_logs_on_loggable_type_and_loggable_id  (loggable_type,loggable_id)
-#
-
 require 'enum'
 
 class Log < ActiveRecord::Base
@@ -146,3 +120,29 @@ class Log < ActiveRecord::Base
 
   
 end
+
+# == Schema Information
+#
+# Table name: logs
+#
+#  id             :integer          not null, primary key
+#  action         :integer
+#  level          :integer
+#  message        :text
+#  data           :jsonb
+#  ip_address     :inet
+#  link           :string
+#  message_vars   :string
+#  action_user_id :integer
+#  loggable_type  :string
+#  loggable_id    :integer
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#
+# Indexes
+#
+#  index_logs_on_action                         (action)
+#  index_logs_on_action_user_id                 (action_user_id)
+#  index_logs_on_level                          (level)
+#  index_logs_on_loggable_type_and_loggable_id  (loggable_type,loggable_id)
+#

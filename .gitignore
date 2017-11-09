@@ -36,3 +36,6 @@ yarn-error.log
 /node_modules
 
 /app/javascript/build
+/public/packs
+/public/packs-test
+/node_modules

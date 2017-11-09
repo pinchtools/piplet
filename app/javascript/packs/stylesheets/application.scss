@@ -1,7 +1,8 @@
 // ~ to tell webpack that this is not a relative import:
 @import 'variables';
-@import '~bootstrap-sass/assets/stylesheets/_bootstrap';
+@import '~bootstrap-sass/assets/stylesheets/_bootstrap.scss';
 @import 'bootswatch';
+@import 'font-awesome/scss/variables';
 @import 'font-awesome/scss/font-awesome';
 @import '~draft-js/dist/Draft';
 

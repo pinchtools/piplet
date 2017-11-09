@@ -1,3 +1,13 @@
+class AuthAccount < ApplicationRecord
+  belongs_to :user
+
+  validates :uid, presence: true
+  validates :provider, presence: true
+  validates :uid, uniqueness: {scope: :provider}
+
+  scope :without_user, -> { where( user_id: nil ) }
+end
+
 # == Schema Information
 #
 # Table name: auth_accounts
@@ -20,15 +30,5 @@
 #
 # Foreign Keys
 #
-#  fk_rails_570f163821  (user_id => users.id)
+#  fk_rails_...  (user_id => users.id)
 #
-
-class AuthAccount < ApplicationRecord
-  belongs_to :user
-
-  validates :uid, presence: true
-  validates :provider, presence: true
-  validates :uid, uniqueness: {scope: :provider}
-
-  scope :without_user, -> { where( user_id: nil ) }
-end

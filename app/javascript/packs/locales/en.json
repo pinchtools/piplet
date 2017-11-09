@@ -1,7 +1,11 @@
 {
   "CommentEditor.placeholder": "Write a comment ...",
+  "CommentEditor.publish": "publish",
   "Header.logout": "logout",
   "Header.login": "login",
+  "LoginDialog.cancel": "cancel",
+  "LoginDialog.submit.signup": "signup",
+  "LoginDialog.submit.login": "login",
   "LoginDialog.Tab.Signup.Title": "Signup",
   "LoginDialog.Tab.Login.Title": "Login",
   "LoginForm.email": "email",

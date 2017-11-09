@@ -1,3 +1,15 @@
+class RefreshToken < ApplicationRecord
+  belongs_to :user
+  enum platform: [ :web, :stateless ]
+
+  validates :token, presence: true
+  validates :token, uniqueness: { scope: :user_id }
+  validates :user_id, presence: true
+  validates :platform, presence: true
+
+  scope :all_valid, -> { where(blocked_at: nil) }
+end
+
 # == Schema Information
 #
 # Table name: refresh_tokens
@@ -18,17 +30,5 @@
 #
 # Foreign Keys
 #
-#  fk_rails_279e9a0091  (user_id => users.id)
+#  fk_rails_...  (user_id => users.id)
 #
-
-class RefreshToken < ApplicationRecord
-  belongs_to :user
-  enum platform: [ :web, :stateless ]
-
-  validates :token, presence: true
-  validates :token, uniqueness: { scope: :user_id }
-  validates :user_id, presence: true
-  validates :platform, presence: true
-
-  scope :all_valid, -> { where(blocked_at: nil) }
-end
