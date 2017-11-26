@@ -11,6 +11,7 @@ RSpec.describe Site, type: :model do
   it { should validate_length_of(:name).is_at_least(3) }
 
   it { should have_many(:api_keys).dependent(:destroy) }
+  it { should have_many(:trusted_domains).dependent(:destroy) }
 
   describe '.create' do
     subject{ create(:site) }

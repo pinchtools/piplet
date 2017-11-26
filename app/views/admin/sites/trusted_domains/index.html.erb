@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <%= render 'admin/sites/shared/settings_nav', site: site %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+
+      <p class="text-xs-right">
+        <button class="btn btn-default"  data-toggle="modal" data-target="#newTrustedDomainModal"><%= t 'admin.sites.trusted_domains.index.new_trusted_domain' %></button>
+      </p>
+      <p class="help-block text-muted">
+        <%= t 'admin.sites.trusted_domains.index.empty_rule' %>
+      </p>
+
+      <table id="trusted-domains" class="table table-striped">
+        <thead>
+          <tr>
+            <th>Domain</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if site.trusted_domains.any? %>
+            <%= render partial: 'trusted_domain', collection: site.trusted_domains, locals: {site: site} %>
+          <% else %>
+            <tr>
+              <td colspan="2" class="text-muted text-center"><%= t 'default.no-entries' %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<%= render 'modal_new' %>

@@ -6,6 +6,8 @@ en:
       uid: 'identifier'
     api_key:
       lable: 'label'
+    trusted_domain:
+      domain: 'domain'
   admin:
     sites:
       sites:
@@ -24,11 +26,14 @@ en:
           tab:
             general: 'General'
             api_keys: 'Api Keys'
+            trusted_domains: 'Trusted Domains'
           submit: 'Save changes'
         notice:
           success:
             updated: 'Successful update'
             created: 'New site created'
+          danger:
+            not_found: 'Site not found'
       api_keys:
         index:
           new_api_key: 'Create a new api key'
@@ -36,6 +41,15 @@ en:
           title: 'New Api key'
           close: 'Close'
           submit: 'Generate Api Key'
+      trusted_domains:
+        index:
+          new_trusted_domain: 'Create a trusted domain'
+          empty_rule: 'When no trusted domain is defined any domain can load or create a conversation with just the public key. Unless you use your own web client, just enters the domain of the actual page if you want to restrict the usage.'
+        form:
+          title: 'New trusted domain'
+          close: 'Close'
+          submit: 'Add'
+          help_text: 'Adding a domain without mentioning subdomain will include all of them, e.g. example.com include blog.example.com and forum.example.com'
   helpers:
     label:
       <<: *attributes

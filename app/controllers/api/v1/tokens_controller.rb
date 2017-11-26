@@ -1,5 +1,6 @@
 class Api::V1::TokensController < ApiController
   skip_before_action :authorize_request, only: [:create, :update]
+  skip_before_action :authenticate_site, only: [:create, :update]
   before_action -> { authorize_request(accept_expiration: true) }, only: :update
 
   def create

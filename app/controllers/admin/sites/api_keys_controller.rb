@@ -11,18 +11,15 @@ class Admin::Sites::ApiKeysController < Admin::AdminController
     render locals: { site: @site, sites: @sites }
   end
 
-
   def create
-    @api_key = @site.api_keys.new(api_key_params)
-
-    @api_key.save
+    @api_key = @site.api_keys.create(api_key_params)
   end
-
 
   def destroy
     @api_key.destroy
   end
 
+  private
 
   def set_api_key
     @api_key = @site.api_keys.find_by_id(params[:id])

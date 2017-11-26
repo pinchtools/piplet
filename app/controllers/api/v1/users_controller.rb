@@ -1,6 +1,7 @@
 class Api::V1::UsersController < ApiController
   include ApplicationHelper
   skip_before_action :authorize_request, only: :create
+  skip_before_action :authenticate_site, only: [:create, :update, :show]
 
   def create
     @user = User.new( user_create_params.merge({

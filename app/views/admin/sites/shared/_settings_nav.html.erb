@@ -5,4 +5,7 @@
   <li class="nav-item">
     <%= active_link_to t('admin.sites.sites.edit.tab.api_keys'), admin_api_keys_path(site.uid), class: "nav-link" %>
   </li>
+  <li class="nav-item">
+    <%= active_link_to t('admin.sites.sites.edit.tab.trusted_domains'), admin_trusted_domains_path(site.uid), class: "nav-link" %>
+  </li>
 </ul>

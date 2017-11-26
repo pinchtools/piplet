@@ -1,0 +1,4 @@
+<tr id="trusted-domain-<%= trusted_domain.id %>">
+  <td><%= trusted_domain.domain %></td>
+  <td align="right"><%= link_to t('global.destroy-btn'),  admin_trusted_domain_path(site.uid, trusted_domain.id), method: :delete, remote: true, data: { confirm: t('global.destroy-confirm') } %></td>
+</tr>

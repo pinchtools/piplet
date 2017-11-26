@@ -1,0 +1,11 @@
+<% if @trusted_domain.errors.any? %>
+$('#newTrustedDomainModal #error_explanation').remove();
+$('#newTrustedDomainModal .modal-body').prepend("<%= j render 'shared/error_messages', object: @trusted_domain %>");
+<% else %>
+$("#newTrustedDomainModal").modal('hide');
+
+$("#trusted-domains tbody").prepend("<%= j render partial: 'trusted_domain', locals: { site: @site, trusted_domain: @trusted_domain } %>")
+$("#trusted-domains tbody tr:first").effect( "highlight","slow" );
+
+$('#newTrustedDomainModal form')[0].reset();
+<% end %>

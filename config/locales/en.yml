@@ -45,6 +45,8 @@ en:
     destroy-btn: 'delete'
   default:
     close: 'close'
+    empty: 'empty'
+    no-entries: 'no entries'
   admin:
     links:
       users:

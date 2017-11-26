@@ -3,6 +3,10 @@ require 'rails_helper'
 RSpec.describe ApiKey, type: :model do
   it { should validate_presence_of(:label) }
   it { should validate_uniqueness_of(:label).case_insensitive }
+  it { should validate_presence_of(:public_key) }
+  it { should validate_uniqueness_of(:public_key).case_insensitive }
+  it { should validate_presence_of(:secret_key) }
+  it { should validate_uniqueness_of(:secret_key).case_insensitive }
 
   describe '#public_key' do
     subject{ build(:api_key) }

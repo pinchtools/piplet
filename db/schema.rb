@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171001161607) do
+ActiveRecord::Schema.define(version: 20171119102950) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,6 +38,17 @@ ActiveRecord::Schema.define(version: 20171001161607) do
     t.datetime "updated_at", null: false
     t.index ["uid", "provider"], name: "index_auth_accounts_on_uid_and_provider", unique: true
     t.index ["user_id"], name: "index_auth_accounts_on_user_id"
+  end
+
+  create_table "conversations", force: :cascade do |t|
+    t.string "title"
+    t.string "identifier"
+    t.bigint "site_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["identifier"], name: "index_conversations_on_identifier", unique: true
+    t.index ["site_id"], name: "index_conversations_on_site_id"
+    t.index ["title"], name: "index_conversations_on_title"
   end
 
   create_table "logs", force: :cascade do |t|
@@ -73,6 +84,18 @@ ActiveRecord::Schema.define(version: 20171001161607) do
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
+  create_table "pages", force: :cascade do |t|
+    t.string "url"
+    t.string "title"
+    t.string "locale"
+    t.bigint "conversation_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["conversation_id"], name: "index_pages_on_conversation_id"
+    t.index ["title"], name: "index_pages_on_title"
+    t.index ["url"], name: "index_pages_on_url", unique: true
+  end
+
   create_table "refresh_tokens", force: :cascade do |t|
     t.string "token"
     t.integer "platform"
@@ -100,6 +123,14 @@ ActiveRecord::Schema.define(version: 20171001161607) do
     t.string "uid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "trusted_domains", force: :cascade do |t|
+    t.string "domain"
+    t.bigint "site_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["site_id"], name: "index_trusted_domains_on_site_id"
   end
 
   create_table "user_avatars", force: :cascade do |t|

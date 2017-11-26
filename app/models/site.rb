@@ -7,6 +7,9 @@ class Site < ActiveRecord::Base
   after_create :create_default_api_key
 
   has_many :api_keys, dependent: :destroy
+  has_many :trusted_domains, dependent: :destroy
+  has_many :conversations, dependent: :destroy
+
 
   scope :oldest_first, -> { order( created_at: :desc ) }
 

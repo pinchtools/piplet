@@ -1,5 +1,6 @@
 class Api::V1::OauthProvidersController < ApiController
   skip_before_action :authorize_request, only: [:index]
+  skip_before_action :authenticate_site, only: [:index]
   include SettingsHelper
 
   def index

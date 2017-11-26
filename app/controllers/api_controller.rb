@@ -4,9 +4,11 @@ class ApiController < ActionController::API
   include AbstractController::Helpers
   include Rails.application.routes.url_helpers
   include ActionController::Cookies
-  include ApiHelper
+  include Api::BaseHelper
+  include Api::ResponseHelper
 
   before_action :authorize_request
+  before_action :authenticate_site
 
   TOKEN_REQUIRED_ATTRS = %w(user exp iat).freeze
 
@@ -15,21 +17,6 @@ class ApiController < ActionController::API
   rescue_from InvalidToken, with: :invalid_token_response
 
   private
-
-  def render_error(resource, key_code)
-    api_code = api_codes(key_code)
-
-    serializer = ActiveModel::Serializer::ErrorSerializer.new(resource)
-    adapter = ActiveModelSerializers::Adapter.create(serializer)
-    json = adapter.as_json.merge({meta: {code: api_code[:response_code]}})
-
-    render json: json, status: api_code[:http_code]
-  end
-
-  def render_success(resource, key_code, **instance_options)
-    api_code = api_codes(key_code)
-    render json: resource, status: api_code[:http_code], meta: {code: api_code[:response_code]}, **instance_options
-  end
 
   def authorize_request(accept_expiration: false)
     begin
@@ -56,18 +43,19 @@ class ApiController < ActionController::API
     @current_user = User.actives.find( token_payload['user'] )
   end
 
-  def invalid_token_response
-    user = User.new.tap{|u| u.errors.add(:base, I18n.t('user.notice.danger.invalid-token'))}
-    render_error(user, :invalid_token)
-  end
+  def authenticate_site
+    api_key_record = ApiKey.find_by_public_key(api_key)
 
-  def expired_token_response
-    user = User.new.tap{|u| u.errors.add(:base, I18n.t('user.notice.danger.expired-token'))}
-    render_error(user, :expired_token)
-  end
+    unless site = api_key_record.try(:site)
+      throw Exception, I18n.t('site.notice.danger.not_found')
+    end
 
-  def unprocessable_entity_response exception
-    user = User.new.tap{|u| u.errors.add(:base, exception.message)}
-    render_error(user, :unprocessable_entity)
+    if api_secret
+      throw Exception, I18n.t('site.notice.danger.invalid_secret_key') if api_key_record.secret_key != api_secret
+    elsif site.trusted_domains.any?
+      throw Exception, I18n.t('site.notice.danger.invalid_domain') if referer_domain.blank? || TrustedDomain.search_by_domain(referer_domain).empty?
+    end
+
+    @current_site = site
   end
 end

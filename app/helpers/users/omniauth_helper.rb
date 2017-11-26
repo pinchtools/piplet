@@ -1,5 +1,5 @@
 module Users::OmniauthHelper
-  include ApiHelper
+  include Api::BaseHelper
 
   def gain_access_on_client(user)
     cookies[:token] = { :value => user.api_access_token, :httponly => true }

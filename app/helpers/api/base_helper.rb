@@ -1,4 +1,4 @@
-module ApiHelper
+module Api::BaseHelper
   class InvalidToken < StandardError; end
 
   WEB_CLIENT = 'web'.freeze
@@ -41,5 +41,23 @@ module ApiHelper
 
   def csrf_token
     @csrf_token ||= request.headers['x-csrf-token'].presence
+  end
+
+  def api_key
+    @api_key ||= request.headers['x-api-key'].presence
+  end
+
+  def api_secret
+    @api_secret ||= request.headers['x-api-secret'].presence
+  end
+
+  def referer_domain
+    begin
+      uri = URI.parse(request.referer)
+    rescue
+      uri = URI.parse('')
+    end
+
+    @referer_domain ||= uri.host
   end
 end

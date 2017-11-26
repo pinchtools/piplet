@@ -67,6 +67,7 @@ Rails.application.routes.draw do
         patch 'edit', to: 'sites#update', as: :site_update
 
         resources :api_keys
+        resources :trusted_domains
       end
 
     end
@@ -134,6 +135,7 @@ Rails.application.routes.draw do
         end
       end
       resources :oauth_providers, only: [:index]
+      resources :conversations, only: [:show], param: :identifier
     end #v1
   end # namespace api
 

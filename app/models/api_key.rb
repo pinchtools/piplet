@@ -2,9 +2,12 @@ class ApiKey < ApplicationRecord
   belongs_to :site
 
   validates :label, presence: true, uniqueness: { case_sensitive: false }
+  validates :public_key, presence: true, uniqueness: { case_sensitive: false }
+  validates :secret_key, presence: true, uniqueness: { case_sensitive: false }
 
-  before_validation :generate_public_key, if: :new_record?
-  before_validation :generate_secret_key, if: :new_record?
+  before_validation :generate_public_key, if: :generate_public_key?
+  before_validation :generate_secret_key, if: :generate_secret_key?
+
   def generate_public_key
     uuid = nil
 
@@ -19,6 +22,15 @@ class ApiKey < ApplicationRecord
     self.secret_key = SecureRandom.base64
   end
 
+  private
+
+  def generate_public_key?
+    new_record? && public_key.blank?
+  end
+
+  def generate_secret_key?
+    new_record? && secret_key.blank?
+  end
 end
 
 # == Schema Information

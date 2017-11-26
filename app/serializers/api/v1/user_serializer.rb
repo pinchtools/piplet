@@ -1,5 +1,5 @@
 class Api::V1::UserSerializer < ActiveModel::Serializer
-  include ApiHelper
+  include Api::BaseHelper
 
   attributes :email, :username
   attribute :api_access_token, unless: :hide_access_token?

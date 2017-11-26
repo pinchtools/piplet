@@ -4,7 +4,7 @@ shared_examples "authentication validation" do |method, url, request_options: {}
   end
 
   context 'token is not passed' do
-    before { send(method, url) }
+    before{ send(method, url, request_options) }
     it { expect(response).to have_http_status(:unauthorized) }
   end
 
@@ -181,5 +181,70 @@ shared_examples 'object response does not contain' do |key|
     expect(json['data']).not_to include(
                               'attributes' => hash_including(key)
                             )
+  end
+end
+
+shared_examples 'missing required params must result in response error' do |method, url, request_options: {}, required_params:|
+  let(:params) { request_options[:params] || {} }
+
+  it 'returns an error' do
+    i = 0
+    while i < required_params.count
+      request_options[:params] = params.merge(required_params.except(required_params.keys[i]))
+      send(method, url, request_options)
+      json = JSON.parse response.body
+
+      expect(json).to have_key('errors')
+      expect(response).to have_http_status(:unprocessable_entity)
+      i += 1
+    end
+  end
+end
+
+shared_examples 'site authentication' do |method, url, request_options: {}|
+  describe 'public api key is not passed' do
+    before{ send(method, url, request_options) }
+    it { expect(response).to have_http_status(:unprocessable_entity) }
+  end
+
+  describe 'api key is passed' do
+    let(:api_public_key) { 'fake_api_key' }
+    before { request.headers['x-api-key'] = api_public_key }
+
+    describe 'but invalid' do
+      before { send(method, url, request_options) }
+      it { expect(response).to have_http_status(:unprocessable_entity) }
+    end
+
+    describe 'and valid' do
+      let(:site) { create(:site) }
+      let!(:api_key) { create(:api_key, public_key: api_public_key, site: site) }
+
+      describe 'no api secret is passed' do
+        context 'no trusted domain are defined' do
+          before { send(method, url, request_options) }
+          it { expect(response).to have_http_status(:ok) }
+        end
+
+        context 'some trusted domains are defined' do
+          context 'and the referer domain does not match to those' do
+          end
+
+          context 'and the referer domain is included' do
+
+          end
+        end
+      end
+
+      describe 'and an api secret is passed' do
+        describe 'but is invalid' do
+
+        end
+
+        context 'and correct' do
+
+        end
+      end
+    end
   end
 end
