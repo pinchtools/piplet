@@ -42,7 +42,7 @@ RSpec.describe Api::V1::ConversationsController, type: :controller do
       end
 
       context 'conversation already exists' do
-        let!(:conversation) { create(:conversation, identifier: params[:identifier]) }
+        let!(:conversation) { create(:conversation, site: site, identifier: params[:identifier]) }
         let(:http_request) { get :show, params: params }
 
         it { expect { http_request }.not_to change { Conversation.count } }
@@ -56,6 +56,7 @@ RSpec.describe Api::V1::ConversationsController, type: :controller do
             it { expect { http_request }.to change { page.reload.title }.to( params[:title] ) }
           end
         end
+
         context 'it is a new page' do
           it { expect { http_request }.to change { Page.count }.by(1) }
         end
