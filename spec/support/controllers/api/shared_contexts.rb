@@ -21,3 +21,11 @@ shared_context 'concerned by filters returns true' do
     allow(filter_service).to receive(:call).and_return(concerned_by_filter)
   end
 end
+
+shared_context 'valid site authentication' do | define_site: false |
+  let(:site) {create(:site)} if define_site
+  let(:api_key) { site.api_keys.first }
+  before {
+    request.headers['x-api-key'] = api_key.public_key
+  }
+end

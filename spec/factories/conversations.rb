@@ -1,7 +1,6 @@
 FactoryBot.define do
   factory :conversation do
-    title "MyString"
-    identifier "MyString"
+    sequence(:identifier) { |n| "id#{n}" }
     site
   end
 end

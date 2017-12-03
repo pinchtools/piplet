@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :page do
-    url "MyString"
-    title "MyString"
-    locale "MyString"
-    conversation ""
+    sequence(:url) { |n| "http://example.com/#{n}" }
+    sequence(:title) { |n| "My page #{n}" }
+    locale 'en'
+    conversation
   end
 end
