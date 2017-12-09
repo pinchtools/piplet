@@ -149,76 +149,76 @@ RSpec.describe User, type: :model do
   end
 
 
-  it 'should not have a mail similar to a blocked one' do
-    Setting.defaults['user.signaled_matching_with_blocked_account'] = true
-    Setting.defaults['user.considered_email_similar_when_x_characters'] = 2
+  context 'similar settings are on' do
+    before do
+      Setting.create_section_settings('user', {
+        'signaled_matching_with_blocked_account': true,
+        'signaled_matching_with_suspected_account': true,
+        'considered_email_similar_when_x_characters': 2,
+        'considered_email_similar_when_x_characters': 2
+      })
+    end
 
-    subject.email = "mail-similar@example.com"
 
-    another_user = create(:user)
-    another_user.update_column(:email, "mail-similar1@example.com")
+    it 'should not have a mail similar to a blocked one' do
+      subject.email = "mail-similar@example.com"
 
-    another_user.block
+      another_user = create(:user)
+      another_user.update_column(:email, "mail-similar1@example.com")
 
-    expect(subject.find_email_similar_on_scope(:all_blocked)).to eq(another_user.email)
+      another_user.block
 
-    another_user.update_column(:email, "mail-not-similar-at-all@example.com")
+      expect(subject.find_email_similar_on_scope(:all_blocked)).to eq(another_user.email)
 
-    expect(subject.find_email_similar_on_scope(:all_blocked)).to be_nil
-  end
+      another_user.update_column(:email, "mail-not-similar-at-all@example.com")
 
-  it 'should not have a username similar to a blocked one' do
-    Setting.defaults['user.signaled_matching_with_blocked_account'] = true
-    Setting.defaults['user.considered_username_similar_when_x_characters'] = 2
+      expect(subject.find_email_similar_on_scope(:all_blocked)).to be_nil
+    end
 
-    subject.username = "very-common"
+    it 'should not have a username similar to a blocked one' do
+      subject.username = "very-common"
 
-    another_user = create(:user)
-    another_user.update_column(:username, "very-common1")
+      another_user = create(:user)
+      another_user.update_column(:username, "very-common1")
 
-    another_user.block
+      another_user.block
 
-    expect(subject.find_username_similar_on_scope(:all_blocked)).to eq(another_user.username)
+      expect(subject.find_username_similar_on_scope(:all_blocked)).to eq(another_user.username)
 
-    another_user.update_column(:username, "unusual")
+      another_user.update_column(:username, "unusual")
 
-    expect(subject.find_username_similar_on_scope(:all_blocked)).to be_nil
-  end
+      expect(subject.find_username_similar_on_scope(:all_blocked)).to be_nil
+    end
 
-  it 'should not have a mail similar to a suspected one' do
-    Setting.defaults['user.signaled_matching_with_suspected_account'] = true
-    Setting.defaults['user.considered_email_similar_when_x_characters'] = 2
+    it 'should not have a mail similar to a suspected one' do
+      subject.email = "mail-similar@example.com"
 
-    subject.email = "mail-similar@example.com"
+      another_user = create(:user)
+      another_user.update_column(:email, "mail-similar1@example.com")
 
-    another_user = create(:user)
-    another_user.update_column(:email, "mail-similar1@example.com")
+      another_user.suspect
 
-    another_user.suspect
+      expect(subject.find_email_similar_on_scope(:suspects)).to eq(another_user.email)
 
-    expect(subject.find_email_similar_on_scope(:suspects)).to eq(another_user.email)
+      another_user.update_column(:email, "mail-not-similar-at-all@example.com")
 
-    another_user.update_column(:email, "mail-not-similar-at-all@example.com")
+      expect(subject.find_email_similar_on_scope(:suspects)).to be_nil
+    end
 
-    expect(subject.find_email_similar_on_scope(:suspects)).to be_nil
-  end
+    it 'should not have a username similar to a suspected one' do
+      subject.username = "very-common"
 
-  it 'should not have a username similar to a suspeced one' do
-    Setting.defaults['user.signaled_matching_with_suspected_account'] = true
-    Setting.defaults['user.considered_username_similar_when_x_characters'] = 2
+      another_user = create(:user)
+      another_user.update_column(:username, "very-common1")
 
-    subject.username = "very-common"
+      another_user.suspect
 
-    another_user = create(:user)
-    another_user.update_column(:username, "very-common1")
+      expect(subject.find_username_similar_on_scope(:suspects)).to eq(another_user.username)
 
-    another_user.suspect
+      another_user.update_column(:username, "unusual")
 
-    expect(subject.find_username_similar_on_scope(:suspects)).to eq(another_user.username)
-
-    another_user.update_column(:username, "unusual")
-
-    expect(subject.find_username_similar_on_scope(:suspects)).to be_nil
+      expect(subject.find_username_similar_on_scope(:suspects)).to be_nil
+    end
   end
 
   it 'should check a newly created account' do

@@ -3,18 +3,15 @@ require 'rails_helper'
 RSpec.describe ApiKey, type: :model do
   it { should validate_presence_of(:label) }
   it { should validate_uniqueness_of(:label).case_insensitive }
-  it { should validate_presence_of(:public_key) }
   it { should validate_uniqueness_of(:public_key).case_insensitive }
-  it { should validate_presence_of(:secret_key) }
   it { should validate_uniqueness_of(:secret_key).case_insensitive }
 
   describe '#public_key' do
-    subject{ build(:api_key) }
+    subject{ build(:api_key, public_key: nil ) }
 
     it 'is generated on new record' do
       expect{ subject.save }.to change{ subject.public_key }.from(nil)
       expect(subject.public_key).to be_present
-
     end
 
     it 'does not change on update' do
@@ -29,7 +26,7 @@ RSpec.describe ApiKey, type: :model do
   end
 
   describe '#secret_key' do
-    subject{ build(:api_key) }
+    subject{ build(:api_key, secret_key: nil) }
 
     it 'is generated on new record' do
       expect{ subject.save }.to change{ subject.secret_key }.from(nil)

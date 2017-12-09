@@ -116,8 +116,8 @@ RSpec.describe Api::V1::TokensController, type: :controller do
       end
 
       describe 'the refresh token exists but not for that platform' do
-        let(:refresh_token) { create(:refresh_token, platform: ApiHelper::WEB_CLIENT, user: user) }
-        before { put :update, params: { refresh_token: refresh_token.token, client_platform: ApiHelper::STATELESS_CLIENT } }
+        let(:refresh_token) { create(:refresh_token, platform: Api::BaseHelper::WEB_CLIENT, user: user) }
+        before { put :update, params: { refresh_token: refresh_token.token, client_platform: Api::BaseHelper::STATELESS_CLIENT } }
         it { expect(response).to have_http_status(:unprocessable_entity) }
       end
 
@@ -148,7 +148,7 @@ RSpec.describe Api::V1::TokensController, type: :controller do
 
             put :update, params: { refresh_token: refresh_token.token, client_platform: client_platform }
           end
-          let(:client_platform) { ApiHelper::WEB_CLIENT }
+          let(:client_platform) { Api::BaseHelper::WEB_CLIENT }
           let(:refresh_token) { create(:refresh_token, user: user, platform: client_platform) }
 
           it {expect(response).to have_http_status(:success)}
