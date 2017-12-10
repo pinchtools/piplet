@@ -24,6 +24,9 @@ gem 'http_accept_language'
 gem 'bootstrap', '4.0.0.alpha5'
 gem 'font-awesome-rails'
 
+gem 'friendly_id', '~> 5.1.0'
+gem 'ancestry'
+
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 

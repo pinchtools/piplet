@@ -98,6 +98,10 @@ en:
     client:
       notice:
         success: "You're now logged, you can close this window and go back to the website."
+  api:
+    errors:
+      conversations:
+        not_found: 'This conversation does not exists'
   attributes:  &attributes
     log:
       action: "Action"
